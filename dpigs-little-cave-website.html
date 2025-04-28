@@ -1,117 +1,58 @@
 <!DOCTYPE html>
+    <!--主要語言-->
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--網站名稱-->
   <title>D.pig's Little Cave</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
+  
 
-    .container {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr); /* 5個區塊寬度 */
-      grid-template-rows: repeat(7, 1fr); /* 7個區塛長度 */
-      grid-gap: 5px;
-      width: 80vw;
-      height: 80vh;
-      position: relative;
-    }
-
-    .block {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 16px;
-      color: white;
-      font-weight: bold;
-      border-radius: 5px;
-    }
-
-    /* 主區塊 */
-    .block0 { background-color: #7D492C; } /* 主區塊 */
-
-    /* 其他區塊顏色設定 (棋盤式) */
-    .L-1, .R-1, .U-1, .D-1 {
-      background-color: #DD8A5A;
-    }
-
-    .L-2, .R-2, .U-2, .D-2 {
-      background-color: #7D492C;
-    }
-
-    .L-1-D-1, .R-1-D-1, .L-2-D-2, .R-2-D-2 {
-      background-color: #DD8A5A;
-    }
-
-    /* 區塊編號 */
-    .block::after {
-      content: attr(data-block);
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      font-size: 14px;
-      color: black;
-      background-color: white;
-      padding: 3px;
-      border-radius: 5px;
-    }
-
-  </style>
+    <!--連結.css-->
+  <link rel="stylesheet" href="style.css">
+  
 </head>
 <body>
+    <!--設定部分-->
+    <main>
+        <section id="section-U-1">
+            <div>U-1</div>
+        </section>
+        <section id="section-0">
+          <div>Main</div>
+        </section>
+        <section id="section-D-1">
+          <div>D-1</div>
+        </section>
+        <section id="section-D-2">
+          <div>D-2</div>
+        </section>
+        <section id="section-D-3">
+          <div>D-3</div>
+        </section>
+        <section id="section-D-4">
+          <div>D-4</div>
+        </section>
+        <section id="section-D-5">
+          <div>D-5</div>
+        </section>
+      
+    </main>
 
-  <div class="container">
-    <!-- 左側區塊 -->
-    <div class="block L-1" data-block="L-1">左側區塊 1</div>
-    <div class="block L-2" data-block="L-2">左側區塊 2</div>
-
-    <!-- 左側下方區塊 -->
-    <div class="block L-1-D-1" data-block="L-1-D-1">左側區塊 1 下方 1</div>
-    <div class="block L-1-D-2" data-block="L-1-D-2">左側區塊 1 下方 2</div>
-    <div class="block L-1-D-3" data-block="L-1-D-3">左側區塊 1 下方 3</div>
-    <div class="block L-1-D-4" data-block="L-1-D-4">左側區塊 1 下方 4</div>
-    <div class="block L-1-D-5" data-block="L-1-D-5">左側區塊 1 下方 5</div>
-
-    <!-- 上方區塊 -->
-    <div class="block U-1" data-block="U-1">上方區塊</div>
-
-    <!-- 主區塊 -->
-    <div class="block block0" data-block="0">主區塊</div>
-
-    <!-- 右側區塊 -->
-    <div class="block R-1" data-block="R-1">右側區塊 1</div>
-    <div class="block R-2" data-block="R-2">右側區塊 2</div>
-
-    <!-- 右側下方區塊 -->
-    <div class="block R-1-D-1" data-block="R-1-D-1">右側區塊 1 下方 1</div>
-    <div class="block R-1-D-2" data-block="R-1-D-2">右側區塊 1 下方 2</div>
-    <div class="block R-1-D-3" data-block="R-1-D-3">右側區塊 1 下方 3</div>
-    <div class="block R-1-D-4" data-block="R-1-D-4">右側區塊 1 下方 4</div>
-    <div class="block R-1-D-5" data-block="R-1-D-5">右側區塊 1 下方 5</div>
-
-    <!-- 下方區塊 -->
-    <div class="block D-1" data-block="D-1">下方區塊 1</div>
-    <div class="block D-2" data-block="D-2">下方區塊 2</div>
-    <div class="block D-3" data-block="D-3">下方區塊 3</div>
-    <div class="block D-4" data-block="D-4">下方區塊 4</div>
-    <div class="block D-5" data-block="D-5">下方區塊 5</div>
-
-    <!-- 左側上方區塊 -->
-    <div class="block L-1-U-1" data-block="L-1-U-1">左側上方區塊 1</div>
-    <div class="block L-2-U-1" data-block="L-2-U-1">左側上方區塊 2</div>
-
-    <!-- 右側上方區塊 -->
-    <div class="block R-1-U-1" data-block="R-1-U-1">右側上方區塊 1</div>
-    <div class="block R-2-U-1" data-block="R-2-U-1">右側上方區塊 2</div>
-  </div>
-
+  
+    <!--文字部分-->
+    <!-- 主要標題 -->
+  <h1>D.pig's Little Cave</h1>
+ 
+  <script>
+    window.addEventListener('load', function() {
+      // 在頁面加載完成後滾動到 section-0
+      const section = document.getElementById('section-0');
+      if (section) {
+        section.scrollIntoView({ behavior: 'instant' });
+      }
+    });
+  </script>
+  
 </body>
 </html>

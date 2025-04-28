@@ -1,0 +1,53 @@
+/*css部分是body head是html*/
+body {
+    /* margin 外邊距 -與頁面邊界的距離*/
+    margin: 0;
+    /*padding 內邊距 - 自己內縮得距離*/
+    padding: 0;
+    /*font 字體*/
+    font-family: sans-serif;
+}
+
+
+/*main  這段 CSS 頁面中設置的顯示屬性*/
+main {                  
+    /*vh 百分比 px 像素 */ 
+    height: 100vh;      
+    width: 300vw;
+    /*垂直方向（y 方向）的溢出處理設為 scroll  即使內容沒有超出，也會顯示垂直滾動條（這是 scroll 的效果）。如果你只希望在內容超過時顯示滾動條，可以改為 auto。*/
+    overflow-y: scroll auto;   
+    /*滾動時更加平滑  y指的是y軸*/
+    scroll-snap-type: y mandatory;
+    
+}
+
+
+/*主區塊設定*/
+main >section{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    /*設定每個 section 的背景顏色為深綠色（除非下面選中不同的背景色）*/ 
+    background-color: #2f8367;
+    margin: 0 auto;
+
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+
+/*:nth-child(odd) :使用 CSS 的「第 N 個子元素選擇器」*/
+/*選中奇數順序的 <section>（也就是第 1、3、5、7... 個）*/
+
+main > section:nth-child(odd){
+    background:rebeccapurple;
+}
+
+
+/*區塊中央字設定*/
+main > section > div {
+    font-size:80px;
+    font-weight: 700;
+    color: white;
+}

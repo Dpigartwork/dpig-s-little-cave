@@ -44,7 +44,15 @@
     <!-- 主要標題 -->
   <h1>D.pig's Little Cave</h1>
  
-
+  <script>
+    window.addEventListener('load', function() {
+      // 在頁面加載完成後滾動到 section-0
+      const section = document.getElementById('section-0');
+      if (section) {
+        section.scrollIntoView({ behavior: 'instant' });
+      }
+    });
+  </script>
   
 </body>
 </html>

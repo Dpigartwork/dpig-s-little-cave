@@ -46,11 +46,24 @@
  
   <script>
     window.addEventListener('load', function() {
-      // 在頁面加載完成後滾動到 section-0
-      const section = document.getElementById('section-0');
-      if (section) {
-        section.scrollIntoView({ behavior: 'instant' });
-      }
+      // 等待頁面完全加載後，再觸發滾動
+      setTimeout(function() {
+        // 檢查 URL 是否有 hashtag  "###"，如果有則滾動到某區塊
+        //例子.file:///E:/website/dpigs-little-cave-website_files/dpigs-little-cave-website.html#section-D-5
+        if (window.location.hash) {
+          const section = document.getElementById(window.location.hash.substring(1));
+          if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+          }
+        } else {
+          // 沒有 hash 時，滾動到 section-0
+          const section = document.getElementById('section-0');
+          if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+        // 延遲200毫秒，確保頁面加載完成後滾動
+      }, 200); 
     });
   </script>
   

@@ -1,56 +1,82 @@
-/*css部分是body head是html*/
+/* 基本設定 */
 body {
-    /* margin 外邊距 -與頁面邊界的距離*/
-    margin: 0;
-    /*padding 內邊距 - 自己內縮得距離*/
-    padding: 0;
-    /*font 字體*/
-    font-family: sans-serif;
+    margin: 0; /* 移除頁面外邊距，這樣頁面就會直接緊貼螢幕邊緣 */
+    padding: 0; /* 移除頁面內邊距，確保內容緊貼邊界 */
+    font-family: sans-serif; /* 設定全頁使用的字體，這裡使用了無襯線字體 */
+    overflow: auto; /* ✅ 允許頁面顯示滾輪，上下滾動 */
 }
 
-
-/*main  這段 CSS 頁面中設置的顯示屬性*/
-main {                  
-    /*vh 百分比 px 像素 */ 
-    height: 100vh;      
-    width: 300vw;
-    /*垂直方向（y 方向）的溢出處理設為 scroll  即使內容沒有超出，也會顯示垂直滾動條（這是 scroll 的效果）。如果你只希望在內容超過時顯示滾動條，可以改為 auto。*/
-    overflow-y: scroll auto;   
-    /*滾動時更加平滑  y指的是y軸*/
-    scroll-snap-type: y mandatory;
-    
+/* 主格子網格 */
+main {
+    display: grid; /* 使用 grid 布局方式，將頁面分割成多個區塊 */
+    grid-template-areas:
+      "L2_U1 L1_U1 C_U1 R1_U1 R2_U1" /* 第 1 行區塊名稱配置 */
+      "L2    L1    C    R1    R2" /* 第 2 行區塊名稱配置 */
+      "L2_D1 L1_D1 C_D1 R1_D1 R2_D1" /* 第 3 行區塊名稱配置 */
+      "L2_D2 L1_D2 C_D2 R1_D2 R2_D2" /* 第 4 行區塊名稱配置 */
+      "L2_D3 L1_D3 C_D3 R1_D3 R2_D3" /* 第 5 行區塊名稱配置 */
+      "L2_D4 L1_D4 C_D4 R1_D4 R2_D4" /* 第 6 行區塊名稱配置 */
+      "L2_D5 L1_D5 C_D5 R1_D5 R2_D5"; /* 第 7 行區塊名稱配置 */
+    grid-template-columns: repeat(5, 100vw); /* 5 個區塊，每個區塊寬度為 100vw（視口寬度） */
+    grid-template-rows: repeat(7, 100vh); /* 7 行區塊，每個區塊高度為 100vh（視口高度） */
+    width: 500vw; /* 網格總寬度為 500vw（5 倍的視口寬度） */
+    height: 700vh; /* 網格總高度為 700vh（7 倍的視口高度） */
+    scroll-snap-type: both mandatory; /* 設定滾動對齊方式：強制水平和垂直滾動對齊 */
+    overflow: auto; /* ✅ 允許內容上下左右滑動 */
+    position: relative; /* 設定父元素相對定位，以便其他元素定位於此 */
 }
 
-
-/*主區塊設定*/
-main >section{
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    /* 水平居中 justify-content: center; */
-    justify-content: center;
-    /* 垂直居中  align-items: center;  */
-    align-items: center; 
-    /*設定每個 section 的背景顏色（除非下面選中不同的背景色）*/ 
-    background-color: #b38357;
-    margin: 0 auto;
-
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
+/* 每個格子 */
+main > section {
+    width: 100vw; /* 每個區塊寬度 100vw，即填滿整個視口寬度 */
+    height: 100vh; /* 每個區塊高度 100vh，即填滿整個視口高度 */
+    display: flex; /* 使用 Flexbox 排版，每個區塊內的元素將被彈性排列 */
+    justify-content: center; /* 水平居中對齊區塊內的內容 */
+    align-items: center; /* 垂直居中對齊區塊內的內容 */
+    scroll-snap-align: start; /* 滾動時，區塊將與視口的開始位置對齊 */
+    background-color: #b38357; /* 設定每個區塊的背景顏色為一個橙色 */
 }
 
-
-/*:nth-child(odd) :使用 CSS 的「第 N 個子元素選擇器」*/
-/*選中奇數順序的 <section>（也就是第 1、3、5、7... 個）*/
-
-main > section:nth-child(odd){
-    background:rgb(94, 64, 36);
+/* 針對奇數序號的區塊設定背景顏色 */
+main > section:nth-child(odd) {
+    background: rgb(94, 64, 36); /* 設定奇數區塊的背景顏色為深棕色 */
 }
 
-
-/*區塊中央字設定*/
+/* 區塊中的字設定 */
 main > section > div {
-    font-size:80px;
-    font-weight: 700;
-    color: white;
+    font-size: 60px; /* 設定文字的字體大小為 60px */
+    color: white; /* 設定文字顏色為白色 */
+    font-weight: bold; /* 設定文字為粗體 */
+}
+
+/* 圖片和影片樣式 */
+main > section > img,
+main > section > video {
+    width: 100%; /* 圖片或影片寬度為 100% */
+    height: 100%; /* 圖片或影片高度為 100% */
+    object-fit: cover; /* 圖片或影片將會完全填滿區塊，且保持比例裁剪 */
+}
+
+/* 左右箭頭按鈕 */
+.arrow {
+    position: fixed; /* 固定定位，保持在畫面上方 */
+    top: 50%; /* 垂直方向 50%，即畫面中間 */
+    transform: translateY(-50%); /* 垂直居中，使箭頭按鈕對齊中央 */
+    z-index: 1000; /* 設置較高層級，確保箭頭按鈕不會被其他元素遮擋 */
+    background: rgba(0, 0, 0, 0.5); /* 設置半透明的黑色背景 */
+    color: white; /* 設定文字顏色為白色 */
+    font-size: 40px; /* 設定字體大小為 40px */
+    border: none; /* 去除按鈕邊框 */
+    padding: 10px 20px; /* 設定內邊距，讓按鈕更大些 */
+    cursor: pointer; /* 設定滑鼠指標為可點擊 */
+}
+
+/* 左箭頭按鈕位置 */
+.arrow.left {
+    left: 20px; /* 設定左箭頭的位置距左邊 20px */
+}
+
+/* 右箭頭按鈕位置 */
+.arrow.right {
+    right: 20px; /* 設定右箭頭的位置距右邊 20px */
 }

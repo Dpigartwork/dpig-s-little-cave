@@ -63,7 +63,7 @@ main > section > video {
     top: 50%; /* 垂直方向 50%，即畫面中間 */
     transform: translateY(-50%); /* 垂直居中，使箭頭按鈕對齊中央 */
     z-index: 1000; /* 設置較高層級，確保箭頭按鈕不會被其他元素遮擋 */
-    background: rgba(0, 0, 0, 0.5); /* 設置半透明的黑色背景 */
+    background: rgba(20, 65, 14, 0); /* 設置半透明的黑色背景，前面是顏色，後面是透明度 */
     color: white; /* 設定文字顏色為白色 */
     font-size: 40px; /* 設定字體大小為 40px */
     border: none; /* 去除按鈕邊框 */

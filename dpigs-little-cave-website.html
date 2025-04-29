@@ -1,71 +1,50 @@
 <!DOCTYPE html>
-    <!--主要語言-->
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--網站名稱-->
-  <title>D.pig's Little Cave</title>
-  
-
-    <!--連結.css-->
-  <link rel="stylesheet" href="style.css">
-  
+  <meta charset="UTF-8"> <!-- 設定字符編碼為 UTF-8 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 設定視口以適應不同設備尺寸 -->
+  <title>D.pig's Little Cave</title> <!-- 設定網頁標題 -->
+  <link rel="stylesheet" href="style.css"> <!-- 連結外部 CSS 樣式表 -->
 </head>
 <body>
-    <!--設定部分-->
-    <main>
-        <section id="section-U-1">
-            <div>U-1</div>
-        </section>
-        <section id="section-0">
-          <div>Main</div>
-        </section>
-        <section id="section-D-1">
-          <div>D-1</div>
-        </section>
-        <section id="section-D-2">
-          <div>D-2</div>
-        </section>
-        <section id="section-D-3">
-          <div>D-3</div>
-        </section>
-        <section id="section-D-4">
-          <div>D-4</div>
-        </section>
-        <section id="section-D-5">
-          <div>D-5</div>
-        </section>
-      
-    </main>
 
-  
-    <!--文字部分-->
-    <!-- 主要標題 -->
-  <h1>D.pig's Little Cave</h1>
- 
+  <!-- 左右箭頭按鈕：用來實現頁面左右滾動 -->
+  <button id="left-arrow" class="arrow left">←</button> <!-- 左箭頭按鈕 -->
+  <button id="right-arrow" class="arrow right">→</button> <!-- 右箭頭按鈕 -->
+
+  <!-- 主格子區域：這個區域會顯示不同的 section 區塊 -->
+  <main id="grid-layout"></main> <!-- 用來顯示網格布局的區塊 -->
+
+  <!-- 主要標題 -->
+  <h1>D.pig's Little Cave</h1> <!-- 頁面的主要標題 -->
+
+  <!-- JavaScript 部分：負責實現網格和頁面交互的邏輯 -->
+  <script src="main.js"></script> <!-- 連結外部的 JavaScript 文件，控制頁面邏輯和功能 -->
+
   <script>
     window.addEventListener('load', function() {
       // 等待頁面完全加載後，再觸發滾動
       setTimeout(function() {
         // 檢查 URL 是否有 hashtag  "###"，如果有則滾動到某區塊
-        //例子.file:///E:/website/dpigs-little-cave-website_files/dpigs-little-cave-website.html#section-D-5
+        // 例如 URL 是：file:///E:/website/dpigs-little-cave-website_files/dpigs-little-cave-website.html#section-D-5
         if (window.location.hash) {
+          // 根據 URL 中的 hashtag (例如 "#section-D-5") 找到對應的區塊
           const section = document.getElementById(window.location.hash.substring(1));
           if (section) {
+            // 如果找到對應的區塊，滾動到該區塊
             section.scrollIntoView({ behavior: 'smooth' });
           }
         } else {
-          // 沒有 hash 時，滾動到 section-0
+          // 如果 URL 沒有 hashtag，滾動到預設的 section-0 區塊
           const section = document.getElementById('section-0');
           if (section) {
             section.scrollIntoView({ behavior: 'smooth' });
           }
         }
-        // 延遲200毫秒，確保頁面加載完成後滾動
+        // 延遲200毫秒，確保頁面加載完成後再執行滾動
       }, 200); 
     });
   </script>
-  
 </body>
 </html>
+

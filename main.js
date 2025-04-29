@@ -1,88 +1,175 @@
+/**
+ * 📘 JavaScript 關鍵字與常用詞解釋：
+ *
+ * function：定義一個函式（功能單元），可重複執行一段程式邏輯。
+ * gridLayout：變數名稱，代表 <main id="grid-layout"> 的 DOM 元素，是整個網格的容器。
+ * colLabels：橫向欄位名稱陣列，用來定義左右的 5 個區塊。
+ * rowLabels：縱向列名稱陣列，用來定義上下的 7 行（包含空字串代表中央列）。
+ * customSections：可客製化的區塊設定（背景色、圖片等），用來控制特定格子的內容。
+ * let：宣告區域變數，支援重新賦值，但不像 var 那樣有提升（hoisting）問題。
+ * const：宣告常數，不可重新賦值，用於不會變動的參數。
+ * `<div>${area}</div>`：模板字串，用於動態建立 HTML 字串，插入區塊名稱 area。
+ * param：是 JSDoc 標準註解格式，說明函式參數的用途與類型，對維護大型程式非常重要。
+ * document.getElementById()：取得 HTML 中指定 id 的元素。
+ * .addEventListener()：綁定使用者事件，例如按鈕點擊。
+ * .scrollIntoView()：讓某個區塊自動捲動至可視畫面中。
+ * setTimeout()：延遲指定時間後執行一段程式碼。
+ * .appendChild()：將建立好的元素加入 HTML 結構中。
+ * .innerHTML：操作元素內部的 HTML。
+ * behavior, block, inline：scrollIntoView 的選項，用來控制滾動行為。
+ */
+
 window.addEventListener('load', function () {
-  // 取得網格容器
+  // 取得網格主容器（<main id="grid-layout">）
   const gridLayout = document.getElementById('grid-layout');
 
-  // 橫向欄位和縱向列位標籤
-  const colLabels = ['L2', 'L1', 'C', 'R1', 'R2']; // 橫向欄位
-  const rowLabels = ['U1', '', 'D1', 'D2', 'D3', 'D4', 'D5']; // 縱向列位
+  // ➡️ 橫向欄位名稱：從左到右（共 5 欄）
+  const colLabels = ['L2', 'L1', 'C', 'R1', 'R2'];
 
-  // 可指定特殊樣式或圖片的區塊
+  // ⬇️ 縱向列名稱：從上到下（共 7 行，空字串為中央列）
+  const rowLabels = ['U1', '', 'D1', 'D2', 'D3', 'D4', 'D5'];
+
+  // 🎯 可客製化的格子設定，透過區塊 ID 定義背景色或媒體內容
   const customSections = {
-    // 例: "R2_D4": { color: "#f38357", media: "image", mediaSrc: "images/Happy.jpg" }
+    // 範例："R2_D4": { color: "#f38357", media: "image", mediaSrc: "images/Happy.jpg" }
   };
 
-  // 自動建立網格區塊
+  // 🔁 逐一建立 5×7 個 section（格子）
   for (let r = 0; r < rowLabels.length; r++) {
     for (let c = 0; c < colLabels.length; c++) {
       const col = colLabels[c];
       const row = rowLabels[r];
+
+      // ⛳ 格子 ID，例如：C_D1 或 L1_U1
       const area = (col && row) ? `${col}_${row}` : col || row;
 
-      // 創建每個區塊的 section 元素
+      // 建立 section 元素（格子）
       const section = document.createElement('section');
-      section.id = area; // 設定每個區塊的 ID
-      section.style.gridArea = area; // 設定每個區塊的 grid 排版
+      section.id = area;
+      section.style.gridArea = area;
 
-      // 如果該區塊有自定義設置
+      // ✅ 若為客製化格子，則套用設定
       if (customSections[area]) {
         const setting = customSections[area];
         section.style.backgroundColor = setting.color;
 
-        // 如果是圖片，則插入圖片
         if (setting.media === "image") {
           const img = document.createElement('img');
           img.src = setting.mediaSrc;
           img.alt = "Image content";
           section.appendChild(img);
         } else {
-          // 如果沒有特殊設定，則顯示區塊名稱
           section.innerHTML = `<div>${area}</div>`;
         }
       } else {
-        // 預設顯示區塊名稱
+        // 📝 預設顯示區塊名稱
         section.innerHTML = `<div>${area}</div>`;
       }
 
-      // 將每個區塊添加到 grid 容器
+      // 加入網格主容器
       gridLayout.appendChild(section);
     }
   }
 
-  // 🔁 左右捲動邏輯
-  let currentColIndex = 2; // 預設從 C 開始
+  // 👉 初始位置設為中央的 C 區塊
+  let currentColIndex = 2; // 對應 colLabels[2] = "C"
+  let currentRowIndex = 1; // 對應 rowLabels[1] = ""
 
-  // 滾動至指定的區塊
-  function scrollToColumn(colIndex) {
-    const sectionId = `${colLabels[colIndex]}`; // 滾動至指定的區塊（例如 C 區塊）
+  /**
+   * 🧭 scrollToPosition()：滾動到指定格子位置
+   * @param {number} colIndex - 欄位索引（0～4）
+   * @param {number} rowIndex - 列索引（0～6）
+   */
+  function scrollToPosition(colIndex, rowIndex) {
+    const col = colLabels[colIndex];
+    const row = rowLabels[rowIndex];
+    const sectionId = (col && row) ? `${col}_${row}` : col || row;
     const section = document.getElementById(sectionId);
+
     if (section) {
-      // 使用 scrollIntoView 進行平滑滾動
-      section.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+      section.scrollIntoView({
+        behavior: 'smooth', // 平滑滾動
+        block: 'start',     // 垂直頂部對齊
+        inline: 'start'     // 水平左側對齊
+      });
     }
   }
 
-  // 左箭頭按鈕的事件處理
+  // ◀️ 左箭頭事件
   document.getElementById('left-arrow').addEventListener('click', () => {
     if (currentColIndex > 0) {
-      currentColIndex--; // 向左移動一個欄位
-      scrollToColumn(currentColIndex); // 滾動到新欄位
+      currentColIndex--;
+      scrollToPosition(currentColIndex, currentRowIndex);
     }
   });
 
-  // 右箭頭按鈕的事件處理
+  // ▶️ 右箭頭事件
   document.getElementById('right-arrow').addEventListener('click', () => {
     if (currentColIndex < colLabels.length - 1) {
-      currentColIndex++; // 向右移動一個欄位
-      scrollToColumn(currentColIndex); // 滾動到新欄位
+      currentColIndex++;
+      scrollToPosition(currentColIndex, currentRowIndex);
     }
   });
 
-  // ✅ 頁面加載完自動滾動至中間的 C 區塊
-  setTimeout(() => {
-    const centerSection = document.getElementById('C');
-    if (centerSection) {
-      // 延遲 500 毫秒後滾動至 C 區塊
-      centerSection.scrollIntoView({ behavior: 'instant', block: 'start', inline: 'start' });
+  // 🔼 上箭頭事件
+  document.getElementById('up-arrow').addEventListener('click', () => {
+    if (currentRowIndex > 0) {
+      currentRowIndex--;
+      scrollToPosition(currentColIndex, currentRowIndex);
     }
-  }, 200); // 延遲 200 毫秒，確保內容完全加載
+  });
+
+  // 🔽 下箭頭事件
+  document.getElementById('down-arrow').addEventListener('click', () => {
+    if (currentRowIndex < rowLabels.length - 1) {
+      currentRowIndex++;
+      scrollToPosition(currentColIndex, currentRowIndex);
+    }
+  });
+
+  // 🕒 頁面載入完成後，自動滾動至中央的 C 區塊
+  setTimeout(() => {
+    scrollToPosition(currentColIndex, currentRowIndex);
+  }, 300); // 延遲 300 毫秒，確保所有格子已加載完畢
+});
+
+// 🧲 監聽捲動，確保吸附到最近格子，並更新當前索引
+let isScrolling;
+window.addEventListener('scroll', () => {
+  clearTimeout(isScrolling);
+
+  // 200ms 停止滾動後再執行吸附與索引更新
+  isScrolling = setTimeout(() => {
+    // 🔍 找出最接近的格子
+    const sections = document.querySelectorAll('#grid-layout > section');
+    let closestSection = null;
+    let closestDistance = Infinity;
+    let viewportCenterX = window.scrollX + window.innerWidth / 2;
+    let viewportCenterY = window.scrollY + window.innerHeight / 2;
+
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      const sectionCenterX = rect.left + window.scrollX + rect.width / 2;
+      const sectionCenterY = rect.top + window.scrollY + rect.height / 2;
+
+      const dx = viewportCenterX - sectionCenterX;
+      const dy = viewportCenterY - sectionCenterY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestSection = section;
+      }
+    });
+
+    // 若找到最近的格子，就滾動過去並更新索引
+    if (closestSection) {
+      closestSection.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+
+      const id = closestSection.id; // 例如 C_D2
+      const [col, row] = id.split('_');
+      currentColIndex = colLabels.indexOf(col);
+      currentRowIndex = rowLabels.indexOf(row);
+    }
+  }, 200); // ← 這個延遲時間可微調
 });

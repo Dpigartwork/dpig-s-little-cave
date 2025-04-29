@@ -3,7 +3,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    overflow: auto;
+    overflow: hidden;/*使中鍵能移動視窗*/
+    overflow-x:hidden ;/*使用 overflow-x: hidden 禁止頁面在水平方向上的滾動。*/
 }
 
 /* 主格子網格 */
@@ -52,8 +53,7 @@ main > section > div {
 /* 左右箭頭按鈕 */
 .arrow {
     position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
+    
     z-index: 1000;
     background: rgba(20, 65, 14, 0);
     color: white;
@@ -63,12 +63,34 @@ main > section > div {
     cursor: pointer;
 }
 
+
+
 /* 左箭頭按鈕位置 */
 .arrow.left {
+    top: 50%;
+    transform: translateY(-50%);
     left: 20px;
 }
 
 /* 右箭頭按鈕位置 */
 .arrow.right {
+    top: 50%;
+    transform: translateY(-50%);
     right: 20px;
+}
+
+
+
+/* 上箭頭（水平置中） */
+.arrow.up {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* 下箭頭（水平置中） */
+.arrow.down {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
 }

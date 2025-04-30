@@ -1,111 +1,152 @@
 /* 基本設定 */
 body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    overflow: auto; /*使中鍵能移動視窗*/
-    overflow-x: hidden; /*禁止頁面在水平方向上的滾動*/
+    margin: 0; /* 去除頁面邊距 */
+    padding: 0; /* 去除頁面內邊距 */
+    font-family: sans-serif; /* 設定字型 */
+    overflow: auto; /* 啟用頁面捲動 */
+    overflow-x: hidden; /* 隱藏水平方向的捲動條 */
 }
 
 /* 主格子網格 */
 main {
-    display: grid;
-    grid-template-areas:
+    display: grid; /* 使用 CSS Grid 排版 */
+    grid-template-areas: /* 定義區域配置，5 列 7 行 */
       "L2_U1 L1_U1 C_U1 R1_U1 R2_U1"
-      "L2_GROUND L1_GROUND C_GROUND R1_GROUND R2_GROUND" /* ✨ 將空字串行改為 GROUND */
+      "L2_GROUND L1_GROUND C_GROUND R1_GROUND R2_GROUND"
       "L2_D1 L1_D1 C_D1 R1_D1 R2_D1"
       "L2_D2 L1_D2 C_D2 R1_D2 R2_D2"
       "L2_D3 L1_D3 C_D3 R1_D3 R2_D3"
       "L2_D4 L1_D4 C_D4 R1_D4 R2_D4"
       "L2_D5 L1_D5 C_D5 R1_D5 R2_D5";
-    grid-template-columns: repeat(5, 100vw);
-    grid-template-rows: repeat(7, 100vh);
-    width: 500vw;
-    height: 700vh;
-    scroll-snap-type: both mandatory;
-    overflow: auto;
-    position: relative;
+    grid-template-columns: repeat(5, 100vw); /* 每列佔滿 100% 頁面寬度 */
+    grid-template-rows: repeat(7, 100vh); /* 每行佔滿 100% 頁面高度 */
+    width: 500vw; /* 網格總寬度 */
+    height: 700vh; /* 網格總高度 */
+    scroll-snap-type: both mandatory; /* 啟用滾動捕捉，兩個方向都可以捕捉 */
+    overflow: auto; /* 啟用捲動 */
+    position: relative; /* 相對定位 */
 }
 
 /* 每個格子 */
 main > section {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    scroll-snap-align: start;
-    background-color: #b38357;
+    width: 100vw; /* 格子寬度為 100% 頁面寬度 */
+    height: 100vh; /* 格子高度為 100% 頁面高度 */
+    display: flex; /* 使用 Flexbox 來排列內容 */
+    justify-content: center; /* 讓內容水平置中 */
+    align-items: center; /* 讓內容垂直置中 */
+    scroll-snap-align: start; /* 滾動時對齊頂端 */
+    background-color: #b38357; /* 格子的背景色 */
 }
 
-/* 針對奇數序號的區塊設定背景顏色 */
+/* 奇數序號格子 */
 main > section:nth-child(odd) {
-    background: rgb(94, 64, 36);
+    background: rgb(94, 64, 36); /* 奇數格子背景顏色不同 */
 }
 
-/* 區塊中的字設定 */
+/* 區塊內字設定 */
 main > section > div {
-    font-size: 60px;
-    color: white;
-    font-weight: bold;
+    font-size: 60px; /* 設定字型大小 */
+    color: white; /* 文字顏色為白色 */
+    font-weight: bold; /* 文字加粗 */
 }
 
-/* 左右箭頭按鈕 */
+/* 左右箭頭 */
 .arrow {
-    position: fixed;
-    z-index: 1000;
-    background: rgba(20, 65, 14, 0);
-    color: white;
-    font-size: 40px;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
+    position: fixed; /* 固定位置 */
+    z-index: 1000; /* 設置較高的層級 */
+    background: rgba(20, 65, 14, 0); /* 背景透明 */
+    color: white; /* 文字顏色為白色 */
+    font-size: 40px; /* 設定字型大小 */
+    border: none; /* 無邊框 */
+    padding: 10px 20px; /* 內邊距 */
+    cursor: pointer; /* 改變鼠標樣式為可點擊 */
 }
 
-/* 左箭頭按鈕位置 */
 .arrow.left {
-    top: 50%;
-    transform: translateY(-50%);
-    left: 20px;
+    top: 50%; /* 垂直置中 */
+    transform: translateY(-50%); /* 調整位置使其完全垂直置中 */
+    left: 20px; /* 左邊距離 */
 }
 
-/* 右箭頭按鈕位置 */
 .arrow.right {
-    top: 50%;
-    transform: translateY(-50%);
-    right: 20px;
+    top: 50%; /* 垂直置中 */
+    transform: translateY(-50%); /* 調整位置使其完全垂直置中 */
+    right: 20px; /* 右邊距離 */
 }
 
-/* 上箭頭（水平置中） */
 .arrow.up {
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 20px; /* 距離頁面頂部 20px */
+    left: 50%; /* 水平置中 */
+    transform: translateX(-50%); /* 調整位置使其完全水平置中 */
 }
 
-/* 下箭頭（水平置中） */
 .arrow.down {
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 20px; /* 距離頁面底部 20px */
+    left: 50%; /* 水平置中 */
+    transform: translateX(-50%); /* 調整位置使其完全水平置中 */
 }
 
-/* 🐞 DEBUG 小工具顯示區塊 */
+/* 🐞 DEBUG 小工具 */
 #debug-info {
-    position: fixed; /* 固定顯示在畫面上 */
-    bottom: 10px;    /* 距離底部 10px */
-    right: 10px;     /* 距離右邊 10px */
-    background-color: rgba(0,0,0,0.6); /* 背景色透明黑 */
-    color: #00ff88;  /* 字體顏色為淡綠 */
-    font-size: 14px; /* 字體大小 */
-    padding: 8px 12px; /* 邊距 */
-    border-radius: 8px; /* 邊框圓角 */
-    z-index: 9999;   /* 確保顯示在最上層 */
-    font-family: monospace; /* 等寬字型 */
-    display: flex;   /* 使用 Flexbox 排版 */
+    position: fixed; /* 固定在頁面底部 */
+    bottom: 10px; /* 距離底部 10px */
+    right: 10px; /* 距離右邊 10px */
+    background-color: rgba(0,0,0,0.6); /* 背景顏色 */
+    color: #00ff88; /* 文字顏色為綠色 */
+    font-size: 14px; /* 文字大小 */
+    padding: 8px 12px; /* 內邊距 */
+    border-radius: 8px; /* 圓角邊框 */
+    z-index: 9999; /* 設置較高的層級 */
+    font-family: monospace; /* 使用等寬字型 */
+    display: flex; /* 使用 Flexbox 排列 */
     flex-direction: column; /* 垂直排列 */
-    align-items: flex-start; /* 左對齊 */
+    align-items: flex-start; /* 文字靠左排列 */
 }
+
+#debug-info div {
+    margin-bottom: 5px; /* 每個 div 下方有 5px 的間距 */
+    font-size: 12px; /* 文字大小 */
+}
+
+/* 📱 手機版調整：箭頭位置改為四邊 10% 寬度內 */
+@media (max-width: 768px) {
+    .arrow {
+        width: 10vw;
+        height: 10vw;
+        font-size: 5vw;
+        padding: 0;
+    }
+
+    .arrow.left {
+        left: 5%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .arrow.right {
+        right: 5%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .arrow.up {
+        top: 5%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .arrow.down {
+        bottom: 5%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #debug-info {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
   
 #debug-info div {
     margin-bottom: 5px; /* 每行間距 5px */

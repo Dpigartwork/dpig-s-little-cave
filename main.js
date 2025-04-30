@@ -75,6 +75,9 @@ window.addEventListener('load', function () {
   let currentColIndex = 2; // 對應 colLabels[2] = "C"
   let currentRowIndex = 1; // 對應 rowLabels[1] = ""
 
+  let previousColIndex = currentColIndex; // 記錄上次位置
+  let previousRowIndex = currentRowIndex; // 記錄上次位置
+
   /**
    * 🧭 scrollToPosition()：滾動到指定格子位置
    * @param {number} colIndex - 欄位索引（0～4）
@@ -92,6 +95,14 @@ window.addEventListener('load', function () {
         block: 'start',     // 垂直頂部對齊
         inline: 'start'     // 水平左側對齊
       });
+
+      // 更新 DEBUG 顯示
+      document.getElementById('previous-block').innerText = `上次區塊: ${colLabels[previousColIndex]}_${rowLabels[previousRowIndex]}`;
+      document.getElementById('current-block').innerText = `當前區塊: ${colLabels[colIndex]}_${rowLabels[rowIndex]}`;
+
+      // 更新當前區塊為上次區塊
+      previousColIndex = colIndex;
+      previousRowIndex = rowIndex;
     }
   }
 
@@ -131,16 +142,10 @@ window.addEventListener('load', function () {
   setTimeout(() => {
     scrollToPosition(currentColIndex, currentRowIndex);
   }, 300); // 延遲 300 毫秒，確保所有格子已加載完畢
-});
 
-// 🧲 監聽捲動，確保吸附到最近格子，並更新當前索引
-let isScrolling;
-window.addEventListener('scroll', () => {
-  clearTimeout(isScrolling);
-
-  // 200ms 停止滾動後再執行吸附與索引更新
-  isScrolling = setTimeout(() => {
-    // 🔍 找出最接近的格子
+  // 📌 立即更新目前位置（即時監控畫面中心區塊）
+  window.addEventListener('scroll', () => {
+    // 🔍 找出最接近畫面中心的格子
     const sections = document.querySelectorAll('#grid-layout > section');
     let closestSection = null;
     let closestDistance = Infinity;
@@ -162,14 +167,20 @@ window.addEventListener('scroll', () => {
       }
     });
 
-    // 若找到最近的格子，就滾動過去並更新索引
+    // ✏️ 更新目前位置索引（不自動捲動）
     if (closestSection) {
-      closestSection.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
-
       const id = closestSection.id; // 例如 C_D2
       const [col, row] = id.split('_');
-      currentColIndex = colLabels.indexOf(col);
-      currentRowIndex = rowLabels.indexOf(row);
+      if (colLabels.includes(col)) currentColIndex = colLabels.indexOf(col);
+      if (rowLabels.includes(row)) currentRowIndex = rowLabels.indexOf(row);
+
+      // 更新 DEBUG 顯示
+      document.getElementById('previous-block').innerText = `上次區塊: ${colLabels[previousColIndex]}_${rowLabels[previousRowIndex]}`;
+      document.getElementById('current-block').innerText = `當前區塊: ${colLabels[currentColIndex]}_${rowLabels[currentRowIndex]}`;
+      
+      // 更新當前區塊為上次區塊
+      previousColIndex = currentColIndex;
+      previousRowIndex = currentRowIndex;
     }
-  }, 200); // ← 這個延遲時間可微調
+  });
 });

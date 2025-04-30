@@ -173,25 +173,9 @@ window.addEventListener('load', function () {
     if (closestSection) {
       const id = closestSection.id; // 例如 C_D2 或 C_GROUND
       const [col, row] = id.includes('_') ? id.split('_') : [id, 'GROUND'];
-
-      if (colLabels.includes(col)) currentColIndex = colLabels.indexOf(col);
-      if (rowLabels.includes(row)) currentRowIndex = rowLabels.indexOf(row);
-
-      // 更新 DEBUG 顯示（立即）
-      document.getElementById('previous-block').innerText = `上次區塊: ${colLabels[previousColIndex]}_${rowLabels[previousRowIndex]}`;
-      document.getElementById('current-block').innerText = `當前區塊: ${colLabels[currentColIndex]}_${rowLabels[currentRowIndex]}`;
-
-      // 延遲更新 previous 為目前
-      setTimeout(() => {
-        previousColIndex = currentColIndex;
-        previousRowIndex = currentRowIndex;
-      }, 0);
+      currentColIndex = colLabels.indexOf(col);
+      currentRowIndex = rowLabels.indexOf(row);
     }
   });
 
-  // 📏 視窗尺寸變化時，確保回到當前區塊
-  window.addEventListener('resize', () => {
-    // 當視窗大小變化時，不改變所在位置，直接返回當前區塊
-    scrollToPosition(currentColIndex, currentRowIndex);
-  });
 });

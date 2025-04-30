@@ -3,7 +3,7 @@ body {
     margin: 0; /* 去除頁面邊距 */
     padding: 0; /* 去除頁面內邊距 */
     font-family: sans-serif; /* 設定字型 */
-    overflow: auto; /* 啟用頁面捲動 */
+    overflow-y: scroll; /* 只啟用垂直捲動 */
     overflow-x: hidden; /* 隱藏水平方向的捲動條 */
 }
 
@@ -62,26 +62,28 @@ main > section > div {
     cursor: pointer; /* 改變鼠標樣式為可點擊 */
 }
 
+/* 左右箭頭 */
 .arrow.left {
     top: 50%; /* 垂直置中 */
     transform: translateY(-50%); /* 調整位置使其完全垂直置中 */
-    left: 20px; /* 左邊距離 */
+    left: 10px; /* 左邊距離 */
 }
 
 .arrow.right {
     top: 50%; /* 垂直置中 */
     transform: translateY(-50%); /* 調整位置使其完全垂直置中 */
-    right: 20px; /* 右邊距離 */
+    right: 10px; /* 右邊距離 */
 }
 
+/* 上下箭頭 */
 .arrow.up {
-    top: 20px; /* 距離頁面頂部 20px */
+    top: 10px; /* 距離頁面頂部 10px */
     left: 50%; /* 水平置中 */
     transform: translateX(-50%); /* 調整位置使其完全水平置中 */
 }
 
 .arrow.down {
-    bottom: 20px; /* 距離頁面底部 20px */
+    bottom: 10px; /* 距離頁面底部 10px */
     left: 50%; /* 水平置中 */
     transform: translateX(-50%); /* 調整位置使其完全水平置中 */
 }
@@ -103,52 +105,39 @@ main > section > div {
     align-items: flex-start; /* 文字靠左排列 */
 }
 
-#debug-info div {
-    margin-bottom: 5px; /* 每個 div 下方有 5px 的間距 */
-    font-size: 12px; /* 文字大小 */
-}
-
-/* 📱 手機版調整：箭頭位置改為四邊 10% 寬度內 */
+/* 手機版樣式 */
 @media (max-width: 768px) {
+    /* 設定只有垂直滾動，禁止水平滾動 */
+    body {
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+    /* 固定箭頭與 debug 視窗 */
     .arrow {
-        width: 10vw;
-        height: 10vw;
-        font-size: 5vw;
-        padding: 0;
+        font-size: 30px; /* 在手機上縮小箭頭字型 */
+        padding: 5px 10px; /* 在手機上縮小箭頭按鈕 */
     }
 
-    .arrow.left {
-        left: 5%;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
+    /* 左右箭頭縮小位置與寬度 */
+    .arrow.left,
     .arrow.right {
-        right: 5%;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 50%; /* 保持在垂直中心 */
+ 
+        padding: 5px 10px; /* 在手機上縮小箭頭按鈕 */
     }
 
-    .arrow.up {
-        top: 5%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
+    /* 上下箭頭縮小 */
+    .arrow.up,
     .arrow.down {
-        bottom: 5%;
-        left: 50%;
-        transform: translateX(-50%);
+        font-size: 20px;
+        padding: 5px 10px;
     }
 
+    /* 調整 debug 視窗 */
     #debug-info {
-        font-size: 12px;
-        padding: 8px;
+        bottom: 5px;
+        right: 5px;
+        font-size: 12px; /* 在手機上縮小字體 */
     }
-}
-
-  
-#debug-info div {
-    margin-bottom: 5px; /* 每行間距 5px */
-    font-size: 12px;    /* 字體大小 */
 }

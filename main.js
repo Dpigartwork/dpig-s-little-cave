@@ -4,7 +4,7 @@
  * function：定義一個函式（功能單元），可重複執行一段程式邏輯。
  * gridLayout：變數名稱，代表 <main id="grid-layout"> 的 DOM 元素，是整個網格的容器。
  * colLabels：橫向欄位名稱陣列，用來定義左右的 5 個區塊。
- * rowLabels：縱向列名稱陣列，用來定義上下的 7 行（包含空字串代表中央列）。
+ * rowLabels：縱向列名稱陣列，用來定義上下的 7 行（包含 "GROUND" 代表中央列）。
  * customSections：可客製化的區塊設定（背景色、圖片等），用來控制特定格子的內容。
  * let：宣告區域變數，支援重新賦值，但不像 var 那樣有提升（hoisting）問題。
  * const：宣告常數，不可重新賦值，用於不會變動的參數。
@@ -26,8 +26,8 @@ window.addEventListener('load', function () {
   // ➡️ 橫向欄位名稱：從左到右（共 5 欄）
   const colLabels = ['L2', 'L1', 'C', 'R1', 'R2'];
 
-  // ⬇️ 縱向列名稱：從上到下（共 7 行，空字串為中央列）
-  const rowLabels = ['U1', '', 'D1', 'D2', 'D3', 'D4', 'D5'];
+  // ⬇️ 縱向列名稱：從上到下（共 7 行，"GROUND" 代表中央列）
+  const rowLabels = ['U1', 'GROUND', 'D1', 'D2', 'D3', 'D4', 'D5'];
 
   // 🎯 可客製化的格子設定，透過區塊 ID 定義背景色或媒體內容
   const customSections = {
@@ -73,7 +73,7 @@ window.addEventListener('load', function () {
 
   // 👉 初始位置設為中央的 C 區塊
   let currentColIndex = 2; // 對應 colLabels[2] = "C"
-  let currentRowIndex = 1; // 對應 rowLabels[1] = ""
+  let currentRowIndex = 1; // 對應 rowLabels[1] = "GROUND"
 
   let previousColIndex = currentColIndex; // 記錄上次位置
   let previousRowIndex = currentRowIndex; // 記錄上次位置
@@ -106,7 +106,7 @@ window.addEventListener('load', function () {
     }
   }
 
-  // ◀️ 左箭頭事件
+  // ◀️ 左箭頭事件：向左移動顯示區塊
   document.getElementById('left-arrow').addEventListener('click', () => {
     if (currentColIndex > 0) {
       currentColIndex--;
@@ -114,7 +114,7 @@ window.addEventListener('load', function () {
     }
   });
 
-  // ▶️ 右箭頭事件
+  // ▶️ 右箭頭事件：向右移動顯示區塊
   document.getElementById('right-arrow').addEventListener('click', () => {
     if (currentColIndex < colLabels.length - 1) {
       currentColIndex++;
@@ -122,7 +122,7 @@ window.addEventListener('load', function () {
     }
   });
 
-  // 🔼 上箭頭事件
+  // 🔼 上箭頭事件：向上移動顯示區塊
   document.getElementById('up-arrow').addEventListener('click', () => {
     if (currentRowIndex > 0) {
       currentRowIndex--;
@@ -130,7 +130,7 @@ window.addEventListener('load', function () {
     }
   });
 
-  // 🔽 下箭頭事件
+  // 🔽 下箭頭事件：向下移動顯示區塊
   document.getElementById('down-arrow').addEventListener('click', () => {
     if (currentRowIndex < rowLabels.length - 1) {
       currentRowIndex++;
@@ -140,8 +140,10 @@ window.addEventListener('load', function () {
 
   // 🕒 頁面載入完成後，自動滾動至中央的 C 區塊
   setTimeout(() => {
+    currentColIndex = 2; // C
+    currentRowIndex = 1; // GROUND
     scrollToPosition(currentColIndex, currentRowIndex);
-  }, 300); // 延遲 300 毫秒，確保所有格子已加載完畢
+  }, 0);
 
   // 📌 立即更新目前位置（即時監控畫面中心區塊）
   window.addEventListener('scroll', () => {
@@ -169,18 +171,27 @@ window.addEventListener('load', function () {
 
     // ✏️ 更新目前位置索引（不自動捲動）
     if (closestSection) {
-      const id = closestSection.id; // 例如 C_D2
-      const [col, row] = id.split('_');
+      const id = closestSection.id; // 例如 C_D2 或 C_GROUND
+      const [col, row] = id.includes('_') ? id.split('_') : [id, 'GROUND'];
+
       if (colLabels.includes(col)) currentColIndex = colLabels.indexOf(col);
       if (rowLabels.includes(row)) currentRowIndex = rowLabels.indexOf(row);
 
-      // 更新 DEBUG 顯示
+      // 更新 DEBUG 顯示（立即）
       document.getElementById('previous-block').innerText = `上次區塊: ${colLabels[previousColIndex]}_${rowLabels[previousRowIndex]}`;
       document.getElementById('current-block').innerText = `當前區塊: ${colLabels[currentColIndex]}_${rowLabels[currentRowIndex]}`;
-      
-      // 更新當前區塊為上次區塊
-      previousColIndex = currentColIndex;
-      previousRowIndex = currentRowIndex;
+
+      // 延遲更新 previous 為目前
+      setTimeout(() => {
+        previousColIndex = currentColIndex;
+        previousRowIndex = currentRowIndex;
+      }, 0);
     }
+  });
+
+  // 📏 視窗尺寸變化時，確保回到當前區塊
+  window.addEventListener('resize', () => {
+    // 當視窗大小變化時，不改變所在位置，直接返回當前區塊
+    scrollToPosition(currentColIndex, currentRowIndex);
   });
 });

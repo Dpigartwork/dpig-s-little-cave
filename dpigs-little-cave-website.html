@@ -12,6 +12,16 @@
   
   <!-- 引入外部的 CSS 文件，用來設計頁面的樣式 -->
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* 針對手機版的樣式 */
+    @media screen and (max-width: 768px) {
+      /* 限制手機版不可以縮放，這樣會防止手動縮放 */
+      meta[name="viewport"] {
+        content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -44,4 +54,3 @@
 
 </body>
 </html>
-  

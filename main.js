@@ -82,8 +82,9 @@ window.addEventListener('load', function () {
    * 🧭 scrollToPosition()：滾動到指定格子位置
    * @param {number} colIndex - 欄位索引（0～4）
    * @param {number} rowIndex - 列索引（0～6）
+   * @param {string} [behavior='smooth'] - 滾動行為，可選 'smooth' 或 'auto'
    */
-  function scrollToPosition(colIndex, rowIndex) {
+  function scrollToPosition(colIndex, rowIndex, behavior = 'smooth') {
     const col = colLabels[colIndex];
     const row = rowLabels[rowIndex];
     const sectionId = (col && row) ? `${col}_${row}` : col || row;
@@ -91,16 +92,14 @@ window.addEventListener('load', function () {
 
     if (section) {
       section.scrollIntoView({
-        behavior: 'smooth', // 平滑滾動
-        block: 'start',     // 垂直頂部對齊
-        inline: 'start'     // 水平左側對齊
+        behavior,       // 可變的行為：'smooth' 或 'auto'
+        block: 'start',
+        inline: 'start'
       });
 
-      // 更新 DEBUG 顯示
       document.getElementById('previous-block').innerText = `上次區塊: ${colLabels[previousColIndex]}_${rowLabels[previousRowIndex]}`;
       document.getElementById('current-block').innerText = `當前區塊: ${colLabels[colIndex]}_${rowLabels[rowIndex]}`;
 
-      // 更新當前區塊為上次區塊
       previousColIndex = colIndex;
       previousRowIndex = rowIndex;
     }
@@ -173,9 +172,30 @@ window.addEventListener('load', function () {
     if (closestSection) {
       const id = closestSection.id; // 例如 C_D2 或 C_GROUND
       const [col, row] = id.includes('_') ? id.split('_') : [id, 'GROUND'];
-      currentColIndex = colLabels.indexOf(col);
-      currentRowIndex = rowLabels.indexOf(row);
+
+      if (colLabels.includes(col)) currentColIndex = colLabels.indexOf(col);
+      if (rowLabels.includes(row)) currentRowIndex = rowLabels.indexOf(row);
+
+      // 更新 DEBUG 顯示（立即）
+      document.getElementById('previous-block').innerText = `上次區塊: ${colLabels[previousColIndex]}_${rowLabels[previousRowIndex]}`;
+      document.getElementById('current-block').innerText = `當前區塊: ${colLabels[currentColIndex]}_${rowLabels[currentRowIndex]}`;
+
+      // 延遲更新 previous 為目前
+      setTimeout(() => {
+        previousColIndex = currentColIndex;
+        previousRowIndex = currentRowIndex;
+      }, 0);
     }
   });
 
+  // 📏 視窗尺寸變化時，確保回到當前區塊
+  window.addEventListener('resize', () => {
+    // 使用兩層 requestAnimationFrame 確保樣式與 layout 都穩定後才滾動
+    // // 當視窗大小變化時，不改變所在位置，直接返回當前區塊
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        scrollToPosition(currentColIndex, currentRowIndex, 'auto'); // ❗使用 'auto' 避免平滑動畫
+      });
+    });
+  });
 });

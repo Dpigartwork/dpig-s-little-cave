@@ -144,54 +144,61 @@ window.addEventListener('load', function () {
     scrollToPosition(currentColIndex, currentRowIndex);
   }, 0);
 
-  // 📌 立即更新目前位置（即時監控畫面中心區塊）
+  // 📌 防抖處理：限制 scroll 事件更新頻率，避免快速滑動造成區塊偵測跳格
+  let scrollDebounceTimeout = null;
+
+  // 📌 立即更新目前位置（延遲處理 scroll，減少錯誤）
   window.addEventListener('scroll', () => {
-    // 🔍 找出最接近畫面中心的格子
-    const sections = document.querySelectorAll('#grid-layout > section');
-    let closestSection = null;
-    let closestDistance = Infinity;
-    let viewportCenterX = window.scrollX + window.innerWidth / 2;
-    let viewportCenterY = window.scrollY + window.innerHeight / 2;
+    clearTimeout(scrollDebounceTimeout);
 
-    sections.forEach(section => {
-      const rect = section.getBoundingClientRect();
-      const sectionCenterX = rect.left + window.scrollX + rect.width / 2;
-      const sectionCenterY = rect.top + window.scrollY + rect.height / 2;
+    // ⚠️ 等使用者停止捲動 100ms 再處理
+    scrollDebounceTimeout = setTimeout(() => {
+      // 🔍 找出最接近畫面中心的格子
+      const sections = document.querySelectorAll('#grid-layout > section');
+      let closestSection = null;
+      let closestDistance = Infinity;
+      let viewportCenterX = window.scrollX + window.innerWidth / 2;
+      let viewportCenterY = window.scrollY + window.innerHeight / 2;
 
-      const dx = viewportCenterX - sectionCenterX;
-      const dy = viewportCenterY - sectionCenterY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        const sectionCenterX = rect.left + window.scrollX + rect.width / 2;
+        const sectionCenterY = rect.top + window.scrollY + rect.height / 2;
 
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestSection = section;
+        const dx = viewportCenterX - sectionCenterX;
+        const dy = viewportCenterY - sectionCenterY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestSection = section;
+        }
+      });
+
+      // ✏️ 更新目前位置索引（不自動捲動）
+      if (closestSection) {
+        const id = closestSection.id; // 例如 C_D2 或 C_GROUND
+        const [col, row] = id.includes('_') ? id.split('_') : [id, 'GROUND'];
+
+        if (colLabels.includes(col)) currentColIndex = colLabels.indexOf(col);
+        if (rowLabels.includes(row)) currentRowIndex = rowLabels.indexOf(row);
+
+        // 更新 DEBUG 顯示（立即）
+        document.getElementById('previous-block').innerText = `上次區塊: ${colLabels[previousColIndex]}_${rowLabels[previousRowIndex]}`;
+        document.getElementById('current-block').innerText = `當前區塊: ${colLabels[currentColIndex]}_${rowLabels[currentRowIndex]}`;
+
+        // 延遲更新 previous 為目前
+        setTimeout(() => {
+          previousColIndex = currentColIndex;
+          previousRowIndex = currentRowIndex;
+        }, 0);
       }
-    });
-
-    // ✏️ 更新目前位置索引（不自動捲動）
-    if (closestSection) {
-      const id = closestSection.id; // 例如 C_D2 或 C_GROUND
-      const [col, row] = id.includes('_') ? id.split('_') : [id, 'GROUND'];
-
-      if (colLabels.includes(col)) currentColIndex = colLabels.indexOf(col);
-      if (rowLabels.includes(row)) currentRowIndex = rowLabels.indexOf(row);
-
-      // 更新 DEBUG 顯示（立即）
-      document.getElementById('previous-block').innerText = `上次區塊: ${colLabels[previousColIndex]}_${rowLabels[previousRowIndex]}`;
-      document.getElementById('current-block').innerText = `當前區塊: ${colLabels[currentColIndex]}_${rowLabels[currentRowIndex]}`;
-
-      // 延遲更新 previous 為目前
-      setTimeout(() => {
-        previousColIndex = currentColIndex;
-        previousRowIndex = currentRowIndex;
-      }, 0);
-    }
+    }, 500); // <- 調整 debounce 時間（建議 100～200ms）
   });
 
   // 📏 視窗尺寸變化時，確保回到當前區塊
   window.addEventListener('resize', () => {
     // 使用兩層 requestAnimationFrame 確保樣式與 layout 都穩定後才滾動
-    // // 當視窗大小變化時，不改變所在位置，直接返回當前區塊
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         scrollToPosition(currentColIndex, currentRowIndex, 'auto'); // ❗使用 'auto' 避免平滑動畫

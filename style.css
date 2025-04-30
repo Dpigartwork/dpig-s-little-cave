@@ -115,6 +115,7 @@ main > section > div {
 
     /* 固定箭頭與 debug 視窗 */
     .arrow {
+        position: fixed; /* 固定位置 */
         font-size: 30px; /* 在手機上縮小箭頭字型 */
         padding: 5px 10px; /* 在手機上縮小箭頭按鈕 */
     }
@@ -136,6 +137,7 @@ main > section > div {
 
     /* 調整 debug 視窗 */
     #debug-info {
+        position: fixed; /* 固定位置 */
         bottom: 5px;
         right: 5px;
         font-size: 12px; /* 在手機上縮小字體 */

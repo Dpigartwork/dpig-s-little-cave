@@ -10,7 +10,7 @@ body {
 /* 主格子網格 */
 main {
     display: grid; /* 使用 CSS Grid 排版 */
-    grid-template-areas: /* 定義區域配置，5 列 7 行 */
+    grid-template-areas:
       "L2_U1 L1_U1 C_U1 R1_U1 R2_U1"
       "L2_GROUND L1_GROUND C_GROUND R1_GROUND R2_GROUND"
       "L2_D1 L1_D1 C_D1 R1_D1 R2_D1"
@@ -62,7 +62,7 @@ main > section > div {
     cursor: pointer; /* 改變鼠標樣式為可點擊 */
 }
 
-/* 左右箭頭 */
+/* 左右箭頭位置 */
 .arrow.left {
     top: 50%; /* 垂直置中 */
     transform: translateY(-50%); /* 調整位置使其完全垂直置中 */
@@ -70,39 +70,39 @@ main > section > div {
 }
 
 .arrow.right {
-    top: 50%; /* 垂直置中 */
-    transform: translateY(-50%); /* 調整位置使其完全垂直置中 */
+    top: 50%;
+    transform: translateY(-50%);
     right: 10px; /* 右邊距離 */
 }
 
 /* 上下箭頭 */
 .arrow.up {
-    top: 10px; /* 距離頁面頂部 10px */
-    left: 50%; /* 水平置中 */
-    transform: translateX(-50%); /* 調整位置使其完全水平置中 */
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .arrow.down {
-    bottom: 10px; /* 距離頁面底部 10px */
-    left: 50%; /* 水平置中 */
-    transform: translateX(-50%); /* 調整位置使其完全水平置中 */
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* 🐞 DEBUG 小工具 */
 #debug-info {
-    position: fixed; /* 固定在頁面底部 */
-    bottom: 10px; /* 距離底部 10px */
-    right: 10px; /* 距離右邊 10px */
-    background-color: rgba(0,0,0,0.6); /* 背景顏色 */
-    color: #00ff88; /* 文字顏色為綠色 */
-    font-size: 14px; /* 文字大小 */
-    padding: 8px 12px; /* 內邊距 */
-    border-radius: 8px; /* 圓角邊框 */
-    z-index: 9999; /* 設置較高的層級 */
-    font-family: monospace; /* 使用等寬字型 */
-    display: flex; /* 使用 Flexbox 排列 */
-    flex-direction: column; /* 垂直排列 */
-    align-items: flex-start; /* 文字靠左排列 */
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0,0,0,0.6);
+    color: #00ff88;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    z-index: 9999;
+    font-family: monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 /* 手機版樣式 */
@@ -115,17 +115,16 @@ main > section > div {
 
     /* 固定箭頭與 debug 視窗 */
     .arrow {
-        position: fixed; /* 固定位置 */
-        font-size: 30px; /* 在手機上縮小箭頭字型 */
-        padding: 5px 10px; /* 在手機上縮小箭頭按鈕 */
+        position: fixed;
+        font-size: 30px;
+        padding: 5px 10px;
     }
 
     /* 左右箭頭縮小位置與寬度 */
     .arrow.left,
     .arrow.right {
-        top: 50%; /* 保持在垂直中心 */
- 
-        padding: 5px 10px; /* 在手機上縮小箭頭按鈕 */
+        top: 50%;
+        padding: 5px 10px;
     }
 
     /* 上下箭頭縮小 */
@@ -137,9 +136,9 @@ main > section > div {
 
     /* 調整 debug 視窗 */
     #debug-info {
-        position: fixed; /* 固定位置 */
+        position: fixed;
         bottom: 5px;
         right: 5px;
-        font-size: 12px; /* 在手機上縮小字體 */
+        font-size: 12px;
     }
 }

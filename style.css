@@ -3,8 +3,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    overflow: hidden;/*使中鍵能移動視窗*/
-    overflow-x:hidden ;/*使用 overflow-x: hidden 禁止頁面在水平方向上的滾動。*/
+    overflow: hidden; /*使中鍵能移動視窗*/
+    overflow-x: hidden; /*禁止頁面在水平方向上的滾動*/
 }
 
 /* 主格子網格 */
@@ -53,7 +53,6 @@ main > section > div {
 /* 左右箭頭按鈕 */
 .arrow {
     position: fixed;
-    
     z-index: 1000;
     background: rgba(20, 65, 14, 0);
     color: white;
@@ -62,8 +61,6 @@ main > section > div {
     padding: 10px 20px;
     cursor: pointer;
 }
-
-
 
 /* 左箭頭按鈕位置 */
 .arrow.left {
@@ -79,8 +76,6 @@ main > section > div {
     right: 20px;
 }
 
-
-
 /* 上箭頭（水平置中） */
 .arrow.up {
     top: 20px;
@@ -94,3 +89,26 @@ main > section > div {
     left: 50%;
     transform: translateX(-50%);
 }
+
+/* 🐞 DEBUG 小工具顯示區塊 */
+#debug-info {
+    position: fixed; /* 固定顯示在畫面上 */
+    bottom: 10px;    /* 距離底部 10px */
+    right: 10px;     /* 距離右邊 10px */
+    background-color: rgba(0,0,0,0.6); /* 背景色透明黑 */
+    color: #00ff88;  /* 字體顏色為淡綠 */
+    font-size: 14px; /* 字體大小 */
+    padding: 8px 12px; /* 邊距 */
+    border-radius: 8px; /* 邊框圓角 */
+    z-index: 9999;   /* 確保顯示在最上層 */
+    font-family: monospace; /* 等寬字型 */
+    display: flex;   /* 使用 Flexbox 排版 */
+    flex-direction: column; /* 垂直排列 */
+    align-items: flex-start; /* 左對齊 */
+  }
+  
+  #debug-info div {
+    margin-bottom: 5px; /* 每行間距 5px */
+    font-size: 12px;    /* 字體大小 */
+  }
+  

@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    overflow: hidden; /*使中鍵能移動視窗*/
+    overflow: auto; /*使中鍵能移動視窗*/
     overflow-x: hidden; /*禁止頁面在水平方向上的滾動*/
 }
 
@@ -12,7 +12,7 @@ main {
     display: grid;
     grid-template-areas:
       "L2_U1 L1_U1 C_U1 R1_U1 R2_U1"
-      "L2    L1    C    R1    R2"
+      "L2_GROUND L1_GROUND C_GROUND R1_GROUND R2_GROUND" /* ✨ 將空字串行改為 GROUND */
       "L2_D1 L1_D1 C_D1 R1_D1 R2_D1"
       "L2_D2 L1_D2 C_D2 R1_D2 R2_D2"
       "L2_D3 L1_D3 C_D3 R1_D3 R2_D3"
@@ -105,10 +105,9 @@ main > section > div {
     display: flex;   /* 使用 Flexbox 排版 */
     flex-direction: column; /* 垂直排列 */
     align-items: flex-start; /* 左對齊 */
-  }
+}
   
-  #debug-info div {
+#debug-info div {
     margin-bottom: 5px; /* 每行間距 5px */
     font-size: 12px;    /* 字體大小 */
-  }
-  
+}

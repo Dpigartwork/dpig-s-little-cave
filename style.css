@@ -228,16 +228,30 @@ body {
     align-items: flex-start;
   }
   
-  /* 📱 手機適配 */
   @media (max-width: 768px) {
     #nav-toggle {
-      display: block; /* 手機顯示漢堡按鈕 */
+      display: block; /* 顯示漢堡選單（☰） */
+      z-index: 3001; /* 確保在上層 */
+    }
+  
+    #nav-collapse-toggle {
+      display: block; /* 手機版強制顯示導覽列收合鍵（⬡⬢） */
+      z-index: 3002; /* 層級最高 */
+      top: 10px; /* 靠近頂端 */
+      right: 20px; /* 靠右邊 */
+      position: fixed; /* 固定位置 */
+      background: rgba(0, 0, 0, 0.7); /* 背景半透明 */
+      color: white; /* 白色字元 */
+    }
+  
+    #navbar {
+      z-index: 2500; /* 導覽列本身層級 */
     }
   
     #nav-menu {
-      display: none;
-      flex-direction: column;
-      background: #333;
+      display: none; /* 預設收起 */
+      flex-direction: column; /* 垂直排列 */
+      background: #333; /* 深灰背景 */
       position: absolute;
       top: 50px;
       left: 0;
@@ -245,11 +259,11 @@ body {
     }
   
     #nav-menu.open {
-      display: flex;
+      display: flex !important; /* 展開時顯示 */
     }
   
     .arrow {
-      font-size: 24px;
+      font-size: 24px; /* 縮小箭頭字體 */
       padding: 6px 10px;
     }
   

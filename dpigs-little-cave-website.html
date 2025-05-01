@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
   <title>D.pig's Little Cave</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -18,10 +18,10 @@
     </ul>
   </nav>
 
-  <!-- ⬡ 導覽列收合控制按鈕（已移出 navbar 外部） -->
-  <button id="nav-collapse-toggle" title="顯示/隱藏導覽列">⬡</button>
+  <!-- ⬡ 導覽列收合按鈕 -->
+  <button id="nav-collapse-toggle">⬡</button>
 
-  <!-- 🗂️ 分類選單 -->
+  <!-- 篩選選單 -->
   <div id="filter-bar">
     <button class="filter-button active" data-tag="all">全部</button>
     <button class="filter-button" data-tag="watercolor">水彩</button>
@@ -29,22 +29,22 @@
     <button class="filter-button" data-tag="sketch">素描</button>
   </div>
 
-  <!-- 🕹️ 箭頭控制按鈕 -->
+  <!-- 四向箭頭 -->
   <button id="left-arrow" class="arrow left">◁</button>
   <button id="right-arrow" class="arrow right">▷</button>
   <button id="up-arrow" class="arrow up">△</button>
   <button id="down-arrow" class="arrow down">▽</button>
 
-  <!-- 🎯 主要展示網格 -->
+  <!-- 主展示區 -->
   <main id="grid-layout"></main>
 
-  <!-- 🖼️ Lightbox 模組 -->
+  <!-- Lightbox -->
   <div id="lightbox">
     <span id="lightbox-close">×</span>
-    <img id="lightbox-image" src="" alt="放大圖像">
+    <img id="lightbox-image" src="" alt="放大圖像" />
   </div>
 
-  <!-- 🐞 DEBUG 面板 -->
+  <!-- DEBUG -->
   <div id="debug-info">
     <div id="previous-block">上次區塊: 尚未滾動</div>
     <div id="current-block">當前區塊: 尚未滾動</div>
@@ -55,12 +55,11 @@
     <div id="input-debug">輸入狀態：Idle</div>
   </div>
 
-  <!-- 📦 頁尾 -->
+  <!-- Footer -->
   <footer id="contact">
     <p>聯絡方式：dpig@example.com</p>
   </footer>
 
-  <!-- 主控制腳本 -->
   <script src="main.js"></script>
 </body>
 </html>

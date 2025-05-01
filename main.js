@@ -20,92 +20,104 @@
  */
 
 window.addEventListener('load', function () {
-  // 取得網格主容器（<main id="grid-layout">）
-  const gridLayout = document.getElementById('grid-layout');
+  // 🎛️ 取得主網格容器
+  const gridLayout = document.getElementById('grid-layout'); // 取得 <main> 元素
 
-  // ➡️ 橫向欄位名稱：從左到右（共 5 欄）
-  const colLabels = ['L2', 'L1', 'C', 'R1', 'R2'];
+  // ➡️ 橫向欄位名稱（共 5 欄）
+  const colLabels = ['L2', 'L1', 'C', 'R1', 'R2']; // 從左到右
 
-  // ⬇️ 縱向列名稱：從上到下（共 7 行，"GROUND" 代表中央列）
-  const rowLabels = ['U1', 'GROUND', 'D1', 'D2', 'D3', 'D4', 'D5'];
+  // ⬇️ 縱向列名稱（共 7 行）
+  const rowLabels = ['U1', 'GROUND', 'D1', 'D2', 'D3', 'D4', 'D5']; // 從上到下
 
-  // 🎯 可客製化的格子設定，透過區塊 ID 定義背景色或媒體內容
+  // 🖼️ 自定義作品內容區塊
   const customSections = {
-    // 範例："R2_D4": { color: "#f38357", media: "image", mediaSrc: "images/Happy.jpg" }
+    "C_GROUND": { tag: "watercolor", title: "靜物練習", year: "2024", medium: "水彩", media: "image", mediaSrc: "images/sample1.jpg" },
+    "L1_D1": { tag: "oil", title: "肖像系列 #3", year: "2023", medium: "油畫", media: "image", mediaSrc: "images/sample2.jpg" },
+    "R2_U1": { tag: "sketch", title: "速寫課堂", year: "2022", medium: "鉛筆素描", media: "image", mediaSrc: "images/sample3.jpg" }
   };
 
-  // 🔁 逐一建立 5×7 個 section（格子）
+  // 🧱 建立網格區塊（7列 × 5欄）
   for (let r = 0; r < rowLabels.length; r++) {
     for (let c = 0; c < colLabels.length; c++) {
-      const col = colLabels[c];
-      const row = rowLabels[r];
+      const col = colLabels[c]; // 欄位名稱
+      const row = rowLabels[r]; // 列名稱
+      const area = `${col}_${row}`; // 區塊 ID
 
-      // ⛳ 格子 ID，例如：C_D1 或 L1_U1
-      const area = (col && row) ? `${col}_${row}` : col || row;
+      const section = document.createElement('section'); // 建立 section 元素
+      section.id = area; // 設定 ID
+      section.style.gridArea = area; // 對應 CSS grid-area 名稱
 
-      // 建立 section 元素（格子）
-      const section = document.createElement('section');
-      section.id = area;
-      section.style.gridArea = area;
-
-      // ✅ 若為客製化格子，則套用設定
+      // 如果該格有定義作品內容
       if (customSections[area]) {
-        const setting = customSections[area];
-        section.style.backgroundColor = setting.color;
+        const setting = customSections[area]; // 取得設定
+        section.dataset.tag = setting.tag; // 設定 data-tag 屬性
+
+        const infoCard = document.createElement('div'); // 建立作品資訊卡片
+        infoCard.className = 'info-card'; // 設定樣式
+        infoCard.innerText = `${setting.title}\n${setting.year}｜${setting.medium}`; // 填入文字內容
+        section.appendChild(infoCard); // 加入到格子中
 
         if (setting.media === "image") {
-          const img = document.createElement('img');
-          img.src = setting.mediaSrc;
-          img.alt = "Image content";
-          section.appendChild(img);
-        } else {
-          section.innerHTML = `<div>${area}</div>`;
+          const img = document.createElement('img'); // 建立圖片
+          img.src = setting.mediaSrc; // 設定圖片來源
+          img.alt = setting.title; // 設定替代文字
+
+          img.addEventListener('click', () => {
+            document.getElementById('lightbox-image').src = img.src; // 顯示放大圖
+            document.getElementById('lightbox').style.display = 'flex'; // 顯示燈箱
+            document.getElementById('lightbox-debug').innerText = `燈箱狀態：開啟 (${setting.title})`; // Debug 狀態
+          });
+
+          section.appendChild(img); // 加入圖片
         }
-      } else {
-        // 📝 預設顯示區塊名稱
-        section.innerHTML = `<div>${area}</div>`;
       }
 
-      // 加入網格主容器
-      gridLayout.appendChild(section);
-    }
-  }
+      const label = document.createElement('div'); // 顯示區塊代號
+      label.innerText = area; // 格子名稱
+      section.appendChild(label); // 加入格子中
 
-  // 👉 初始位置設為中央的 C 區塊
-  let currentColIndex = 2; // 對應 colLabels[2] = "C"
-  let currentRowIndex = 1; // 對應 rowLabels[1] = "GROUND"
-
-  let previousColIndex = currentColIndex; // 記錄上次位置
-  let previousRowIndex = currentRowIndex; // 記錄上次位置
-
-  /**
-   * 🧭 scrollToPosition()：滾動到指定格子位置
-   * @param {number} colIndex - 欄位索引（0～4）
-   * @param {number} rowIndex - 列索引（0～6）
-   * @param {string} [behavior='smooth'] - 滾動行為，可選 'smooth' 或 'auto'
-   */
-  function scrollToPosition(colIndex, rowIndex, behavior = 'smooth') {
-    const col = colLabels[colIndex];
-    const row = rowLabels[rowIndex];
-    const sectionId = (col && row) ? `${col}_${row}` : col || row;
-    const section = document.getElementById(sectionId);
-
-    if (section) {
-      section.scrollIntoView({
-        behavior,       // 可變的行為：'smooth' 或 'auto'
-        block: 'start',
-        inline: 'start'
+      section.addEventListener('mouseenter', () => {
+        const card = section.querySelector('.info-card'); // 取得卡片
+        if (card) {
+          card.style.display = 'block'; // 顯示資訊卡
+          document.getElementById('info-debug').innerText = `作品資訊：${card.innerText.replace(/\n/g, " ")}`; // 更新 Debug
+        }
       });
 
-      document.getElementById('previous-block').innerText = `上次區塊: ${colLabels[previousColIndex]}_${rowLabels[previousRowIndex]}`;
-      document.getElementById('current-block').innerText = `當前區塊: ${colLabels[colIndex]}_${rowLabels[rowIndex]}`;
+      section.addEventListener('mouseleave', () => {
+        const card = section.querySelector('.info-card'); // 取得卡片
+        if (card) card.style.display = 'none'; // 隱藏資訊卡
+      });
 
-      previousColIndex = colIndex;
-      previousRowIndex = rowIndex;
+      gridLayout.appendChild(section); // 將 section 加入主容器
+    }
+  }
+  // 🎯 初始捲動位置設定為中心格 C_GROUND
+  let currentColIndex = 2; // 預設在 C
+  let currentRowIndex = 1; // 預設在 GROUND
+  let previousColIndex = currentColIndex; // 上一次欄位位置
+  let previousRowIndex = currentRowIndex; // 上一次列位置
+
+  // 📍 捲動畫面至指定位置
+  function scrollToPosition(colIndex, rowIndex, behavior = 'smooth') {
+    const sectionId = `${colLabels[colIndex]}_${rowLabels[rowIndex]}`; // 格子 ID
+    const section = document.getElementById(sectionId); // 取得對應元素
+
+    if (section) {
+      section.scrollIntoView({ behavior, block: 'start', inline: 'start' }); // 捲動到該區塊
+      document.getElementById('previous-block').innerText = `上次區塊: ${colLabels[previousColIndex]}_${rowLabels[previousRowIndex]}`; // Debug 顯示
+      document.getElementById('current-block').innerText = `當前區塊: ${colLabels[colIndex]}_${rowLabels[rowIndex]}`; // Debug 顯示
+      previousColIndex = colIndex; // 更新欄位置
+      previousRowIndex = rowIndex; // 更新列位置
     }
   }
 
-  // ◀️ 左箭頭事件：向左移動顯示區塊
+  // ⏱️ 載入完自動捲至中央
+  setTimeout(() => {
+    scrollToPosition(currentColIndex, currentRowIndex); // 捲到 C_GROUND
+  }, 0); // 延遲 0ms 等待載入完成
+
+  // 🔼🔽◁▷ 方向按鈕控制
   document.getElementById('left-arrow').addEventListener('click', () => {
     if (currentColIndex > 0) {
       currentColIndex--;
@@ -113,7 +125,6 @@ window.addEventListener('load', function () {
     }
   });
 
-  // ▶️ 右箭頭事件：向右移動顯示區塊
   document.getElementById('right-arrow').addEventListener('click', () => {
     if (currentColIndex < colLabels.length - 1) {
       currentColIndex++;
@@ -121,7 +132,6 @@ window.addEventListener('load', function () {
     }
   });
 
-  // 🔼 上箭頭事件：向上移動顯示區塊
   document.getElementById('up-arrow').addEventListener('click', () => {
     if (currentRowIndex > 0) {
       currentRowIndex--;
@@ -129,7 +139,6 @@ window.addEventListener('load', function () {
     }
   });
 
-  // 🔽 下箭頭事件：向下移動顯示區塊
   document.getElementById('down-arrow').addEventListener('click', () => {
     if (currentRowIndex < rowLabels.length - 1) {
       currentRowIndex++;
@@ -137,72 +146,132 @@ window.addEventListener('load', function () {
     }
   });
 
-  // 🕒 頁面載入完成後，自動滾動至中央的 C 區塊
-  setTimeout(() => {
-    currentColIndex = 2; // C
-    currentRowIndex = 1; // GROUND
-    scrollToPosition(currentColIndex, currentRowIndex);
-  }, 0);
+  // 🌀 防抖機制：滾動結束後自動判斷中心格
+  let scrollDebounceTimeout = null; // 儲存 debounce timeout 的變數
 
-  // 📌 防抖處理：限制 scroll 事件更新頻率，避免快速滑動造成區塊偵測跳格
-  let scrollDebounceTimeout = null;
-
-  // 📌 立即更新目前位置（延遲處理 scroll，減少錯誤）
   window.addEventListener('scroll', () => {
-    clearTimeout(scrollDebounceTimeout);
+    clearTimeout(scrollDebounceTimeout); // 每次滾動都先清除舊的 timeout
 
-    // ⚠️ 等使用者停止捲動 100ms 再處理
     scrollDebounceTimeout = setTimeout(() => {
-      // 🔍 找出最接近畫面中心的格子
-      const sections = document.querySelectorAll('#grid-layout > section');
-      let closestSection = null;
-      let closestDistance = Infinity;
-      let viewportCenterX = window.scrollX + window.innerWidth / 2;
-      let viewportCenterY = window.scrollY + window.innerHeight / 2;
+      const sections = document.querySelectorAll('#grid-layout > section'); // 取得所有格子
+      let closest = null; // 最接近畫面中心的格子
+      let minDistance = Infinity; // 初始化最短距離
+
+      const cx = window.scrollX + window.innerWidth / 2; // 畫面中心點 X
+      const cy = window.scrollY + window.innerHeight / 2; // 畫面中心點 Y
 
       sections.forEach(section => {
-        const rect = section.getBoundingClientRect();
-        const sectionCenterX = rect.left + window.scrollX + rect.width / 2;
-        const sectionCenterY = rect.top + window.scrollY + rect.height / 2;
+        const rect = section.getBoundingClientRect(); // 取得格子的視窗座標
+        const scx = rect.left + window.scrollX + rect.width / 2; // 格子中心 X
+        const scy = rect.top + window.scrollY + rect.height / 2; // 格子中心 Y
+        const dx = cx - scx; // X 軸距離
+        const dy = cy - scy; // Y 軸距離
+        const dist = Math.sqrt(dx * dx + dy * dy); // 計算距離
 
-        const dx = viewportCenterX - sectionCenterX;
-        const dy = viewportCenterY - sectionCenterY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestSection = section;
+        if (dist < minDistance) {
+          minDistance = dist; // 更新最近距離
+          closest = section; // 更新最近格子
         }
       });
 
-      // ✏️ 更新目前位置索引（不自動捲動）
-      if (closestSection) {
-        const id = closestSection.id; // 例如 C_D2 或 C_GROUND
-        const [col, row] = id.includes('_') ? id.split('_') : [id, 'GROUND'];
-
-        if (colLabels.includes(col)) currentColIndex = colLabels.indexOf(col);
-        if (rowLabels.includes(row)) currentRowIndex = rowLabels.indexOf(row);
-
-        // 更新 DEBUG 顯示（立即）
-        document.getElementById('previous-block').innerText = `上次區塊: ${colLabels[previousColIndex]}_${rowLabels[previousRowIndex]}`;
-        document.getElementById('current-block').innerText = `當前區塊: ${colLabels[currentColIndex]}_${rowLabels[currentRowIndex]}`;
-
-        // 延遲更新 previous 為目前
+      if (closest) {
+        const [col, row] = closest.id.split('_'); // 拆解格子 ID
+        if (colLabels.includes(col)) currentColIndex = colLabels.indexOf(col); // 更新欄索引
+        if (rowLabels.includes(row)) currentRowIndex = rowLabels.indexOf(row); // 更新列索引
+        document.getElementById('previous-block').innerText = `上次區塊: ${colLabels[previousColIndex]}_${rowLabels[previousRowIndex]}`; // Debug
+        document.getElementById('current-block').innerText = `當前區塊: ${colLabels[currentColIndex]}_${rowLabels[currentRowIndex]}`; // Debug
         setTimeout(() => {
-          previousColIndex = currentColIndex;
+          previousColIndex = currentColIndex; // 更新歷史位置
           previousRowIndex = currentRowIndex;
         }, 0);
       }
-    }, 500); // <- 調整 debounce 時間（建議 100～200ms）
+    }, 150); // 防抖延遲時間（150ms）
   });
 
-  // 📏 視窗尺寸變化時，確保回到當前區塊
+  // 📏 畫面尺寸改變時，自動對齊當前格子
   window.addEventListener('resize', () => {
-    // 使用兩層 requestAnimationFrame 確保樣式與 layout 都穩定後才滾動
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        scrollToPosition(currentColIndex, currentRowIndex, 'auto'); // ❗使用 'auto' 避免平滑動畫
+        scrollToPosition(currentColIndex, currentRowIndex, 'auto'); // 無動畫跳轉
       });
     });
+  });
+  // ❌ 關閉燈箱功能
+  document.getElementById('lightbox-close').addEventListener('click', () => {
+    document.getElementById('lightbox').style.display = 'none'; // 關閉 lightbox
+    document.getElementById('lightbox-image').src = ""; // 清除圖片
+    document.getElementById('lightbox-debug').innerText = "燈箱狀態：關閉"; // 更新 Debug
+  });
+
+  // 🧩 篩選作品（依標籤 tag）
+  document.querySelectorAll('.filter-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-button').forEach(b => b.classList.remove('active')); // 移除其他按鈕的選取狀態
+      btn.classList.add('active'); // 加上當前按鈕的 active 樣式
+      const selected = btn.dataset.tag; // 取得所選分類
+      document.getElementById('filter-debug').innerText = `目前篩選：${selected}`; // 更新 Debug 面板
+
+      document.querySelectorAll('#grid-layout > section').forEach(sec => {
+        if (selected === "all" || sec.dataset.tag === selected) {
+          sec.style.opacity = "1"; // 顯示符合的格子
+          sec.style.pointerEvents = "auto"; // 可互動
+        } else {
+          sec.style.opacity = "0.1"; // 淡出不符合的格子
+          sec.style.pointerEvents = "none"; // 停用互動
+        }
+      });
+    });
+  });
+
+  // ☰ 漢堡選單（手機模式）
+  const navToggle = document.getElementById('nav-toggle'); // 取得漢堡按鈕
+  const navMenu = document.getElementById('nav-menu'); // 取得選單區塊
+
+  navToggle.addEventListener('click', () => {
+    navMenu.classList.toggle('open'); // 展開或收起
+    const state = navMenu.classList.contains('open') ? '開啟' : '關閉'; // 判斷狀態
+    document.getElementById('nav-debug').innerText = `導覽狀態：${state}`; // 更新 Debug
+  });
+
+  // ⬡⬢ 導覽列收合控制邏輯（含同步向上箭頭調整）
+  const navBar = document.getElementById('navbar'); // 導覽列元素
+  const navCollapseToggle = document.getElementById('nav-collapse-toggle'); // 收合按鈕
+  const upArrow = document.getElementById('up-arrow'); // 向上箭頭
+
+  navCollapseToggle.addEventListener('click', () => {
+    navBar.classList.toggle('hidden'); // 導覽列顯示/隱藏切換
+    const isHidden = navBar.classList.contains('hidden'); // 是否為隱藏狀態
+    navCollapseToggle.innerText = isHidden ? '⬢' : '⬡'; // 切換按鈕內容（開啟或隱藏）
+
+    if (isHidden) {
+      upArrow.classList.add('nav-hidden'); // 向上箭頭也跟著上移
+    } else {
+      upArrow.classList.remove('nav-hidden'); // 還原預設位置
+    }
+
+    document.getElementById('nav-debug').innerText = `導覽狀態：${isHidden ? '已隱藏' : '顯示中'}`; // 更新 Debug 面板
+  });
+
+  // ⌨️ 鍵盤方向控制（方向鍵 + WASD）
+  window.addEventListener('keydown', (e) => {
+    let moved = false; // 紀錄是否移動
+
+    if (e.key === 'ArrowUp' || e.key === 'w') {
+      if (currentRowIndex > 0) { currentRowIndex--; moved = true; }
+    }
+    if (e.key === 'ArrowDown' || e.key === 's') {
+      if (currentRowIndex < rowLabels.length - 1) { currentRowIndex++; moved = true; }
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'a') {
+      if (currentColIndex > 0) { currentColIndex--; moved = true; }
+    }
+    if (e.key === 'ArrowRight' || e.key === 'd') {
+      if (currentColIndex < colLabels.length - 1) { currentColIndex++; moved = true; }
+    }
+
+    if (moved) {
+      scrollToPosition(currentColIndex, currentRowIndex); // 捲動到新區塊
+      document.getElementById('input-debug').innerText = `輸入狀態：${e.key.toUpperCase()} 觸發`; // 更新輸入狀態 Debug
+    }
   });
 });

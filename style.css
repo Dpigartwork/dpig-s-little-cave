@@ -1,15 +1,15 @@
-/* 🌐 基本全站設定 */
+/* 🌐 基本設定 */
 body {
-    margin: 0; /* 去除頁面邊距 */
-    padding: 0; /* 去除內邊距 */
-    font-family: sans-serif; /* 設定字型為無襯線 */
-    overflow-y: scroll; /* 垂直滾動 */
-    overflow-x: hidden; /* 禁止水平滾動 */
-    background-color: #222; /* 背景深色 */
-    color: #fff; /* 白色文字 */
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: #222;
+    color: #fff;
   }
   
-  /* 🧱 主格子網格容器 */
+  /* 🧱 主展示格 */
   main {
     display: grid;
     grid-template-areas:
@@ -20,16 +20,15 @@ body {
       "L2_D3 L1_D3 C_D3 R1_D3 R2_D3"
       "L2_D4 L1_D4 C_D4 R1_D4 R2_D4"
       "L2_D5 L1_D5 C_D5 R1_D5 R2_D5";
-    grid-template-columns: repeat(5, 100vw); /* 每欄寬度為 100vw */
-    grid-template-rows: repeat(7, 100vh); /* 每列高度為 100vh */
-    width: 500vw; /* 寬度總和為 5 倍螢幕寬 */
-    height: 700vh; /* 高度總和為 7 倍螢幕高 */
-    scroll-snap-type: both mandatory; /* 吸附捲動 */
-    overflow: auto; /* 可滾動 */
+    grid-template-columns: repeat(5, 100vw);
+    grid-template-rows: repeat(7, 100vh);
+    width: 500vw;
+    height: 700vh;
+    scroll-snap-type: both mandatory;
+    overflow: auto;
     position: relative;
   }
   
-  /* 🔲 每個格子區塊 */
   main > section {
     width: 100vw;
     height: 100vh;
@@ -42,19 +41,14 @@ body {
     position: relative;
     transition: opacity 0.4s;
   }
-  
   main > section:nth-child(odd) {
     background: rgb(94, 64, 36);
   }
-  
-  /* 🏷️ 區塊標籤 */
   main > section > div {
     font-size: 60px;
     color: white;
     font-weight: bold;
   }
-  
-  /* 🖼️ 圖片 */
   main > section > img {
     max-width: 80%;
     max-height: 60%;
@@ -114,7 +108,7 @@ body {
     color: white;
     padding: 10px 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     position: fixed;
     width: 100%;
@@ -125,32 +119,43 @@ body {
   #navbar.hidden {
     transform: translateY(-100%);
   }
-  
-  /* ☰ 漢堡按鈕 */
   #nav-toggle {
-    display: none;
+    display: block;
     font-size: 28px;
     cursor: pointer;
+    z-index: 3001;
+    margin-right: 10px;
   }
-  
-  /* 📋 導覽選單（桌機） */
   #nav-menu {
     list-style: none;
-    display: flex;
-    gap: 20px;
-    padding-left: 0;
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(51, 51, 51, 0.95);
+    padding: 0;
+    margin: 0;
+    z-index: 2501;
+  }
+  #nav-menu.open {
+    display: flex !important;
+  }
+  #nav-menu li {
+    padding: 10px 20px;
+    text-align: left;
   }
   #nav-menu li a {
     color: white !important;
     text-decoration: none;
+    font-size: 18px;
   }
-  #nav-menu li a:visited,
-  #nav-menu li a:hover,
-  #nav-menu li a:active {
-    color: white !important;
+  #nav-menu li a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
   }
   
-  /* ⬡⬢ 導覽列收合按鈕 */
+  /* ⬡⬢ 收合鍵 */
   #nav-collapse-toggle {
     position: fixed;
     top: 10px;
@@ -163,9 +168,6 @@ body {
     border-radius: 4px;
     cursor: pointer;
     z-index: 3000;
-  }
-  #nav-collapse-toggle:hover {
-    background: rgba(255, 255, 255, 0.2);
   }
   
   /* 🔼 向上箭頭 */
@@ -187,7 +189,7 @@ body {
     top: 10px;
   }
   
-  /* 🔼🔽◁▷ 四向箭頭通用樣式 */
+  /* 四向箭頭 */
   .arrow {
     position: fixed;
     font-size: clamp(18px, 2.5vw, 28px);
@@ -199,23 +201,11 @@ body {
     cursor: pointer;
     z-index: 2500;
   }
-  .arrow.left {
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .arrow.right {
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .arrow.down {
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+  .arrow.left { left: 10px; top: 50%; transform: translateY(-50%); }
+  .arrow.right { right: 10px; top: 50%; transform: translateY(-50%); }
+  .arrow.down { bottom: 10px; left: 50%; transform: translateX(-50%); }
   
-  /* 🐞 DEBUG 面板 */
+  /* 🐞 Debug */
   #debug-info {
     position: fixed;
     bottom: 2vh;
@@ -233,41 +223,5 @@ body {
     width: clamp(120px, 20vw, 180px);
     max-height: 200px;
     box-sizing: border-box;
-  }
-  
-  /* 📱 手機版樣式 */
-  @media (max-width: 768px) {
-    #nav-toggle {
-      display: block;
-      z-index: 3001;
-    }
-  
-    #nav-menu {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: rgba(51, 51, 51, 0.85);
-      display: none;
-      flex-direction: column;
-      padding-left: 0;
-      margin: 0;
-      z-index: 2501;
-    }
-    #nav-menu.open {
-      display: flex !important;
-    }
-  
-    .arrow {
-      font-size: clamp(16px, 4vw, 28px);
-      padding: 6px 10px;
-    }
-  
-    #up-arrow {
-      top: calc(env(safe-area-inset-top, 10px) + 50px);
-    }
-    #up-arrow.nav-hidden {
-      top: env(safe-area-inset-top, 10px);
-    }
   }
   

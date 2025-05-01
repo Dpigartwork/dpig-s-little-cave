@@ -11,7 +11,7 @@ body {
   
   /* 🧱 主格子網格容器 */
   main {
-    display: grid;
+    display: grid; /* 使用 CSS Grid 布局 */
     grid-template-areas:
       "L2_U1 L1_U1 C_U1 R1_U1 R2_U1"
       "L2_GROUND L1_GROUND C_GROUND R1_GROUND R2_GROUND"
@@ -19,86 +19,86 @@ body {
       "L2_D2 L1_D2 C_D2 R1_D2 R2_D2"
       "L2_D3 L1_D3 C_D3 R1_D3 R2_D3"
       "L2_D4 L1_D4 C_D4 R1_D4 R2_D4"
-      "L2_D5 L1_D5 C_D5 R1_D5 R2_D5";
-    grid-template-columns: repeat(5, 100vw);
-    grid-template-rows: repeat(7, 100vh);
-    width: 500vw;
-    height: 700vh;
-    scroll-snap-type: both mandatory;
-    overflow: auto;
-    position: relative;
+      "L2_D5 L1_D5 C_D5 R1_D5 R2_D5"; /* 定義 7x5 網格區域 */
+    grid-template-columns: repeat(5, 100vw); /* 每欄寬度為 100vw */
+    grid-template-rows: repeat(7, 100vh); /* 每列高度為 100vh */
+    width: 500vw; /* 寬度總和為 5 倍螢幕寬 */
+    height: 700vh; /* 高度總和為 7 倍螢幕高 */
+    scroll-snap-type: both mandatory; /* 啟用雙向吸附滾動 */
+    overflow: auto; /* 可滾動 */
+    position: relative; /* 內部元素可使用絕對定位 */
   }
   
   /* 🔲 每個格子區塊 */
   main > section {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    scroll-snap-align: start;
-    background-color: #b38357;
-    position: relative;
-    transition: opacity 0.4s;
+    width: 100vw; /* 格子寬度為 100vw */
+    height: 100vh; /* 格子高度為 100vh */
+    display: flex; /* 使用 Flex 排列 */
+    flex-direction: column; /* 垂直方向 */
+    justify-content: center; /* 垂直置中 */
+    align-items: center; /* 水平置中 */
+    scroll-snap-align: start; /* 捲動吸附頂端 */
+    background-color: #b38357; /* 預設背景色 */
+    position: relative; /* 支援絕對定位 */
+    transition: opacity 0.4s; /* 淡出淡入動畫 */
   }
   
   /* 🎨 奇數格子背景 */
   main > section:nth-child(odd) {
-    background: rgb(94, 64, 36);
+    background: rgb(94, 64, 36); /* 深咖啡色背景 */
   }
   
   /* 🏷️ 區塊代號文字 */
   main > section > div {
-    font-size: 60px;
-    color: white;
-    font-weight: bold;
+    font-size: 60px; /* 文字大小 */
+    color: white; /* 白色字 */
+    font-weight: bold; /* 粗體 */
   }
   
   /* 🖼️ 圖片 */
   main > section > img {
-    max-width: 80%;
-    max-height: 60%;
-    border: 3px solid #fff;
-    cursor: pointer;
-    transition: transform 0.3s;
+    max-width: 80%; /* 最大寬度 */
+    max-height: 60%; /* 最大高度 */
+    border: 3px solid #fff; /* 白色邊框 */
+    cursor: pointer; /* 滑鼠變手型 */
+    transition: transform 0.3s; /* 放大動畫 */
   }
   main > section > img:hover {
-    transform: scale(1.05);
+    transform: scale(1.05); /* 滑鼠懸停放大 */
   }
   
   /* 📌 作品資訊卡 */
   .info-card {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 10px 15px;
-    border-radius: 6px;
-    font-size: 14px;
-    color: #fff;
-    z-index: 10;
-    pointer-events: none;
-    display: none;
+    position: absolute; /* 絕對定位 */
+    bottom: 10px; /* 距離底部 */
+    left: 10px; /* 距離左側 */
+    background-color: rgba(0, 0, 0, 0.6); /* 半透明黑底 */
+    padding: 10px 15px; /* 內距 */
+    border-radius: 6px; /* 圓角 */
+    font-size: 14px; /* 字體大小 */
+    color: #fff; /* 白色字 */
+    z-index: 10; /* 層級高 */
+    pointer-events: none; /* 不干擾滑鼠 */
+    display: none; /* 預設隱藏 */
   }
   
   /* 🖼️ Lightbox */
   #lightbox {
-    position: fixed;
+    position: fixed; /* 固定在畫面上 */
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
+    background: rgba(0, 0, 0, 0.8); /* 深色遮罩 */
+    display: none; /* 預設隱藏 */
+    justify-content: center; /* 水平置中 */
+    align-items: center; /* 垂直置中 */
+    z-index: 2000; /* 最上層 */
   }
   #lightbox img {
     max-width: 90%;
     max-height: 90%;
-    box-shadow: 0 0 10px #fff;
+    box-shadow: 0 0 10px #fff; /* 陰影 */
   }
   #lightbox-close {
     position: absolute;
@@ -109,9 +109,9 @@ body {
     cursor: pointer;
   }
   
-  /* 🧭 桌機版導覽列 */
+  /* 🧭 導覽列 */
   #navbar {
-    background: rgba(51, 51, 51, 0.85);
+    background: rgba(51, 51, 51, 0.85); /* 半透明背景 */
     color: white;
     padding: 10px 20px;
     display: flex;
@@ -124,17 +124,17 @@ body {
     transition: transform 0.4s ease;
   }
   #navbar.hidden {
-    transform: translateY(-100%);
+    transform: translateY(-100%); /* 隱藏時向上移 */
   }
   
-  /* ☰ 漢堡按鈕（桌機隱藏） */
+  /* ☰ 漢堡按鈕 */
   #nav-toggle {
-    display: none;
+    display: none; /* 桌機不顯示 */
     font-size: 28px;
     cursor: pointer;
   }
   
-  /* 📋 導覽選單（桌機橫排） */
+  /* 📋 導覽選單 */
   #nav-menu {
     list-style: none;
     display: flex;
@@ -142,12 +142,10 @@ body {
     padding-left: 0;
   }
   #nav-menu li a {
-    color: white !important;
+    color: white !important; /* 強制白字 */
     text-decoration: none;
   }
-  #nav-menu li a:visited {
-    color: white !important;
-  }
+  #nav-menu li a:visited,
   #nav-menu li a:hover,
   #nav-menu li a:active {
     color: white !important;
@@ -180,7 +178,7 @@ body {
     z-index: 2001;
     background: rgba(0, 0, 0, 0.6);
     color: white;
-    font-size: 28px;
+    font-size: clamp(14px, 2.5vw, 32px); /* ✅ 自適應字體大小 */
     border: none;
     padding: 6px 12px;
     border-radius: 4px;
@@ -190,10 +188,10 @@ body {
     top: 10px;
   }
   
-  /* 🔼🔽◁▷ 四向箭頭共用樣式 */
+  /* 🔼🔽◁▷ 四向箭頭通用樣式 */
   .arrow {
     position: fixed;
-    font-size: 32px;
+    font-size: clamp(14px, 2.5vw, 32px); /* ✅ 字體大小限制 */
     background: rgba(0, 0, 0, 0.6);
     color: white;
     border: none;
@@ -218,14 +216,14 @@ body {
     transform: translateX(-50%);
   }
   
-/* 🐞 DEBUG 面板 */
-#debug-info {
+  /* 🐞 DEBUG 面板 */
+  #debug-info {
     position: fixed; /* 固定在螢幕上 */
     bottom: 2vh; /* 距離底部 2% */
     right: 2vw; /* 距離右側 2% */
     background-color: rgba(0, 0, 0, 0.6); /* 黑色半透明背景 */
     color: #00ff88; /* 螢光綠字體 */
-    font-size: clamp(5px, 1.7vw, 13px); /* ✅ 使用 clamp 控制字體：最小 10px、理想 1.7vw、最大 16px */
+    font-size: clamp(10px, 1.7vw, 16px); /* ✅ 使用 clamp 控制字體大小 */
     padding: 1.5vw; /* 內距也使用比例單位 */
     border-radius: 1vw; /* 圓角隨比例調整 */
     z-index: 9999; /* 層級最高 */
@@ -237,87 +235,5 @@ body {
     max-width: 200px; /* ✅ 寬度最大不超過 200px */
     max-height: 200px; /* ✅ 高度最大不超過 200px */
     box-sizing: border-box; /* 包含 padding 在內計算寬度 */
-  }
-  
-  
- /* 📱 手機版樣式 */
-@media (max-width: 768px) {
-    #navbar {
-      background: rgba(51, 51, 51, 0.85);
-      color: white;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 2500;
-      transition: transform 0.4s ease;
-      transform: translateY(0);
-    }
-  
-    #navbar.hidden {
-      transform: translateY(-150%);
-    }
-  
-    #navbar::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: env(safe-area-inset-top, 20px);
-      background: rgba(51, 51, 51, 0.85);
-      z-index: -1;
-    }
-  
-    #nav-collapse-toggle {
-      position: fixed;
-      top: env(safe-area-inset-top, 10px);
-      right: 20px;
-      font-size: 22px;
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      z-index: 3000;
-    }
-  
-    #up-arrow {
-      top: calc(env(safe-area-inset-top, 10px) + 50px);
-    }
-  
-    #up-arrow.nav-hidden {
-      top: env(safe-area-inset-top, 10px);
-    }
-  
-    #nav-toggle {
-      display: block;
-      z-index: 3001;
-    }
-  
-    #nav-menu {
-        position: absolute;
-        top: 0; /* 先設定為 0，等 JS 覆蓋 */
-        left: 0;
-        right: 0; /* ✅ 保證延伸滿版 */
-        width: auto; /* ✅ 由 left + right 控制寬度 */
-        box-sizing: border-box; /* ✅ 保證 padding 不影響總寬 */
-        background: rgba(51, 51, 51, 0.85);
-        flex-direction: column;
-        display: none;
-        z-index: 2501;
-        padding-left: 0; /* 保證無縮排 */
-        margin: 0; /* ✅ 清除預設 margin */
-      }
-      
-    #nav-menu.open {
-      display: flex !important;
-    }
   }
   

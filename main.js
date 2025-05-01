@@ -31,12 +31,11 @@ window.addEventListener('load', function () {
   const upArrow = document.getElementById('up-arrow');
 
   const customSections = {
-    "C_GROUND": { tag: "watercolor", title: "靜物練習", year: "2024", medium: "水彩", media: "image", mediaSrc: "images/sample1.jpg" },
+    "C_GROUND": { tag: "watercolor", title: "靜物練習", year: "2024", medium: "水彩", media: "image", mediaSrc: "images/Happy.jpg" },
     "L1_D1": { tag: "oil", title: "肖像系列 #3", year: "2023", medium: "油畫", media: "image", mediaSrc: "images/sample2.jpg" },
     "R2_U1": { tag: "sketch", title: "速寫課堂", year: "2022", medium: "鉛筆素描", media: "image", mediaSrc: "images/sample3.jpg" }
   };
 
-  // 🧱 建立區塊
   for (let r = 0; r < rowLabels.length; r++) {
     for (let c = 0; c < colLabels.length; c++) {
       const area = `${colLabels[c]}_${rowLabels[r]}`;
@@ -77,6 +76,7 @@ window.addEventListener('load', function () {
           document.getElementById('info-debug').innerText = `作品資訊：${card.innerText.replace(/\n/g, " ")}`;
         }
       });
+
       section.addEventListener('mouseleave', () => {
         const card = section.querySelector('.info-card');
         if (card) card.style.display = 'none';
@@ -103,7 +103,12 @@ window.addEventListener('load', function () {
     }
   }
 
-  scrollToPosition(currentColIndex, currentRowIndex);
+  // ✅ 初始對齊中心區塊
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      scrollToPosition(currentColIndex, currentRowIndex);
+    });
+  });
 
   // ⬅➡⬆⬇ 點擊控制
   document.getElementById('left-arrow').addEventListener('click', () => {
@@ -161,7 +166,7 @@ window.addEventListener('load', function () {
     }, 150);
   });
 
-  // 📱 漢堡選單控制
+  // ☰ 手機選單
   navToggle.addEventListener('click', () => {
     navMenu.classList.toggle('open');
     document.getElementById('nav-debug').innerText =
@@ -173,24 +178,22 @@ window.addEventListener('load', function () {
     navBar.classList.toggle('hidden');
     const isHidden = navBar.classList.contains('hidden');
     navCollapseToggle.innerText = isHidden ? '⬢' : '⬡';
-  
+
     if (isHidden) {
       navMenu.classList.remove('open');
       upArrow.classList.add('nav-hidden');
     } else {
       upArrow.classList.remove('nav-hidden');
     }
-  
+
     navToggle.style.display = isHidden ? 'none' : 'block';
-  
-    // ✅ 把這一段放在這裡
+
     const navHeight = navBar.offsetHeight;
     document.getElementById('nav-debug').innerText =
       `導覽狀態：${isHidden ? '已隱藏' : '顯示中'}\n高度：${navHeight}px`;
   });
-  
-  
-  // ⌨️ 鍵盤方向鍵控制
+
+  // ⌨️ 鍵盤控制
   window.addEventListener('keydown', (e) => {
     let moved = false;
     if (e.key === 'ArrowUp' || e.key === 'w') { if (currentRowIndex > 0) { currentRowIndex--; moved = true; } }
@@ -211,7 +214,7 @@ window.addEventListener('load', function () {
     document.getElementById('lightbox-debug').innerText = "燈箱狀態：關閉";
   });
 
-  // 🎨 篩選控制
+  // 🎨 篩選功能
   document.querySelectorAll('.filter-button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-button').forEach(b => b.classList.remove('active'));
@@ -230,7 +233,7 @@ window.addEventListener('load', function () {
     });
   });
 
-  // 📏 更新 nav-menu 位置
+  // 📏 menu 位置對齊
   function updateMobileMenuPosition() {
     const navHeight = navBar.offsetHeight;
     navMenu.style.top = navHeight + 'px';
@@ -241,6 +244,7 @@ window.addEventListener('load', function () {
     const isMobile = window.innerWidth <= 768;
     const isHidden = navBar.classList.contains('hidden');
     navToggle.style.display = isMobile && !isHidden ? 'block' : 'none';
+
     requestAnimationFrame(() => {
       scrollToPosition(currentColIndex, currentRowIndex, 'auto');
     });
@@ -249,4 +253,3 @@ window.addEventListener('load', function () {
   updateMobileMenuPosition();
   window.addEventListener('orientationchange', updateMobileMenuPosition);
 });
-

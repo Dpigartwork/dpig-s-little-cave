@@ -20,19 +20,23 @@
  */
 
 window.addEventListener('load', function () {
-  // 🎛️ 取得主要元素
   const gridLayout = document.getElementById('grid-layout');
   const colLabels = ['L2', 'L1', 'C', 'R1', 'R2'];
   const rowLabels = ['U1', 'GROUND', 'D1', 'D2', 'D3', 'D4', 'D5'];
 
-  // 🎨 可自訂作品內容（含圖片與資訊）
+  const navBar = document.getElementById('navbar');
+  const navMenu = document.getElementById('nav-menu');
+  const navCollapseToggle = document.getElementById('nav-collapse-toggle');
+  const navToggle = document.getElementById('nav-toggle');
+  const upArrow = document.getElementById('up-arrow');
+
   const customSections = {
     "C_GROUND": { tag: "watercolor", title: "靜物練習", year: "2024", medium: "水彩", media: "image", mediaSrc: "images/sample1.jpg" },
     "L1_D1": { tag: "oil", title: "肖像系列 #3", year: "2023", medium: "油畫", media: "image", mediaSrc: "images/sample2.jpg" },
     "R2_U1": { tag: "sketch", title: "速寫課堂", year: "2022", medium: "鉛筆素描", media: "image", mediaSrc: "images/sample3.jpg" }
   };
 
-  // 🧱 建立網格（5×7）
+  // 🧱 建立區塊
   for (let r = 0; r < rowLabels.length; r++) {
     for (let c = 0; c < colLabels.length; c++) {
       const area = `${colLabels[c]}_${rowLabels[r]}`;
@@ -73,7 +77,6 @@ window.addEventListener('load', function () {
           document.getElementById('info-debug').innerText = `作品資訊：${card.innerText.replace(/\n/g, " ")}`;
         }
       });
-
       section.addEventListener('mouseleave', () => {
         const card = section.querySelector('.info-card');
         if (card) card.style.display = 'none';
@@ -83,7 +86,6 @@ window.addEventListener('load', function () {
     }
   }
 
-  // 🎯 初始捲動到中心格
   let currentColIndex = 2;
   let currentRowIndex = 1;
   let previousColIndex = currentColIndex;
@@ -101,37 +103,27 @@ window.addEventListener('load', function () {
     }
   }
 
-  setTimeout(() => {
-    scrollToPosition(currentColIndex, currentRowIndex);
-  }, 0);
+  scrollToPosition(currentColIndex, currentRowIndex);
 
-  // 🕹️ 方向鍵點擊控制
+  // ⬅➡⬆⬇ 點擊控制
   document.getElementById('left-arrow').addEventListener('click', () => {
-    if (currentColIndex > 0) {
-      currentColIndex--;
-      scrollToPosition(currentColIndex, currentRowIndex);
-    }
+    if (currentColIndex > 0) currentColIndex--;
+    scrollToPosition(currentColIndex, currentRowIndex);
   });
   document.getElementById('right-arrow').addEventListener('click', () => {
-    if (currentColIndex < colLabels.length - 1) {
-      currentColIndex++;
-      scrollToPosition(currentColIndex, currentRowIndex);
-    }
+    if (currentColIndex < colLabels.length - 1) currentColIndex++;
+    scrollToPosition(currentColIndex, currentRowIndex);
   });
   document.getElementById('up-arrow').addEventListener('click', () => {
-    if (currentRowIndex > 0) {
-      currentRowIndex--;
-      scrollToPosition(currentColIndex, currentRowIndex);
-    }
+    if (currentRowIndex > 0) currentRowIndex--;
+    scrollToPosition(currentColIndex, currentRowIndex);
   });
   document.getElementById('down-arrow').addEventListener('click', () => {
-    if (currentRowIndex < rowLabels.length - 1) {
-      currentRowIndex++;
-      scrollToPosition(currentColIndex, currentRowIndex);
-    }
+    if (currentRowIndex < rowLabels.length - 1) currentRowIndex++;
+    scrollToPosition(currentColIndex, currentRowIndex);
   });
 
-  // 🌀 滾動防抖偵測中心區塊
+  // 📌 自動判定中心區塊
   let scrollDebounceTimeout = null;
   window.addEventListener('scroll', () => {
     clearTimeout(scrollDebounceTimeout);
@@ -169,13 +161,47 @@ window.addEventListener('load', function () {
     }, 150);
   });
 
-  // 📏 畫面尺寸變動時重新對齊
-  window.addEventListener('resize', () => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        scrollToPosition(currentColIndex, currentRowIndex, 'auto');
-      });
-    });
+  // 📱 漢堡選單控制
+  navToggle.addEventListener('click', () => {
+    navMenu.classList.toggle('open');
+    document.getElementById('nav-debug').innerText =
+      `導覽狀態：${navMenu.classList.contains('open') ? '開啟' : '關閉'}`;
+  });
+
+  // ⬡ 收合導覽列
+  navCollapseToggle.addEventListener('click', () => {
+    navBar.classList.toggle('hidden');
+    const isHidden = navBar.classList.contains('hidden');
+    navCollapseToggle.innerText = isHidden ? '⬢' : '⬡';
+  
+    if (isHidden) {
+      navMenu.classList.remove('open');
+      upArrow.classList.add('nav-hidden');
+    } else {
+      upArrow.classList.remove('nav-hidden');
+    }
+  
+    navToggle.style.display = isHidden ? 'none' : 'block';
+  
+    // ✅ 把這一段放在這裡
+    const navHeight = navBar.offsetHeight;
+    document.getElementById('nav-debug').innerText =
+      `導覽狀態：${isHidden ? '已隱藏' : '顯示中'}\n高度：${navHeight}px`;
+  });
+  
+  
+  // ⌨️ 鍵盤方向鍵控制
+  window.addEventListener('keydown', (e) => {
+    let moved = false;
+    if (e.key === 'ArrowUp' || e.key === 'w') { if (currentRowIndex > 0) { currentRowIndex--; moved = true; } }
+    if (e.key === 'ArrowDown' || e.key === 's') { if (currentRowIndex < rowLabels.length - 1) { currentRowIndex++; moved = true; } }
+    if (e.key === 'ArrowLeft' || e.key === 'a') { if (currentColIndex > 0) { currentColIndex--; moved = true; } }
+    if (e.key === 'ArrowRight' || e.key === 'd') { if (currentColIndex < colLabels.length - 1) { currentColIndex++; moved = true; } }
+
+    if (moved) {
+      scrollToPosition(currentColIndex, currentRowIndex);
+      document.getElementById('input-debug').innerText = `輸入狀態：${e.key.toUpperCase()} 觸發`;
+    }
   });
 
   // ❌ 關閉 Lightbox
@@ -185,7 +211,7 @@ window.addEventListener('load', function () {
     document.getElementById('lightbox-debug').innerText = "燈箱狀態：關閉";
   });
 
-  // 🧩 篩選按鈕點擊行為
+  // 🎨 篩選控制
   document.querySelectorAll('.filter-button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-button').forEach(b => b.classList.remove('active'));
@@ -204,72 +230,23 @@ window.addEventListener('load', function () {
     });
   });
 
-  // ☰ 手機漢堡選單控制
-  const navToggle = document.getElementById('nav-toggle');
-  const navMenu = document.getElementById('nav-menu');
-  navToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('open');
-    const state = navMenu.classList.contains('open') ? '開啟' : '關閉';
-    document.getElementById('nav-debug').innerText = `導覽狀態：${state}`;
-  });
-
-  // 🔻 導覽列收合控制（含同步收起 ☰ 選單 + 向上箭頭）
-  const navBar = document.getElementById('navbar');
-  const navCollapseToggle = document.getElementById('nav-collapse-toggle');
-  const upArrow = document.getElementById('up-arrow');
-
-  navCollapseToggle.addEventListener('click', () => {
-    navBar.classList.toggle('hidden');
-    const isHidden = navBar.classList.contains('hidden');
-    navCollapseToggle.innerText = isHidden ? '⬢' : '⬡';
-    document.getElementById('nav-debug').innerText = `導覽狀態：${isHidden ? '已隱藏' : '顯示中'}`;
-
-    if (isHidden) {
-      navMenu.classList.remove('open'); // ✅ 同步收起手機選單
-      upArrow.classList.add('nav-hidden');
-    } else {
-      upArrow.classList.remove('nav-hidden');
-    }
-  });
-
-  // ⌨️ 鍵盤方向控制（方向鍵 + WASD）
-  window.addEventListener('keydown', (e) => {
-    let moved = false;
-    if (e.key === 'ArrowUp' || e.key === 'w') {
-      if (currentRowIndex > 0) { currentRowIndex--; moved = true; }
-    }
-    if (e.key === 'ArrowDown' || e.key === 's') {
-      if (currentRowIndex < rowLabels.length - 1) { currentRowIndex++; moved = true; }
-    }
-    if (e.key === 'ArrowLeft' || e.key === 'a') {
-      if (currentColIndex > 0) { currentColIndex--; moved = true; }
-    }
-    if (e.key === 'ArrowRight' || e.key === 'd') {
-      if (currentColIndex < colLabels.length - 1) { currentColIndex++; moved = true; }
-    }
-
-    if (moved) {
-      scrollToPosition(currentColIndex, currentRowIndex);
-      document.getElementById('input-debug').innerText = `輸入狀態：${e.key.toUpperCase()} 觸發`;
-    }
-  });
-});
-
-/**
- * 📏 改良版：使用 offsetHeight 動態取得 navbar 高度
- * 並確保 #nav-menu 貼齊導覽列底部
- */
-function updateMobileMenuPosition() {
-  const navbar = document.getElementById('navbar');
-  const navMenu = document.getElementById('nav-menu');
-  if (navbar && navMenu) {
-    const navHeight = navbar.offsetHeight;
+  // 📏 更新 nav-menu 位置
+  function updateMobileMenuPosition() {
+    const navHeight = navBar.offsetHeight;
     navMenu.style.top = navHeight + 'px';
   }
-}
 
+  window.addEventListener('resize', () => {
+    updateMobileMenuPosition();
+    const isMobile = window.innerWidth <= 768;
+    const isHidden = navBar.classList.contains('hidden');
+    navToggle.style.display = isMobile && !isHidden ? 'block' : 'none';
+    requestAnimationFrame(() => {
+      scrollToPosition(currentColIndex, currentRowIndex, 'auto');
+    });
+  });
 
-// 🧭 頁面載入與裝置變更時重新對齊
-window.addEventListener('load', updateMobileMenuPosition);
-window.addEventListener('resize', updateMobileMenuPosition);
-window.addEventListener('orientationchange', updateMobileMenuPosition);
+  updateMobileMenuPosition();
+  window.addEventListener('orientationchange', updateMobileMenuPosition);
+});
+

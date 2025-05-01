@@ -1,48 +1,66 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- 設定文件編碼為 UTF-8，確保顯示所有語言字符 -->
   <meta charset="UTF-8">
-  
-  <!-- 設定視窗大小，這樣能確保網頁適應不同的設備（例如手機、平板、桌面） -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-
-  <!-- 設定網頁標題，這個標題會顯示在瀏覽器的標籤頁 -->
   <title>D.pig's Little Cave</title>
-
-  <!-- 引入外部的 CSS 文件，用來設計頁面的樣式 -->
   <link rel="stylesheet" href="style.css">
-
-
 </head>
 <body>
 
-  <!-- 左箭頭按鈕，這個按鈕會用來實現頁面向左滾動的功能 -->
-  <button id="left-arrow" class="arrow left">◁</button>
-  
-  <!-- 右箭頭按鈕，這個按鈕會用來實現頁面向右滾動的功能 -->
-  <button id="right-arrow" class="arrow right">▷</button>
+  <!-- 🧭 導覽列 -->
+  <nav id="navbar">
+    <div id="nav-toggle">☰</div>
+    <ul id="nav-menu">
+      <li><a href="#about">關於我</a></li>
+      <li><a href="#grid-layout">作品集</a></li>
+      <li><a href="#contact">聯絡方式</a></li>
+    </ul>
+  </nav>
 
-  <!-- 上箭頭按鈕，這個按鈕會用來實現頁面向上滾動的功能 -->
+  <!-- ⬡ 導覽列收合控制按鈕（已移出 navbar 外部） -->
+  <button id="nav-collapse-toggle" title="顯示/隱藏導覽列">⬡</button>
+
+  <!-- 🗂️ 分類選單 -->
+  <div id="filter-bar">
+    <button class="filter-button active" data-tag="all">全部</button>
+    <button class="filter-button" data-tag="watercolor">水彩</button>
+    <button class="filter-button" data-tag="oil">油畫</button>
+    <button class="filter-button" data-tag="sketch">素描</button>
+  </div>
+
+  <!-- 🕹️ 箭頭控制按鈕 -->
+  <button id="left-arrow" class="arrow left">◁</button>
+  <button id="right-arrow" class="arrow right">▷</button>
   <button id="up-arrow" class="arrow up">△</button>
-  
-  <!-- 下箭頭按鈕，這個按鈕會用來實現頁面向下滾動的功能 -->
   <button id="down-arrow" class="arrow down">▽</button>
 
-  <!-- 主要的網格區域，所有的區塊都會被動態加入到這裡 -->
+  <!-- 🎯 主要展示網格 -->
   <main id="grid-layout"></main>
 
-  <!-- 🐞 DEBUG 顯示目前位置，新增兩行顯示區塊 ID -->
+  <!-- 🖼️ Lightbox 模組 -->
+  <div id="lightbox">
+    <span id="lightbox-close">×</span>
+    <img id="lightbox-image" src="" alt="放大圖像">
+  </div>
+
+  <!-- 🐞 DEBUG 面板 -->
   <div id="debug-info">
     <div id="previous-block">上次區塊: 尚未滾動</div>
     <div id="current-block">當前區塊: 尚未滾動</div>
+    <div id="info-debug">作品資訊：尚未選擇</div>
+    <div id="lightbox-debug">燈箱狀態：關閉</div>
+    <div id="filter-debug">目前篩選：全部</div>
+    <div id="nav-debug">導覽狀態：顯示中</div>
+    <div id="input-debug">輸入狀態：Idle</div>
   </div>
 
-  <!-- 頁面的主要標題，通常用來顯示網站名稱或簡單描述 -->
-  <h1>D.pig's Little Cave</h1>
+  <!-- 📦 頁尾 -->
+  <footer id="contact">
+    <p>聯絡方式：dpig@example.com</p>
+  </footer>
 
-  <!-- 這是 JavaScript 文件的引入，它控制頁面邏輯和互動 -->
+  <!-- 主控制腳本 -->
   <script src="main.js"></script>
-
 </body>
 </html>

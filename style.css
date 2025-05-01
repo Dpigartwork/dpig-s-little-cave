@@ -218,22 +218,27 @@ body {
     transform: translateX(-50%);
   }
   
-  /* 🐞 DEBUG 面板 */
-  #debug-info {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: #00ff88;
-    font-size: 14px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    z-index: 9999;
-    font-family: monospace;
-    display: flex;
+/* 🐞 DEBUG 面板 */
+#debug-info {
+    position: fixed; /* 固定在螢幕上 */
+    bottom: 2vh; /* 距離底部 2% */
+    right: 2vw; /* 距離右側 2% */
+    background-color: rgba(0, 0, 0, 0.6); /* 黑色半透明背景 */
+    color: #00ff88; /* 螢光綠字體 */
+    font-size: clamp(5px, 1.7vw, 13px); /* ✅ 使用 clamp 控制字體：最小 10px、理想 1.7vw、最大 16px */
+    padding: 1.5vw; /* 內距也使用比例單位 */
+    border-radius: 1vw; /* 圓角隨比例調整 */
+    z-index: 9999; /* 層級最高 */
+    font-family: monospace; /* 固定寬度字型 */
+    display: flex; /* 垂直排列 */
     flex-direction: column;
     align-items: flex-start;
+    width: 20vw; /* ✅ 控制整體寬度為視窗的 20% 左右 */
+    max-width: 200px; /* ✅ 寬度最大不超過 200px */
+    max-height: 200px; /* ✅ 高度最大不超過 200px */
+    box-sizing: border-box; /* 包含 padding 在內計算寬度 */
   }
+  
   
  /* 📱 手機版樣式 */
 @media (max-width: 768px) {

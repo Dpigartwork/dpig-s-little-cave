@@ -235,8 +235,8 @@ body {
     align-items: flex-start;
   }
   
-  /* 📱 手機版樣式 */
-  @media (max-width: 768px) {
+ /* 📱 手機版樣式 */
+@media (max-width: 768px) {
     #navbar {
       background: rgba(51, 51, 51, 0.85);
       color: white;
@@ -268,7 +268,7 @@ body {
       background: rgba(51, 51, 51, 0.85);
       z-index: -1;
     }
-  /*導覽列隱藏按鈕*/
+  
     #nav-collapse-toggle {
       position: fixed;
       top: env(safe-area-inset-top, 10px);
@@ -295,18 +295,22 @@ body {
       display: block;
       z-index: 3001;
     }
-  /*手機板 ☰ 裡的內容*/
-    #nav-menu {
-      position: absolute;
-      top: 72%;
-      left: 0;
-      width: 100%;
-      background:rgba(51, 51, 51, 0.85);
-      flex-direction: column;
-      display: none;
-      z-index: 2501;
-    }
   
+    #nav-menu {
+        position: absolute;
+        top: 0; /* 先設定為 0，等 JS 覆蓋 */
+        left: 0;
+        right: 0; /* ✅ 保證延伸滿版 */
+        width: auto; /* ✅ 由 left + right 控制寬度 */
+        box-sizing: border-box; /* ✅ 保證 padding 不影響總寬 */
+        background: rgba(51, 51, 51, 0.85);
+        flex-direction: column;
+        display: none;
+        z-index: 2501;
+        padding-left: 0; /* 保證無縮排 */
+        margin: 0; /* ✅ 清除預設 margin */
+      }
+      
     #nav-menu.open {
       display: flex !important;
     }

@@ -229,29 +229,38 @@ body {
   }
   
   @media (max-width: 768px) {
-    #nav-toggle {
-      display: block; /* 顯示漢堡選單（☰） */
-      z-index: 3001; /* 確保在上層 */
+    #navbar {
+      top: 40px; /* 導覽列往下移動，避免被網址列遮擋 */
+      height: auto; /* 高度自適應 */
+      z-index: 2500; /* 保持高層級 */
     }
   
     #nav-collapse-toggle {
-      display: block; /* 手機版強制顯示導覽列收合鍵（⬡⬢） */
-      z-index: 3002; /* 層級最高 */
-      top: 10px; /* 靠近頂端 */
-      right: 20px; /* 靠右邊 */
-      position: fixed; /* 固定位置 */
-      background: rgba(0, 0, 0, 0.7); /* 背景半透明 */
-      color: white; /* 白色字元 */
+      top: 40px; /* ⬡ ⬢ 與導覽列同步下移 */
+      right: 20px;
+      position: fixed;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      z-index: 3000;
     }
   
-    #navbar {
-      z-index: 2500; /* 導覽列本身層級 */
+    #up-arrow {
+      top: 110px; /* △ 向下對齊 */
+    }
+  
+    #up-arrow.nav-hidden {
+      top: 40px; /* 隱藏導覽列時回到收合鍵位置 */
+    }
+  
+    #nav-toggle {
+      display: block; /* 手機顯示漢堡按鈕 */
+      z-index: 3001;
     }
   
     #nav-menu {
-      display: none; /* 預設收起 */
-      flex-direction: column; /* 垂直排列 */
-      background: #333; /* 深灰背景 */
+      display: none;
+      flex-direction: column;
+      background: #333;
       position: absolute;
       top: 50px;
       left: 0;
@@ -259,11 +268,11 @@ body {
     }
   
     #nav-menu.open {
-      display: flex !important; /* 展開時顯示 */
+      display: flex !important;
     }
   
     .arrow {
-      font-size: 24px; /* 縮小箭頭字體 */
+      font-size: 24px;
       padding: 6px 10px;
     }
   

@@ -231,10 +231,10 @@ body {
   @media (max-width: 768px) {
     /* 🧭 導覽列調整（避開網址列 + 背景補齊） */
     #navbar {
-      padding-top: env(safe-area-inset-top, 40px); /* 避開網址列或劉海 */
+      padding-top: env(safe-area-inset-top, 0px); /* 避開網址列或劉海 */
       background: rgba(51, 51, 51, 0.85); /* 半透明深灰背景 */
       position: fixed; /* 固定在畫面上方 */
-      top: 0; /* 頂端貼齊 */
+      top: 10hw; /* 頂端貼齊 */
       left: 0;
       right: 0;
       z-index: 2500; /* 高層級顯示 */

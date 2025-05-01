@@ -228,58 +228,63 @@ body {
     align-items: flex-start;
   }
   
-  @media (max-width: 768px) {
-    #navbar {
-      top: 40px; /* 導覽列往下移動，避免被網址列遮擋 */
-      height: auto; /* 高度自適應 */
-      z-index: 2500; /* 保持高層級 */
-    }
-  
-    #nav-collapse-toggle {
-      top: 40px; /* ⬡ ⬢ 與導覽列同步下移 */
-      right: 20px;
-      position: fixed;
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      z-index: 3000;
-    }
-  
-    #up-arrow {
-      top: 110px; /* △ 向下對齊 */
-    }
-  
-    #up-arrow.nav-hidden {
-      top: 40px; /* 隱藏導覽列時回到收合鍵位置 */
-    }
-  
-    #nav-toggle {
-      display: block; /* 手機顯示漢堡按鈕 */
-      z-index: 3001;
-    }
-  
-    #nav-menu {
-      display: none;
-      flex-direction: column;
-      background: #333;
-      position: absolute;
-      top: 50px;
-      left: 0;
-      width: 100%;
-    }
-  
-    #nav-menu.open {
-      display: flex !important;
-    }
-  
-    .arrow {
-      font-size: 24px;
-      padding: 6px 10px;
-    }
-  
-    #debug-info {
-      font-size: 12px;
-      bottom: 5px;
-      right: 5px;
-    }
+@media (max-width: 768px) {
+  #navbar {
+    top: env(safe-area-inset-top, 40px); /* 導覽列自動避開網址列或瀏灠器上方，預設距離為 40px */
+    height: auto; /* 自適應內容高度 */
+    z-index: 2500; /* 層級足夠蓋過畫面 */
   }
-  
+
+  #nav-collapse-toggle {
+    display: block; /* 確保手機上能顯示 */
+    top: env(safe-area-inset-top, 40px); /* 與導覽列齊高，自動避開手機上方狀態列 */
+    right: 20px; /* 靠右邊距離 20px */
+    position: fixed; /* 固定在畫面上 */
+    background: rgba(0, 0, 0, 0.7); /* 半透明黑背景 */
+    color: white; /* 白色文字 ⬡ / ⬢ */
+    font-size: 22px; /* 字體大小 */
+    padding: 6px 12px; /* 內距 */
+    border: none; /* 無邊框 */
+    border-radius: 4px; /* 圓角 */
+    z-index: 3000; /* 高於導覽列與網格 */
+    cursor: pointer; /* 滑鼠移上顯示手型 */
+  }
+
+  #up-arrow {
+    top: calc(env(safe-area-inset-top, 40px) + 70px); /* 比導覽列稍下方顯示，避免重疊 */
+  }
+
+  #up-arrow.nav-hidden {
+    top: env(safe-area-inset-top, 40px); /* 導覽列隱藏時，與收合按鈕對齊 */
+  }
+
+  #nav-toggle {
+    display: block; /* 手機顯示 ☰ 漢堡選單 */
+    z-index: 3001; /* 確保顯示在最上方 */
+  }
+
+  #nav-menu {
+    display: none; /* 預設不顯示選單 */
+    flex-direction: column; /* 垂直排列項目 */
+    background: #333; /* 深灰背景 */
+    position: absolute; /* 絕對定位 */
+    top: 50px; /* 靠下位置 */
+    left: 0;
+    width: 100%; /* 寬度滿版 */
+  }
+
+  #nav-menu.open {
+    display: flex !important; /* 展開時顯示選單 */
+  }
+
+  .arrow {
+    font-size: 24px; /* 縮小箭頭字體 */
+    padding: 6px 10px; /* 調整內距 */
+  }
+
+  #debug-info {
+    font-size: 12px; /* 縮小 debug 字體 */
+    bottom: 5px; /* 更靠近底部 */
+    right: 5px; /* 更靠右側 */
+  }
+}

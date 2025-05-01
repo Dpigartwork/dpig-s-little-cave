@@ -178,7 +178,7 @@ body {
     z-index: 2001;
     background: rgba(0, 0, 0, 0.6);
     color: white;
-    font-size: clamp(14px, 2.5vw, 32px); /* ✅ 自適應字體大小 */
+    font-size: clamp(2px, 2.5vw, 32px); /* ✅ 自適應字體大小 */
     border: none;
     padding: 6px 12px;
     border-radius: 4px;
@@ -191,7 +191,7 @@ body {
   /* 🔼🔽◁▷ 四向箭頭通用樣式 */
   .arrow {
     position: fixed;
-    font-size: clamp(14px, 2.5vw, 32px); /* ✅ 字體大小限制 */
+    font-size: clamp(2px, 2.5vw, 32px); /* ✅ 字體大小限制 */
     background: rgba(0, 0, 0, 0.6);
     color: white;
     border: none;
@@ -223,7 +223,7 @@ body {
     right: 2vw; /* 距離右側 2% */
     background-color: rgba(0, 0, 0, 0.6); /* 黑色半透明背景 */
     color: #00ff88; /* 螢光綠字體 */
-    font-size: clamp(10px, 1.7vw, 16px); /* ✅ 使用 clamp 控制字體大小 */
+    font-size: clamp(2px, 1.7vw, 16px); /* ✅ 使用 clamp 控制字體大小 */
     padding: 1.5vw; /* 內距也使用比例單位 */
     border-radius: 1vw; /* 圓角隨比例調整 */
     z-index: 9999; /* 層級最高 */

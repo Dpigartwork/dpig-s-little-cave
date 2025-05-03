@@ -1,227 +1,322 @@
+/* style.css */
+
 /* 🌐 基本設定 */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    background-color: #222;
-    color: #fff;
+body {                                        /* 控制 整個網頁的最外容器 */
+  margin: 0;                                 /* 控制 body 外邊距 */
+  padding: 0;                                /* 控制 body 內邊距 */
+  font-family: sans-serif;                   /* 控制 全站字型 */
+  overflow-y: scroll;                        /* 控制 垂直滾動顯示 */
+  overflow-x: hidden;                        /* 控制 水平溢出隱藏 */
+  background-color: #222;                    /* 控制 背景色 */
+  color: #fff;                               /* 控制 預設文字顏色 */
+}
+
+/* 🧱 主展示格 */
+main {                                       /* 控制 主要內容容器 */
+  display: grid;                             /* 控制 使用 CSS Grid 排版 */
+  grid-template-areas:                       /* 控制 各區塊網格命名 */
+    "L2_U1 L1_U1 C_U1 R1_U1 R2_U1"
+    "L2_GROUND L1_GROUND C_GROUND R1_GROUND R2_GROUND"
+    "L2_D1 L1_D1 C_D1 R1_D1 R2_D1"
+    "L2_D2 L1_D2 C_D2 R1_D2 R2_D2"
+    "L2_D3 L1_D3 C_D3 R1_D3 R2_D3"
+    "L2_D4 L1_D4 C_D4 R1_D4 R2_D4"
+    "L2_D5 L1_D5 C_D5 R1_D5 R2_D5";          /* 控制 定義七列五欄的區域 */
+  grid-template-columns: repeat(5, 100vw);   /* 控制 每欄寬度為視窗寬度 */
+  grid-template-rows: repeat(7, 100vh);      /* 控制 每列高度為視窗高度 */
+  width: 500vw;                              /* 控制 主容器總寬度 */
+  height: 700vh;                             /* 控制 主容器總高度 */
+  scroll-snap-type: both mandatory;          /* 控制 滾動對齊行為 */
+  overflow: auto;                            /* 控制 溢出顯示自動滾動 */
+  position: relative;                        /* 控制 定位參考 */
+}
+
+main > section {                             /* 控制 每個區塊 Section */
+  width: 100vw;                              /* 控制 區塊寬度 */
+  height: 100vh;                             /* 控制 區塊高度 */
+  display: flex;                             /* 控制 內部使用 Flex 排版 */
+  flex-direction: column;                    /* 控制 主軸方向為垂直 */
+  justify-content: center;                   /* 控制 垂直置中 */
+  align-items: center;                       /* 控制 水平置中 */
+  scroll-snap-align: start;                  /* 控制 滾動對齊到起點 */
+  background-color: #b38357;                 /* 控制 區塊預設背景色 */
+  position: relative;                        /* 控制 定位參考 */
+  transition: opacity 0.4s;                  /* 控制 透明度過渡動畫 */
+}
+
+main > section:nth-child(odd) {              /* 控制 奇數區塊背景 */
+  background: rgb(94, 64, 36);               /* 控制 奇數背景色 */
+}
+
+main > section > div {                       /* 控制 區塊內文字標籤 */
+  font-size: 60px;                           /* 控制 字體大小 */
+  color: white;                              /* 控制 文字顏色 */
+  font-weight: bold;                         /* 控制 文字粗細 */
+}
+
+main > section > img {                       /* 控制 區塊內圖片 */
+  max-width: 80%;                            /* 控制 圖片最大寬度 */
+  max-height: 60%;                           /* 控制 圖片最大高度 */
+  border: 3px solid #fff;                    /* 控制 圖片邊框 */
+  cursor: pointer;                           /* 控制 滑鼠指標形狀 */
+  transition: transform 0.3s;                /* 控制 圖片縮放過渡 */
+}
+
+main > section > img:hover {                 /* 控制 圖片懸停效果 */
+  transform: scale(1.05);                    /* 控制 懸停放大比例 */
+}
+
+/* 📌 作品資訊卡 */
+.info-card {                                 /* 控制 資訊卡容器 */
+  position: absolute;                        /* 控制 絕對定位 */
+  bottom: 10px;                              /* 控制 底部距離 */
+  left: 10px;                                /* 控制 左側距離 */
+  background-color: rgba(0, 0, 0, 0.6);      /* 控制 背景半透明 */
+  padding: 10px 15px;                        /* 控制 內邊距 */
+  border-radius: 6px;                        /* 控制 圓角 */
+  font-size: 14px;                           /* 控制 文字大小 */
+  color: #fff;                               /* 控制 文字顏色 */
+  z-index: 10;                               /* 控制 堆疊順序 */
+  pointer-events: none;                      /* 控制 禁用滑鼠事件 */
+  display: none;                             /* 控制 初始隱藏 */
+}
+
+/* 🖼️ Lightbox */
+#lightbox {                                  /* 控制 燈箱容器 */
+  position: fixed;                           /* 控制 固定定位 */
+  top: 0;                                    /* 控制 頂部對齊 */
+  left: 0;                                   /* 控制 左側對齊 */
+  width: 100vw;                              /* 控制 寬度全螢幕 */
+  height: 100vh;                             /* 控制 高度全螢幕 */
+  background: rgba(0, 0, 0, 0.8);            /* 控制 背景遮罩 */
+  display: none;                             /* 控制 初始隱藏 */
+  justify-content: center;                   /* 控制 內容水平置中 */
+  align-items: center;                       /* 控制 內容垂直置中 */
+  z-index: 2000;                             /* 控制 堆疊順序 */
+}
+
+#lightbox img {                              /* 控制 燈箱中的圖片 */
+  max-width: 90%;                            /* 控制 最大寬度 */
+  max-height: 90%;                           /* 控制 最大高度 */
+  box-shadow: 0 0 10px #fff;                 /* 控制 圖片陰影 */
+}
+
+#lightbox-close {                            /* 控制 燈箱關閉按鈕 */
+  position: absolute;                        /* 控制 絕對定位 */
+  top: 20px;                                 /* 控制 上方距離 */
+  right: 30px;                               /* 控制 右側距離 */
+  font-size: 40px;                           /* 控制 字體大小 */
+  color: #fff;                               /* 控制 文字顏色 */
+  cursor: pointer;                           /* 控制 滑鼠指標 */
+}
+
+/* 🧭 導覽列 */
+#navbar {                                    /* 控制 導覽列 */
+  background: rgba(51, 51, 51, 0.85);        /* 控制 背景色 */
+  color: white;                              /* 控制 文字顏色 */
+  padding: 10px 20px;                        /* 控制 內邊距 */
+  display: flex;                             /* 控制 Flex 排版 */
+  justify-content: flex-start;               /* 控制 水平靠左 */
+  align-items: center;                       /* 控制 垂直置中 */
+  position: fixed;                           /* 控制 固定定位 */
+  width: 100%;                               /* 控制 寬度 */
+  top: 0;                                    /* 控制 頂部對齊 */
+  z-index: 2500;                             /* 控制 堆疊順序 */
+  transition: transform 0.4s ease;           /* 控制 隱藏/顯示動畫 */
+}
+
+#navbar.hidden {                             /* 控制 導覽列隱藏狀態 */
+  transform: translateY(-100%);              /* 控制 向上移動隱藏 */
+}
+
+#nav-toggle {                                /* 控制 手機選單按鈕 */
+  display: block;                            /* 控制 顯示 */
+  font-size: 28px;                           /* 控制 字體大小 */
+  cursor: pointer;                           /* 控制 滑鼠指標 */
+  z-index: 3001;                             /* 控制 堆疊順序 */
+  margin-right: 10px;                        /* 控制 右側間距 */
+}
+
+#nav-menu {                                  /* 控制 選單列表 */
+  list-style: none;                          /* 控制 項目符號移除 */
+  display: none;                             /* 控制 初始隱藏 */
+  flex-direction: column;                    /* 控制 項目直列 */
+  position: absolute;                        /* 控制 絕對定位 */
+  top: 100%;                                 /* 控制 頂部起點 */
+  left: 0;                                   /* 控制 左側對齊 */
+  right: 0;                                  /* 控制 右側對齊 */
+  background: rgba(51, 51, 51, 0.95);        /* 控制 背景色 */
+  padding: 0;                                /* 控制 內邊距 */
+  margin: 0;                                 /* 控制 外邊距 */
+  z-index: 2501;                             /* 控制 堆疊順序 */
+}
+
+#nav-menu.open {                             /* 控制 選單展開狀態 */
+  display: flex !important;                  /* 控制 強制顯示 */
+}
+
+#nav-menu li {                               /* 控制 選單項目 */
+  padding: 10px 20px;                        /* 控制 內邊距 */
+  text-align: left;                          /* 控制 文字靠左 */
+}
+
+#nav-menu li a {                             /* 控制 選單連結 */
+  color: white !important;                   /* 控制 連結顏色 */
+  text-decoration: none;                     /* 控制 取消底線 */
+  font-size: 18px;                           /* 控制 字體大小 */
+}
+
+#nav-menu li a:hover {                       /* 控制 懸停樣式 */
+  background-color: rgba(255, 255, 255, 0.1);/* 控制 背景色變化 */
+}
+
+/* ⬡⬢ 收合鍵 */
+#nav-collapse-toggle {                       /* 控制 收合導覽按鈕 */
+  position: fixed;                           /* 控制 固定定位 */
+  top: 10px;                                 /* 控制 上方距離 */
+  right: 20px;                               /* 控制 右側距離 */
+  font-size: 22px;                           /* 控制 字體大小 */
+  background: rgba(0, 0, 0, 0.6);            /* 控制 背景色 */
+  color: white;                              /* 控制 文字顏色 */
+  border: none;                              /* 控制 邊框移除 */
+  padding: 6px 12px;                         /* 控制 內邊距 */
+  border-radius: 4px;                        /* 控制 圓角 */
+  cursor: pointer;                           /* 控制 滑鼠指標 */
+  z-index: 3000;                             /* 控制 堆疊順序 */
+}
+
+/* 🔼 向上箭頭 */
+#up-arrow {                                  /* 控制 向上箭頭按鈕 */
+  position: fixed;                           /* 控制 固定定位 */
+  top: 80px;                                 /* 控制 上方距離 */
+  left: 50%;                                 /* 控制 水平置中 */
+  transform: translateX(-50%);               /* 控制 微調置中 */
+  z-index: 3000;                             /* 控制 堆疊順序 */
+  background: rgba(0, 0, 0, 0.6);            /* 控制 背景色 */
+  color: white;                              /* 控制 文字顏色 */
+  font-size: 28px;                           /* 控制 字體大小 */
+  border: none;                              /* 控制 邊框移除 */
+  padding: 6px 12px;                         /* 控制 內邊距 */
+  border-radius: 4px;                        /* 控制 圓角 */
+  cursor: pointer;                           /* 控制 滑鼠指標 */
+}
+
+#up-arrow.nav-hidden {                       /* 控制 隱藏時位移 */
+  top: 10px;                                 /* 控制 上方距離 */
+}
+
+/* 四向箭頭 */
+.arrow {                                     /* 控制 通用箭頭按鈕樣式 */
+  position: fixed;                           /* 控制 固定定位 */
+  font-size: clamp(18px, 2.5vw, 28px);       /* 控制 字體大小彈性 */
+  background: rgba(0, 0, 0, 0.6);            /* 控制 背景色 */
+  color: white;                              /* 控制 文字顏色 */
+  border: none;                              /* 控制 邊框移除 */
+  padding: 8px 14px;                         /* 控制 內邊距 */
+  border-radius: 4px;                        /* 控制 圓角 */
+  cursor: pointer;                           /* 控制 滑鼠指標 */
+  z-index: 2500;                             /* 控制 堆疊順序 */
+}
+.arrow.left {                                /* 控制 左箭頭位置 */
+  left: 10px;                                /* 控制 左側距離 */
+  top: 50%;                                  /* 控制 垂直置中 */
+  transform: translateY(-50%);               /* 控制 微調置中 */
+}
+.arrow.right {                               /* 控制 右箭頭位置 */
+  right: 10px;                               /* 控制 右側距離 */
+  top: 50%;                                  /* 控制 垂直置中 */
+  transform: translateY(-50%);               /* 控制 微調置中 */
+}
+.arrow.down {                                /* 控制 下箭頭位置 */
+  bottom: 10px;                              /* 控制 底部距離 */
+  left: 50%;                                 /* 控制 水平置中 */
+  transform: translateX(-50%);               /* 控制 微調置中 */
+}
+
+/* 🆕 全區一覽按鈕 */
+#overview-button {                           /* 控制 全區一覽按鈕 */
+  position: fixed;                           /* 控制 固定定位 */
+  bottom: 25vh;                              /* 控制 距離底部 */
+  right: 2vw;                                /* 控制 距離右側 */
+  background: rgba(0, 0, 0, 0.6);            /* 控制 背景色 */
+  color: #fff;                               /* 控制 文字顏色 */
+  border: none;                              /* 控制 邊框移除 */
+  font-size: clamp(12px, 1.6vw, 14px);       /* 控制 字體大小彈性 */
+  padding: 0.5vw 1vw;                        /* 控制 內邊距 */
+  border-radius: 0.5vw;                      /* 控制 圓角 */
+  cursor: pointer;                           /* 控制 滑鼠指標 */
+  z-index: 9999;                             /* 控制 堆疊順序 */
+}
+
+/* 🆕 Overview Overlay */
+#overview-overlay {                          /* 控制 Overview 覆蓋層 */
+  position: fixed;                           /* 控制 固定定位 */
+  top: 50%;                                  /* 控制 垂直置中 */
+  left: 50%;                                 /* 控制 水平置中 */
+  transform: translate(-50%, -50%);          /* 控制 中心位移 */
+  width: 30vw;                               /* 控制 寬度為視窗30% */
+  height: 30vh;                              /* 控制 高度為視窗30% */
+  max-width: 90vw;                           /* 控制 最大寬度 */
+  max-height: 90vh;                          /* 控制 最大高度 */
+  background: rgba(0,0,0,0.9);               /* 控制 深色遮罩 */
+  display: none;                             /* 控制 初始隱藏 */
+  display: flex;                             /* 控制 Flex 排版 */
+  justify-content: center;                   /* 控制 內容水平置中 */
+  align-items: center;                       /* 控制 內容垂直置中 */
+  z-index: 10000;                            /* 控制 堆疊順序，高於 debug */
+}
+
+.overview-grid {                             /* 控制 Overview 網格容器 */
+  display: grid;                             /* 控制 Grid 排版 */
+  grid-template-columns: repeat(5, 1fr);     /* 控制 五欄平均分配 */
+  grid-template-rows: repeat(7, 1fr);        /* 控制 七列平均分配 */
+  gap: 2px;                                  /* 控制 網格間距 */
+  width: 100%;                               /* 控制 滿寬 */
+  height: 100%;                              /* 控制 滿高 */
+}
+
+.overview-item {                             /* 控制 Overview 項目 */
+  background: #444;                          /* 控制 背景色 */
+  color: #fff;                               /* 控制 文字顏色 */
+  font-size: 12px;                           /* 控制 字體大小 */
+  display: flex;                             /* 控制 Flex 排版 */
+  justify-content: center;                   /* 控制 水平置中 */
+  align-items: center;                       /* 控制 垂直置中 */
+  padding: 2px;                              /* 控制 內邊距 */
+  border-radius: 2px;                        /* 控制 圓角 */
+  cursor: pointer;                           /* 控制 滑鼠指標 */
+  user-select: none;                         /* 控制 禁止文字選取 */
+  transition: background 0.2s;               /* 控制 背景過渡 */
+}
+
+.overview-item:hover {                       /* 控制 Overview 項目懸停 */
+  background: #666;                          /* 控制 背景色變深 */
+}
+
+/* 🐞 Debug */
+#debug-info {                                /* 控制 Debug 面板 */
+  position: fixed;                           /* 控制 固定定位 */
+  bottom: 2vh;                               /* 控制 底部距離 */
+  right: 2vw;                                /* 控制 右側距離 */
+  background-color: rgba(0, 0, 0, 0.6);      /* 控制 背景半透明 */
+  color: #00ff88;                            /* 控制 文字顏色 */
+  font-size: clamp(10px, 1.6vw, 14px);       /* 控制 字體大小彈性 */
+  padding: 1vw;                              /* 控制 內邊距 */
+  border-radius: 1vw;                        /* 控制 圓角 */
+  z-index: 9999;                             /* 控制 堆疊順序 */
+  font-family: monospace;                    /* 控制 字型 */
+  display: flex;                             /* 控制 Flex 排版 */
+  flex-direction: column;                    /* 控制 主軸垂直 */
+  align-items: flex-start;                   /* 控制 內容靠左 */
+  width: clamp(120px, 20vw, 180px);          /* 控制 面板寬度彈性 */
+  max-height: 200px;                         /* 控制 最大高度 */
+  box-sizing: border-box;                    /* 控制 包含內邊距在寬高 */
+}
+
+/* 🖥️ 響應式：手機板時覆蓋層放大 */
+@media screen and (max-width: 768px) {
+  #overview-overlay {                        /* 控制 手機板覆蓋層大小 */
+    width: 80vw;                             /* 控制 寬度80% */
+    height: 50vh;                            /* 控制 高度50% */
   }
-  
-  /* 🧱 主展示格 */
-  main {
-    display: grid;
-    grid-template-areas:
-      "L2_U1 L1_U1 C_U1 R1_U1 R2_U1"
-      "L2_GROUND L1_GROUND C_GROUND R1_GROUND R2_GROUND"
-      "L2_D1 L1_D1 C_D1 R1_D1 R2_D1"
-      "L2_D2 L1_D2 C_D2 R1_D2 R2_D2"
-      "L2_D3 L1_D3 C_D3 R1_D3 R2_D3"
-      "L2_D4 L1_D4 C_D4 R1_D4 R2_D4"
-      "L2_D5 L1_D5 C_D5 R1_D5 R2_D5";
-    grid-template-columns: repeat(5, 100vw);
-    grid-template-rows: repeat(7, 100vh);
-    width: 500vw;
-    height: 700vh;
-    scroll-snap-type: both mandatory;
-    overflow: auto;
-    position: relative;
-  }
-  
-  main > section {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    scroll-snap-align: start;
-    background-color: #b38357;
-    position: relative;
-    transition: opacity 0.4s;
-  }
-  main > section:nth-child(odd) {
-    background: rgb(94, 64, 36);
-  }
-  main > section > div {
-    font-size: 60px;
-    color: white;
-    font-weight: bold;
-  }
-  main > section > img {
-    max-width: 80%;
-    max-height: 60%;
-    border: 3px solid #fff;
-    cursor: pointer;
-    transition: transform 0.3s;
-  }
-  main > section > img:hover {
-    transform: scale(1.05);
-  }
-  
-  /* 📌 作品資訊卡 */
-  .info-card {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 10px 15px;
-    border-radius: 6px;
-    font-size: 14px;
-    color: #fff;
-    z-index: 10;
-    pointer-events: none;
-    display: none;
-  }
-  
-  /* 🖼️ Lightbox */
-  #lightbox {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-  }
-  #lightbox img {
-    max-width: 90%;
-    max-height: 90%;
-    box-shadow: 0 0 10px #fff;
-  }
-  #lightbox-close {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 40px;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  /* 🧭 導覽列 */
-  #navbar {
-    background: rgba(51, 51, 51, 0.85);
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 2500;
-    transition: transform 0.4s ease;
-  }
-  #navbar.hidden {
-    transform: translateY(-100%);
-  }
-  #nav-toggle {
-    display: block;
-    font-size: 28px;
-    cursor: pointer;
-    z-index: 3001;
-    margin-right: 10px;
-  }
-  #nav-menu {
-    list-style: none;
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: rgba(51, 51, 51, 0.95);
-    padding: 0;
-    margin: 0;
-    z-index: 2501;
-  }
-  #nav-menu.open {
-    display: flex !important;
-  }
-  #nav-menu li {
-    padding: 10px 20px;
-    text-align: left;
-  }
-  #nav-menu li a {
-    color: white !important;
-    text-decoration: none;
-    font-size: 18px;
-  }
-  #nav-menu li a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  /* ⬡⬢ 收合鍵 */
-  #nav-collapse-toggle {
-    position: fixed;
-    top: 10px;
-    right: 20px;
-    font-size: 22px;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    z-index: 3000;
-  }
-  
-  /* 🔼 向上箭頭 */
-  #up-arrow {
-    position: fixed;
-    top: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3000;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    font-size: 28px;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  #up-arrow.nav-hidden {
-    top: 10px;
-  }
-  
-  /* 四向箭頭 */
-  .arrow {
-    position: fixed;
-    font-size: clamp(18px, 2.5vw, 28px);
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    z-index: 2500;
-  }
-  .arrow.left { left: 10px; top: 50%; transform: translateY(-50%); }
-  .arrow.right { right: 10px; top: 50%; transform: translateY(-50%); }
-  .arrow.down { bottom: 10px; left: 50%; transform: translateX(-50%); }
-  
-  /* 🐞 Debug */
-  #debug-info {
-    position: fixed;
-    bottom: 2vh;
-    right: 2vw;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: #00ff88;
-    font-size: clamp(10px, 1.6vw, 14px);
-    padding: 1vw;
-    border-radius: 1vw;
-    z-index: 9999;
-    font-family: monospace;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: clamp(120px, 20vw, 180px);
-    max-height: 200px;
-    box-sizing: border-box;
-  }
-  
+}

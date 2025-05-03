@@ -1,65 +1,74 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
-  <title>D.pig's Little Cave</title>
-  <link rel="stylesheet" href="style.css" />
+<!-- index.html -->
+<!DOCTYPE html>                                           <!-- 控制 文件類型 -->
+<html lang="zh-Hant">                                     <!-- 控制 語系 -->
+<head>                                                    <!-- 控制 頁首設定 -->  
+  <meta charset="UTF-8" />                                <!-- 控制 編碼 -->  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" /> <!-- 控制 響應式 -->  
+  <title>D.pig's Little Cave</title>                      <!-- 控制 標題 -->  
+  <link rel="stylesheet" href="style.css" />              <!-- 控制 樣式引用 -->
 </head>
-<body>
+<body>                                                    <!-- 控制 主體開始 -->
 
   <!-- 🧭 導覽列 -->
-  <nav id="navbar">
-    <div id="nav-toggle">☰</div>
-    <ul id="nav-menu">
-      <li><a href="#about">關於我</a></li>
-      <li><a href="#grid-layout">作品集</a></li>
-      <li><a href="#contact">聯絡方式</a></li>
+  <nav id="navbar">                                       <!-- 控制 導覽列容器 -->
+    <div id="nav-toggle">☰</div>                          <!-- 控制 手機選單按鈕 -->
+    <ul id="nav-menu">                                    <!-- 控制 選單列表 -->
+      <li><a href="#about">關於我</a></li>                <!-- 控制 連結項目 -->
+      <li><a href="#grid-layout">作品集</a></li>          <!-- 控制 連結項目 -->
+      <li><a href="#contact">聯絡方式</a></li>            <!-- 控制 連結項目 -->
     </ul>
   </nav>
 
   <!-- ⬡ 導覽列收合按鈕 -->
-  <button id="nav-collapse-toggle">⬡</button>
+  <button id="nav-collapse-toggle">⬡</button>             <!-- 控制 收合按鈕 -->
 
   <!-- 篩選選單 -->
-  <div id="filter-bar">
-    <button class="filter-button active" data-tag="all">全部</button>
-    <button class="filter-button" data-tag="watercolor">水彩</button>
-    <button class="filter-button" data-tag="oil">油畫</button>
-    <button class="filter-button" data-tag="sketch">素描</button>
+  <div id="filter-bar">                                   <!-- 控制 篩選容器 -->
+    <button class="filter-button active" data-tag="all">全部</button>    <!-- 控制 篩選按鈕 -->
+    <button class="filter-button" data-tag="watercolor">水彩</button>      <!-- 控制 篩選按鈕 -->
+    <button class="filter-button" data-tag="oil">油畫</button>            <!-- 控制 篩選按鈕 -->
+    <button class="filter-button" data-tag="sketch">素描</button>         <!-- 控制 篩選按鈕 -->
   </div>
 
   <!-- 四向箭頭 -->
-  <button id="left-arrow" class="arrow left">◁</button>
-  <button id="right-arrow" class="arrow right">▷</button>
-  <button id="up-arrow" class="arrow up">△</button>
-  <button id="down-arrow" class="arrow down">▽</button>
+  <button id="left-arrow"  class="arrow left">◁</button>  <!-- 控制 左移按鈕 -->
+  <button id="right-arrow" class="arrow right">▷</button><!-- 控制 右移按鈕 -->
+  <button id="up-arrow"    class="arrow up">△</button>   <!-- 控制 上移按鈕 -->
+  <button id="down-arrow"  class="arrow down">▽</button> <!-- 控制 下移按鈕 -->
 
   <!-- 主展示區 -->
-  <main id="grid-layout"></main>
+  <main id="grid-layout"></main>                         <!-- 控制 網格主區 -->
 
   <!-- Lightbox -->
-  <div id="lightbox">
-    <span id="lightbox-close">×</span>
-    <img id="lightbox-image" src="" alt="放大圖像" />
+  <div id="lightbox">                                     <!-- 控制 燈箱容器 -->
+    <span id="lightbox-close">×</span>                   <!-- 控制 燈箱關閉按鈕 -->
+    <img id="lightbox-image" src="" alt="放大圖像" />     <!-- 控制 燈箱影像 -->
+  </div>
+
+  <!-- 🆕 全區一覽按鈕 -->
+  <button id="overview-button">全部區塊一覽</button>     <!-- 控制 全區一覽按鈕 -->
+
+  <!-- 🆕 Overview Overlay -->
+  <div id="overview-overlay">                            <!-- 控制 Overview 覆蓋層 -->
+    <div class="overview-grid"></div>                    <!-- 控制 Overview 網格 -->
   </div>
 
   <!-- DEBUG -->
-  <div id="debug-info">
-    <div id="previous-block">上次區塊: 尚未滾動</div>
-    <div id="current-block">當前區塊: 尚未滾動</div>
-    <div id="info-debug">作品資訊：尚未選擇</div>
-    <div id="lightbox-debug">燈箱狀態：關閉</div>
-    <div id="filter-debug">目前篩選：全部</div>
-    <div id="nav-debug">導覽狀態：顯示中</div>
-    <div id="input-debug">輸入狀態：Idle</div>
+  <div id="debug-info">                                   <!-- 控制 Debug 面板 -->
+    <div id="previous-block">上次區塊: 尚未滾動</div>     <!-- 控制 顯示上次區塊 -->
+    <div id="current-block">當前區塊: 尚未滾動</div>       <!-- 控制 顯示當前區塊 -->
+    <div id="info-debug">作品資訊：尚未選擇</div>           <!-- 控制 顯示作品資訊 -->
+    <div id="lightbox-debug">燈箱狀態：關閉</div>          <!-- 控制 顯示燈箱狀態 -->
+    <div id="filter-debug">目前篩選：全部</div>            <!-- 控制 顯示篩選狀態 -->
+    <div id="nav-debug">導覽狀態：顯示中</div>             <!-- 控制 顯示導覽狀態 -->
+    <div id="input-debug">輸入狀態：Idle</div>            <!-- 控制 顯示輸入狀態 -->
   </div>
 
   <!-- Footer -->
-  <footer id="contact">
-    <p>聯絡方式：dpig@example.com</p>
+  <footer id="contact">                                   <!-- 控制 頁腳容器 -->
+    <p>聯絡方式：dpig@example.com</p>                     <!-- 控制 聯絡內容 -->
   </footer>
 
-  <script src="main.js"></script>
+  <script src="main.js"></script>                        <!-- 控制 腳本引用 -->
 </body>
 </html>

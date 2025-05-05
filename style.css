@@ -1,298 +1,213 @@
-/* style.css */
-
-/* 🌐 基本設定 */
-body {                                        /* 控制 整個網頁的最外容器 */
-  margin: 0;                                 /* 控制 body 外邊距 */
-  padding: 0;                                /* 控制 body 內邊距 */
-  font-family: sans-serif;                   /* 控制 全站字型 */
-  overflow-y: scroll;                        /* 控制 垂直滾動顯示 */
-  overflow-x: hidden;                        /* 控制 水平溢出隱藏 */
-  background-color: #222;                    /* 控制 背景色 */
-  color: #fff;                               /* 控制 預設文字顏色 */
+/* 🌐 全局設定 */
+body {
+  margin: 0; padding: 0;
+  font-family: sans-serif;
+  background-color: #222; color: #fff;
+  overflow-x: hidden; overflow-y: scroll;
 }
 
 /* 🧱 主展示格 */
-main {                                       /* 控制 主要內容容器 */
-  display: grid;                             /* 控制 使用 CSS Grid 排版 */
+main {
+  display: grid;
   grid-template-areas:
-    "L2_U1 L1_U1 C_U1 R1_U1 R2_U1"
+    "L2_U1  L1_U1  C_U1   R1_U1  R2_U1"
     "L2_GROUND L1_GROUND C_GROUND R1_GROUND R2_GROUND"
-    "L2_D1 L1_D1 C_D1 R1_D1 R2_D1"
-    "L2_D2 L1_D2 C_D2 R1_D2 R2_D2"
-    "L2_D3 L1_D3 C_D3 R1_D3 R2_D3"
-    "L2_D4 L1_D4 C_D4 R1_D4 R2_D4"
-    "L2_D5 L1_D5 C_D5 R1_D5 R2_D5";
-  grid-template-columns: repeat(5, 100vw);
-  grid-template-rows: repeat(7, 100vh);
-  width: 500vw;
-  height: 700vh;
+    "L2_D1  L1_D1  C_D1   R1_D1  R2_D1"
+    "L2_D2  L1_D2  C_D2   R1_D2  R2_D2"
+    "L2_D3  L1_D3  C_D3   R1_D3  R2_D3"
+    "L2_D4  L1_D4  C_D4   R1_D4  R2_D4"
+    "L2_D5  L1_D5  C_D5   R1_D5  R2_D5";
+  grid-template-columns: repeat(5,100vw);
+  grid-template-rows: repeat(7,100vh);
+  width:500vw; height:700vh;
   scroll-snap-type: both mandatory;
-  overflow: auto;
-  position: relative;
+  overflow:auto; position:relative;
 }
-
-main > section {                             /* 控制 每個區塊 Section */
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  scroll-snap-align: start;
-  background-color: #b38357;
-  position: relative;
-  transition: opacity 0.4s;
+main>section {
+  width:100vw; height:100vh;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  scroll-snap-align:start;
+  background-color:#b38357; transition:opacity .4s;
+  position:relative;
 }
-main > section:nth-child(odd) {
-  background: rgb(94, 64, 36);
-}
-main > section > div {
-  font-size: 60px;
-  color: white;
-  font-weight: bold;
-}
-main > section > img {
-  max-width: 80%;
-  max-height: 60%;
-  border: 3px solid #fff;
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-main > section > img:hover {
-  transform: scale(1.05);
-}
+main>section:nth-child(odd){ background:rgb(94,64,36); }
+main>section>div { font-size:60px; font-weight:bold; color:#fff; pointer-events:none; }
 
 /* 📌 作品資訊卡 */
 .info-card {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 10px 15px;
-  border-radius: 6px;
-  font-size: 14px;
-  color: #fff;
-  z-index: 10;
-  pointer-events: none;
-  display: none;
+  position:absolute; bottom:10px; left:10px;
+  background:rgba(0,0,0,0.6); padding:10px 15px;
+  border-radius:6px; font-size:14px; color:#fff;
+  display:none; pointer-events:none; z-index:10;
 }
 
 /* 🖼️ Lightbox */
 #lightbox {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
+  position:fixed; top:0; left:0; width:100vw; height:100vh;
+  background:rgba(0,0,0,0.8); display:none;
+  justify-content:center; align-items:center; z-index:2000;
 }
-#lightbox img {
-  max-width: 90%;
-  max-height: 90%;
-  box-shadow: 0 0 10px #fff;
-}
-#lightbox-close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  font-size: 40px;
-  color: #fff;
-  cursor: pointer;
-}
+#lightbox img{ max-width:90%; max-height:90%; box-shadow:0 0 10px #fff; }
+#lightbox-close{ position:absolute; top:20px; right:30px; font-size:40px; color:#fff; cursor:pointer; }
 
 /* 🧭 導覽列 */
 #navbar {
-  background: rgba(51, 51, 51, 0.85);
-  color: white;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 2500;
-  transition: transform 0.4s ease;
+  position:fixed; top:0; width:100%; padding:10px 20px;
+  background:rgba(51,51,51,0.85); display:flex; align-items:center;
+  z-index:2500; transition:transform .4s ease;
 }
-#navbar.hidden {
-  transform: translateY(-100%);
+#navbar.hidden{ transform:translateY(-100%); }
+#nav-toggle{ font-size:28px; cursor:pointer; margin-right:10px; z-index:3001; }
+#nav-menu{
+  position:absolute; top:100%; left:0; right:0;
+  background:rgba(51,51,51,0.95); list-style:none;
+  display:none; flex-direction:column; margin:0; padding:0; z-index:2501;
 }
-#nav-toggle {
-  display: block;
-  font-size: 28px;
-  cursor: pointer;
-  z-index: 3001;
-  margin-right: 10px;
-}
-#nav-menu {
-  list-style: none;
-  display: none;
-  flex-direction: column;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: rgba(51, 51, 51, 0.95);
-  padding: 0;
-  margin: 0;
-  z-index: 2501;
-}
-#nav-menu.open {
-  display: flex !important;
-}
-#nav-menu li {
-  padding: 10px 20px;
-  text-align: left;
-}
-#nav-menu li a {
-  color: white !important;
-  text-decoration: none;
-  font-size: 18px;
-}
-#nav-menu li a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
+#nav-menu.open{ display:flex !important; }
+#nav-menu li{ padding:10px 20px; }
+#nav-menu li a{ color:#fff; text-decoration:none; font-size:18px; }
+#nav-menu li a:hover{ background:rgba(255,255,255,0.1); }
 
 /* ⬡ 收合鍵 */
-#nav-collapse-toggle {
-  position: fixed;
-  top: 10px;
-  right: 20px;
-  font-size: 22px;
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  z-index: 3000;
-}
-
-/* 🔼 向上箭頭 */
-#up-arrow {
-  position: fixed;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3000;
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
-  font-size: 28px;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-#up-arrow.nav-hidden {
-  top: 10px;
+#nav-collapse-toggle{
+  position:fixed; top:10px; right:20px;
+  background:rgba(0,0,0,0.6); color:#fff;
+  border:none; padding:6px 12px; border-radius:4px; cursor:pointer; z-index:3000;
 }
 
 /* 四向箭頭 */
-.arrow {
-  position: fixed;
-  font-size: clamp(18px,2.5vw,28px);
-  background: rgba(0,0,0,0.6);
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  z-index: 2500;
+.arrow{
+  position:fixed; background:rgba(0,0,0,0.6);
+  color:#fff; border:none; padding:8px 14px;
+  border-radius:4px; cursor:pointer; z-index:2500;
+  font-size:clamp(18px,2.5vw,28px);
 }
-.arrow.left { left:10px; top:50%; transform:translateY(-50%); }
+.arrow.left{ left:10px; top:50%; transform:translateY(-50%); }
 .arrow.right{ right:10px; top:50%; transform:translateY(-50%); }
+.arrow.up{ left:50%; transform:translateX(-50%); /* top 動態由 JS */ }
 .arrow.down{ bottom:10px; left:50%; transform:translateX(-50%); }
 
-/* 🆕 R1_D1 Gallery 區塊 */
-#R1_D1 {                                   /* 控制 R1_D1 */
-  display: flex;                           /* 控制 Flex 排版 */
-  flex-direction: column;                  /* 控制 直向排列 */
-  align-items: flex-start;                 /* 控制 靠左 */
-  padding: 20px;                           /* 控制 內邊距 */
-  box-sizing: border-box;                  /* 控制 包含 padding */
-  background-color: #333;                  /* 控制 背景色 */
+/* 🔷 gallery-zone：跨 R1_D1~D5 */
+#gallery-zone{
+  grid-column:4/5; grid-row:3/8;
+  margin:0 5%;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  background:#333; z-index:5;
 }
-#R1_D1 .gallery-header {                   /* 控制 標題 */
-  font-size: 2em;
-  margin-bottom: 10px;
-}
-#R1_D1 #upload-input {                     /* 控制 上傳按鈕 */
-  margin-bottom: 10px;
-}
-/* 下半部 80%，並允許滾動 */
-#gallery-container {                       /* 控制 Gallery 容器 */
-  height: 80%;                             /* 控制 占 R1_D1 80% */
-  width: 100%;
-  overflow-y: auto;                        /* 控制 垂直滾動 */
-  display: grid;                           /* 控制 Grid 排版 */
-  grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
+
+/* 🆕 Gallery 列宽最多 15% 配置（等比例缩放） */
+#gallery-container {
+  display: grid;
+  /* 每一列最大占容器宽度的 15% */
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: auto;           /* row 高度自适应，保持图片长宽比 */
+  
   gap: 10px;
-}
-.gallery-item {                            /* 控制 媒體項目 */
   width: 100%;
-  height: auto;
-  max-height: 100%;
-  object-fit: contain;
-  border: 2px solid #555;
-  border-radius: 4px;
+  height: 95%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  justify-items: center;          /* 图片水平居中 */
+  align-items: start;             /* 图片顶部对齐 */
 }
+
+#gallery-container::-webkit-scrollbar{ width:6px; }
+#gallery-container::-webkit-scrollbar-track{ background:transparent; }
+#gallery-container::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.3); border-radius:3px; }
 
 /* 🆕 全區一覽按鈕 */
-#overview-button {
-  position: fixed;
-  bottom: 2vh; right:2vw;
-  background: rgba(0,0,0,0.6);
-  color: #fff;
-  border:none;
-  font-size: clamp(12px,1.6vw,14px);
-  padding:0.5vw 1vw;
-  border-radius:0.5vw;
-  cursor:pointer;
-  z-index:9999;
+#overview-button{
+  position:fixed; bottom:28vh; right:2vw;
+  background:rgba(0, 0, 0, 0.6); color:#fff; border:none;
+  padding:.5vw 1vw; border-radius:.5vw; cursor:pointer; z-index:9999;
 }
 
-/* 🆕 Overview Overlay */
-#overview-overlay {
-  position: fixed;
-  top:50%; left:50%;
+/* Overview Overlay */
+#overview-overlay{
+  position:fixed; top:50%; left:50%;
   transform:translate(-50%,-50%);
-  width:30vw; height:30vh;
-  max-width:90vw; max-height:90vh;
-  background:rgba(0,0,0,0.9);
-  display:none;
-  z-index:10000;
+  width:30vw; height:30vh; max-width:80vw; max-height:80vh;
+  background:rgba(0, 0, 0, 0.9); display:none; z-index:10000;
 }
-.overview-grid {
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  grid-template-rows:repeat(7,1fr);
-  gap:2px;
+.overview-grid{
+  display:grid; grid-template-columns:repeat(5,1fr);
+  grid-template-rows:repeat(7,1fr); gap:2px;
   width:100%; height:100%;
+  
 }
-.overview-item {
-  background:#444; color:#fff;
-  font-size:12px;
+.overview-item{
+  background:#444444; color:#fff; font-size:12px;
   display:flex; justify-content:center; align-items:center;
-  cursor:pointer; user-select:none;
-  transition:background .2s;
+  cursor:pointer; user-select:none; transition:background .2s;
 }
-.overview-item:hover { background:#666; }
+.overview-item:hover{ background:#12ca40; }/*我要綠色/
 
-/* 🐞 Debug */
-#debug-info {
+/* 🔧 Debug 資訊 */
+#debug-info{
   position:fixed; bottom:2vh; right:2vw;
   background:rgba(0,0,0,0.6); color:#0f8;
   font-size:clamp(10px,1.6vw,14px);
   padding:1vw; border-radius:1vw; font-family:monospace;
-  width:clamp(120px,20vw,180px); max-height:200px;
-  box-sizing:border-box;
+  width:clamp(120px,20vw,180px); max-height:200px; box-sizing:border-box;
+  z-index: 9998;
 }
+
+/* 登入 Modal 標籤文字黑色 */
+#login-overlay label { color:#000; }
+
+/* ====== 跨 R1_D1~D5 的 Gallery 外壳 ====== */
+#gallery-zone {
+  /* 放到 R1 列第 D1~D5 */
+  grid-column: 4 / 5;
+  grid-row:    3 / 8;
+  margin:      0 5%;
+  /* 从上往下排：先 header/control，再 gallery */
+  display:        flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #333;
+  padding:         20px 0;       /* 留点上下内距 */
+  box-sizing:      border-box;
+}
+
+/* ====== 抬头 & 按钮区 ====== */
+#gallery-zone .gallery-header,
+#gallery-zone label,
+#gallery-zone select,
+#gallery-zone button,
+#gallery-zone #upload-input {
+  /* 水平居中，垂直有间隙 */
+  margin: 5px auto;
+}
+
+/* ====== 真正的画廊区 ====== */
+#gallery-container {
+  /* 占满剩余空间 */
+  flex: 1;
+  width: 100%;
+  /* Grid 排布，每格最多占父宽 15%，高度自适应保持比例 */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  justify-content: center;
+  gap: 5px;
+  /* 只要垂直滚动条 */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 10px;  /* 底部留白，别贴边 */
+}
+
+/* 图片/Video 元素保持比例缩放 */
+#gallery-container img,
+#gallery-container video {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 
 /* 🖥️ 響應式 */
 @media screen and (max-width:768px){
   #overview-overlay{ width:80vw; height:50vh; }
 }
+

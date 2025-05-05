@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -37,7 +36,12 @@
   <button id="down-arrow"  class="arrow down">▽</button>
 
   <!-- 主展示區 -->
-  <main id="grid-layout"></main>
+  <main id="grid-layout">
+    <!-- gallery-zone：跨越 R1_D1 ~ R1_D5 -->
+    <div id="gallery-zone">
+      <div id="gallery-container"></div>
+    </div>
+  </main>
 
   <!-- Lightbox -->
   <div id="lightbox">
@@ -51,7 +55,7 @@
     <div class="overview-grid"></div>
   </div>
 
-  <!-- DEBUG -->
+  <!-- DEBUG 資訊 -->
   <div id="debug-info">
     <div id="previous-block">上次區塊: 尚未滾動</div>
     <div id="current-block">當前區塊: 尚未滾動</div>

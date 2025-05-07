@@ -1,76 +1,236 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
-  <title>D.pig's Little Cave</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
 
-  <!-- 🧭 導覽列 -->
-  <nav id="navbar">
-    <div id="nav-toggle">☰</div>
-    <ul id="nav-menu">
-      <li><a href="#about">關於我</a></li>
-      <li><a href="#grid-layout">作品集</a></li>
-      <li><a href="#contact">聯絡方式</a></li>
-    </ul>
-  </nav>
+  <!-- ================================================
+    🐽 D.pig's Little Cave - HTML 架構與命名總覽
+    Last Update：2025/05/07
+    作者：D.PIG
 
-  <!-- ⬡ 收合導覽列 -->
-  <button id="nav-collapse-toggle">⬡</button>
+  【📚 文件用途 Purpose】
+  本區為 HTML 架構與命名總覽，統一對應 CSS 與 JavaScript 操作邏輯，
+  供維護、擴充、除錯與他人協作開發使用。
 
-  <!-- 篩選選單 -->
-  <div id="filter-bar">
-    <button class="filter-button active" data-tag="all">全部</button>
-    <button class="filter-button" data-tag="watercolor">水彩</button>
-    <button class="filter-button" data-tag="oil">油畫</button>
-    <button class="filter-button" data-tag="sketch">素描</button>
-  </div>
+  【📐 架構區塊說明 - Structure Overview】
+    🧭 #navbar               ：網站導覽列（全域固定）
+    🎨 #gallery-zone         ：藝術品總覽區（出現在 R1_D1~D5）
+    📦 .info-controls        ：主要區塊容器（具備定位編號，如 L1_GROUND）
+    🖼 .info-card            ：藝術品卡片（內含圖片與文字）
+    💡 #lightbox             ：燈箱展示區（點圖開啟）
+    🎮 .arrow-key            ：上下左右控制按鈕群
+    🧪 #debug-wrapper        ：DEBUG 工具區（顯示資訊與切換全區、參數調整）
+    🗺 #overview-zone        ：全區總覽畫面（按鈕觸發，格子排布）
+    📞 #contact              ：頁尾聯絡資訊
 
-  <!-- 四向箭頭 -->
-  <button id="left-arrow"  class="arrow left">◁</button>
-  <button id="right-arrow" class="arrow right">▷</button>
-  <button id="up-arrow"    class="arrow up">△</button>
-  <button id="down-arrow"  class="arrow down">▽</button>
+  --------------------------------------------------
 
-  <!-- 主展示區 -->
-  <main id="grid-layout">
-    <!-- gallery-zone：跨越 R1_D1 ~ R1_D5 -->
-    <div id="gallery-zone">
-      <div id="gallery-container"></div>
+  【🧷 命名細節對照 - ID / CLASS Name Reference】
+
+  🔹 導覽列 Navigation
+    ├─ #navbar              ：主導覽列容器
+    ├─ #mobile-toggle       ：漢堡選單開關（☰）
+    ├─ #nav-collapse-toggle ：導覽列隱藏鍵（⬡）
+    └─ #nav-menu            ：行動版選單容器
+
+  🔹 藝術品總覽 Gallery
+    ├─ #gallery-zone        ：藝廊主容器（跨 R1_D1~R1_D5）
+    ├─ .info-title          ：總覽標題
+    ├─ .info-controls       ：登入/上傳/排序按鈕群
+    │   ├─ .login-status    ：登入狀態顯示按鈕
+    │   ├─ .upload-button   ：上傳按鈕
+    │   └─ .sort-button     ：排序切換按鈕（可加上 .active）
+    └─ #gallery-container   ：實際作品網格容器
+
+  🔹 燈箱 Lightbox
+    ├─ #lightbox            ：整體覆蓋容器
+    ├─ #lightbox-image      ：展示靜態圖片
+    ├─ #lightbox-video      ：展示影片
+    └─ #lightbox-close      ：關閉燈箱按鈕（×）
+
+  🔹 方向控制 Arrow Keys
+    ├─ .arrow-key           ：通用方向鍵樣式
+    ├─ #up-arrow            ：↑
+    ├─ #down-arrow          ：↓
+    ├─ #left-arrow          ：←
+    └─ #right-arrow         ：→
+
+  🔹 DEBUG 工具區 Debug Tools
+    ├─ #debug-wrapper       ：DEBUG 主容器
+    ├─ #debug-info          ：顯示訊息區
+    ├─ #debug-panel         ：參數調整 UI 區（由 script.js 動態生成）
+    ├─ .debug-label         ：參數名稱文字
+    ├─ .debug-value         ：參數輸入/顯示
+    └─ #debug-pagination    ：分頁控制按鈕
+
+  🔹 區塊總覽 Overview Mode
+    ├─ #overview-toggle     ：切換按鈕
+    └─ #overview-zone       ：預覽格子容器（5×7）
+
+  🔹 參數調整 Debug Toggle
+    └─ #debug-toggle        ：切換 Debug 工具三 所有參數調整 UI
+
+  🔹 聯絡 Contact
+    ├─ #contact             ：頁尾聯絡區容器
+    └─ .contact-text        ：內文簽名與說明
+
+  此後每一行皆需要有對應註解說明用途，若沒有則需補上，當然除了此公告註解本身。
+  ==================================================-->
+  <!DOCTYPE html>
+  <html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />                                                <!-- 設定文件編碼 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" /> <!-- 響應式設定 -->
+    <title>D.pig's Little Cave</title>                                     <!-- 頁面標題 -->
+    <link rel="stylesheet" href="style.css" />                             <!-- 引入樣式表 -->
+  </head>
+  <body>
+    <!-- ================================================
+      🐽 D.pig's Little Cave - HTML 架構與命名總覽
+      Last Update：2025/05/07
+      作者：D.PIG
+  
+    【📚 文件用途 Purpose】
+    本區為 HTML 架構與命名總覽，統一對應 CSS 與 JavaScript 操作邏輯，
+    供維護、擴充、除錯與他人協作開發使用。
+  
+    【📐 架構區塊說明 - Structure Overview】
+      🧭 #navbar               ：網站導覽列（全域固定）
+      🎨 #gallery-zone         ：藝術品總覽區（出現在 R1_D1~D5，使用絕對定位跨格）
+      📦 .info-controls        ：主要區塊容器（具備登入/上傳/排序按鈕）
+      🖼 .info-card            ：區塊內藝術品卡片（內含圖片與文字）
+      💡 #lightbox             ：燈箱展示區（點圖開啟）
+      ▶ .arrow-key            ：上下左右控制按鈕群
+      🗺 #overview-zone        ：全區一覽畫面（5×7 格）
+      ⚙️ #debug-toggle         ：切換 Debug 工具三 UI
+      🧪 #debug-wrapper        ：DEBUG 工具區（顯示資訊與參數調整 UI）
+      📞 #contact              ：頁尾聯絡資訊
+  
+    --------------------------------------------------
+  
+    【🧷 命名細節對照 - ID / CLASS Name Reference】
+  
+    🔹 導覽列 Navigation
+      ├─ #navbar
+      ├─ #mobile-toggle
+      ├─ #nav-collapse-toggle
+      └─ #nav-menu
+  
+    🔹 藝術品總覽 Gallery
+      ├─ #gallery-zone
+      ├─ .info-title
+      ├─ .info-controls
+      │   ├─ .login-status
+      │   ├─ .upload-button
+      │   └─ .sort-button
+      └─ #gallery-container
+  
+    🔹 燈箱 Lightbox
+      ├─ #lightbox
+      ├─ #lightbox-image
+      ├─ #lightbox-video
+      └─ #lightbox-close
+  
+    🔹 方向控制 Arrow Keys
+      ├─ .arrow-key
+      ├─ #up-arrow
+      ├─ #down-arrow
+      ├─ #left-arrow
+      └─ #right-arrow
+  
+    🔹 全區一覽 Overview Mode
+      ├─ #overview-toggle
+      └─ #overview-zone
+  
+    🔹 參數調整切換 Debug Toggle
+      └─ #debug-toggle
+  
+    🔹 Debug 工具區 Debug Tools
+      ├─ #debug-wrapper
+      ├─ #debug-info
+      └─ #debug-panel
+  
+    🔹 聯絡 Contact
+      ├─ #contact
+      └─ .contact-text
+  
+    此後每一行皆需要有對應註解說明用途，若沒有則需補上，當然除了此公告註解本身。
+    ==================================================-->
+  
+    <!-- 🧭 導覽列 -->
+    <nav id="navbar">
+      <div id="mobile-toggle">☰</div>        <!-- 漢堡選單開關 -->
+      <ul id="nav-menu">                     <!-- 行動版選單 -->
+        <li><a href="#about">關於我</a></li>
+        <li><a href="#grid-layout">作品集</a></li>
+        <li><a href="#contact">聯絡方式</a></li>
+      </ul>
+    </nav>
+  
+    <!-- ⬡ 收合導覽列 -->
+    <button id="nav-collapse-toggle">⬡</button>   <!-- 收合導覽列 -->
+  
+    <!-- 🔧 篩選列 -->
+    <div id="filter-bar">
+      <button class="filter-button active" data-tag="all">全部</button>
+      <button class="filter-button" data-tag="watercolor">水彩</button>
+      <button class="filter-button" data-tag="oil">油畫</button>
+      <button class="filter-button" data-tag="sketch">素描</button>
     </div>
-  </main>
-
-  <!-- Lightbox -->
-  <div id="lightbox">
-    <span id="lightbox-close">×</span>
-    <img id="lightbox-image" src="" alt="放大圖像" />
-  </div>
-
-  <!-- 🆕 全區一覽按鈕 -->
-  <button id="overview-button">全區一覽</button>
-  <div id="overview-overlay">
-    <div class="overview-grid"></div>
-  </div>
-
-  <!-- DEBUG 資訊 -->
-  <div id="debug-info">
-    <div id="previous-block">上次區塊: 尚未滾動</div>
-    <div id="current-block">當前區塊: 尚未滾動</div>
-    <div id="info-debug">作品資訊：尚未選擇</div>
-    <div id="lightbox-debug">燈箱狀態：關閉</div>
-    <div id="filter-debug">目前篩選：全部</div>
-    <div id="nav-debug">導覽狀態：顯示中</div>
-    <div id="input-debug">輸入狀態：Idle</div>
-  </div>
-
-  <!-- Footer -->
-  <footer id="contact">
-    <p>聯絡方式：dpig@example.com</p>
-  </footer>
-
-  <script src="main.js"></script>
-</body>
-</html>
+  
+    <!-- ◀ ▶ △ ▽ 方向鍵 -->
+    <button id="left-arrow"  class="arrow-key">◁</button>
+    <button id="right-arrow" class="arrow-key">▷</button>
+    <button id="up-arrow"    class="arrow-key">△</button>
+    <button id="down-arrow"  class="arrow-key">▽</button>
+  
+    <!-- 🧱 主展示區 (Grid 容器由 JS 動態生成 7×5) -->
+    <main id="grid-layout"></main>
+  
+    <!-- 🔷 藝術品總覽區 (#gallery-zone) -->
+    <div id="gallery-zone">
+      <h2 class="info-title">藝術作品總覽</h2>      <!-- 標題 -->
+      <div class="info-controls">                 <!-- 按鈕群 -->
+        <button class="login-status">請登入</button>
+        <button class="upload-button">上傳作品</button>
+        <button class="sort-button active">以上傳日期排序</button>
+      </div>
+      <div id="gallery-container"></div>          <!-- 作品格容器 -->
+    </div>
+  
+    <!-- 💡 Lightbox 燈箱 -->
+    <div id="lightbox">
+      <img id="lightbox-image" src="" alt="放大圖像" />
+      <video id="lightbox-video" style="display:none;" controls></video>
+      <span id="lightbox-close">×</span>
+    </div>
+  
+    <!-- 🗺 全區一覽 & 參數調整 切換按鈕 -->
+    <button id="overview-toggle">全區一覽</button>
+    <button id="debug-toggle">參數調整</button>
+  
+    <!-- 🗺 全區一覽 (5×7 格子) -->
+    <div id="overview-zone"></div>
+  
+    <!-- 🧪 DEBUG 工具區 -->
+    <div id="debug-wrapper">
+      <div id="debug-info">                      <!-- Debug 資訊顯示 -->
+        <div id="previous-block">上一區塊：尚未滾動</div>
+        <div id="current-block">當前區塊：尚未滾動</div>
+        <div id="info-debug">作品資訊：尚未選擇</div>
+        <div id="lightbox-debug">燈箱狀態：關閉</div>
+        <div id="filter-debug">篩選狀態：全部</div>
+        <div id="nav-debug">導覽狀態：顯示中</div>
+        <div id="input-debug">輸入狀態：Idle</div>
+        <!-- 分頁按鈕及頁碼由 main.js 建立 -->
+      </div>
+      <div id="debug-panel" class="hidden">      <!-- 參數調整面板 (預設隱藏) -->
+        <!-- 由 main.js 動態插入「Debug 工具三 參數調整」標題與各參數滑桿 -->
+      </div>
+    </div>
+  
+    <!-- 📞 頁尾 -->
+    <footer id="contact">
+      <p class="contact-text">聯絡方式：dpig@example.com</p>
+    </footer>
+  
+    <script src="main.js"></script>  <!-- 引入主程式 -->
+  </body>
+  </html>
+  

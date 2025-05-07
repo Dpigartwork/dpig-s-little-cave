@@ -1,213 +1,754 @@
+/* ================================================
+  D.pig's Little Cave - 全站樣式表（CSS）
+  此公告不得刪除!!!只能增加項目
+  最後更新：2025/05/07
+  說明：
+    - 此樣式表包含(由最底下圖層至最上方圖層排列，上層蓋過下層)
+
+      - 全局設定:
+        - 基本設置
+
+      - 🧱 主體佈局(背景底色):
+        - 需要能夠設定顏色和切換成圖片、GIF、或影片做為背景      
+        - 目前需確認有共35格(命名規則如下表)
+          "L2_U1  L1_U1  C_U1   R1_U1  R2_U1"
+          "L2_GROUND L1_GROUND C_GROUND R1_GROUND R2_GROUND"
+          "L2_D1  L1_D1  C_D1   R1_D1  R2_D1"
+          "L2_D2  L1_D2  C_D2   R1_D2  R2_D2"
+          "L2_D3  L1_D3  C_D3   R1_D3  R2_D3"
+          "L2_D4  L1_D4  C_D4   R1_D4  R2_D4"
+          "L2_D5  L1_D5  C_D5   R1_D5  R2_D5"
+
+      - 🔧 篩選列（#filter-bar）(佔未更新完全但保留)
+            - 依標籤篩選作品：全部、水彩、油畫、素描
+
+      -客製化區塊設定
+        顯示時應位於畫面左下角
+              const customSections = {
+          "C_GROUND": { tag:"watercolor", title:"靜物練習", year:"2024", medium:"水彩", media:"image", mediaSrc:"images/Happy.jpg" },
+          "L1_D1":    { tag:"oil",       title:"肖像系列 #3", year:"2023", medium:"油畫",  media:"image", mediaSrc:"images/sample2.jpg" },
+          "R2_U1":    { tag:"sketch",    title:"速寫課堂",   year:"2022", medium:"鉛筆素描",media:"image", mediaSrc:"images/sample3.jpg" }
+        };
+    
+
+      -  藝術品總覽區塊(又稱gallery-zone目前設定位於R1_D1~R1_D5，疊加在其上方的圖層)
+          - 禁止使用 position: fixed; 因為會導致位置不能固定於特定區塊
+          - 其中包括位於R1_D5上方的"藝術品總覽"標題
+          - 標題下方的"登入"、"登出"、"上傳"、"以xx排序"按鍵，以及按鈕側邊顯示之"登入狀態"和文字通知"請登入後才能上傳!!( ˊ wˋ)/"
+          - 以及藝術品
+            - 圖層應在藝術品總覽區塊之上，才能看見他們
+            - 可為圖片檔、GIF、或影片檔
+            - 改為同一行只能有三張以上的藝術品，而藝術品縮圖的長邊最大限制為500px
+            - 整齊擺放，每張的皆須將原圖自動縮小至適當大小，而比例不變
+            - 作品須向上方作品底部貼緊
+            - 縮小時檔案大小應在30MB以下，直到左鍵點選進入燈箱時，讓他等比例放大至當前視窗大小(最長的邊不可超出當前視窗)
+
+      - 📄 頁尾（#contact）
+
+      -  ◀ ▶ △ ▽ 控制用方向鍵(簡稱"方向鍵")
+          - 手動滑至上下左右各區塊，
+            - 全方向間皆應該隨時保持大小一致、相同顏色，且時刻常駐於視窗固定位置，除非被特殊要求(如:"上"方向鍵)
+            - "上"方向鍵應位於導覽列下方，若"導覽列"向上隱藏，也須一同往上，若顯示則回到原處
+            - "下"、"左"、"右"則各位於相應位置
+
+      - Lightbox 燈箱
+          - 點選任何圖片或gif檔案時，需顯示得效果
+
+      -  Debug 工具
+          - 包含常駐於視窗右下角的"debug所需之全部資訊"
+            
+            - 🧪 DEBUG 工具 一 (#debug-wrapper, #debug-info, #debug-panel)
+              - 顯示所有可控制或需要的資訊，
+              - 字體大小應為12px且最多顯示8項訊息，
+              - 超出的資訊應在下一頁顯示(目前設定為10頁)，且顯示當前是第幾頁(如1/10頁)
+              - 並以"debug所需之全部資訊"視窗內靠下的"<"和">"控制上下一頁
+              - 內容包括
+                - 上一區塊
+                - 當前區塊
+                - 作品資訊
+                - 燈箱狀態
+                - 篩選狀態
+                - 導覽狀態
+                - 輸入狀態
+                - 以及其他待更新後補上
+
+            - 🗺 DEBUG 工具二 全區一覽 (#overview-zone)
+              - 應有"全區一覽"按鈕，用以開關全區總覽之畫面，顯示及隱藏所有區塊
+              - 全區塊顯示時，應以 橫5x直7 格，共35格 排列整齊
+              - 全區塊顯示時，不該占太大的空間，絕對不能超出視窗大小，字體應為8px
+              - 滑鼠移至該區塊按鈕時，應顯示"#12ca6e"之顏色
+
+            - Debug 面板三 所有參數調整:
+              - 須有一個按鈕控制開關"DEBUG 工具三 所有參數調整"
+                - 固定位於"全區一覽"按鈕側邊與其同高
+              - 一個能夠調整所有參數的UI視窗，
+                - 以像電腦的音量混音裝置控制各參數
+                - 能夠上傳歌曲
+                - 有儲存按鈕
+                - 同時包含音樂播放曲目更換
+                - 並且儲存後同時能夠自動更新 GITHUB 上的程式碼和檔案
+                - 應至少顯示且能夠調整的項目清單
+                  主要能調整的為數字、顏色、單位、以及cursor形狀，列出至少下列 CSS 屬性：
+                    – #navbar: top, left, width, padding, background, z-index, transition
+                    – #navbar.hidden: transform
+                    – #mobile-toggle: font-size, cursor, margin-right, z-index
+                    – #nav-collapse-toggle: position, top, right, font-size, background, color, padding, border-radius, cursor, z-index
+                    – #nav-menu: top, left, right, background, margin, padding, z-index
+                    – #nav-menu li: padding
+                    – #nav-menu li a: color, font-size
+                    – #nav-menu li a:hover: background
+                    – #filter-bar: gap, padding, z-index
+                    – .filter-button: background, padding, border-radius, cursor
+                    – .filter-button.active: background, color
+                    – #gallery-zone: top, left, width, height, background-color, z-index, padding
+                    – .info-title: font-size, margin-bottom
+                    – .info-controls: gap, margin-bottom
+                    – .login-status, .upload-button, .sort-button: background, padding, border-radius, cursor
+                    – .sort-button.active: background, color
+                    – #gallery-container: flex, width, gap, overflow-y, overflow-x, padding-bottom, z-index
+                    – #gallery-container img, video: max-width, max-height, width, height
+                    – scrollbar: width, track background, thumb background, thumb border-radius
+                    – #lightbox: top, left, width, height, background, z-index
+                    – #lightbox img, video: max-width, max-height, box-shadow
+                    – #lightbox-close: top, right, font-size, cursor, z-index
+                    – .arrow-key: background, color, padding, border-radius, cursor, z-index, font-size
+                    – #up-arrow, #down-arrow, #left-arrow, #right-arrow: left/right/top/bottom, transform
+                    – #overview-zone: top, left, width, height, background, z-index, gap
+                    – .overview-block: background, color, font-size, cursor
+                    – .overview-block:hover: background
+                    – #debug-wrapper: bottom, right, z-index
+                    – #debug-info: background, color, font-size, line-height, padding, border-radius, width, max-height
+                    – #debug-info > div: margin
+                    – #debug-pagination: margin-top
+                    – #debug-panel: bottom, right, background, padding, border-radius, max-height, width, overflow-y, z-index
+                    – #debug-panel button: background, padding, font-size, cursor
+                    – #debug-panel button:hover: color
+                    – #overview-toggle: bottom, right, background, color, padding, border-radius, cursor, font-size, z-index
+                    – #debug-toggle: bottom, right, background, color, border, padding, border-radius, cursor, font-size, z-index
+
+      - 各式手機及平板規格的特殊規則
+        - 為在各式機種有舒適體驗而做的特殊排版
+        
+    - 再次強調 以下為DEBUG 工具三 應至少顯示且能夠調整的項目清單，需顯示目前的數字、文字、單位
+      主要能調整的為數字、顏色、單位、以及cursor形狀
+
+          #navbar {
+          top: ; 
+          left: ;
+            width: %;   
+          padding: px px;                                
+          background: rgba(,,,);                    
+            z-index: ;  
+          transition: transform .s ease;                      
+        }
+        #navbar.hidden { transform: translateY(-%); }      
+
+
+        #mobile-toggle {
+          font-size: px;
+          cursor: ; 
+          margin-right: px;
+          z-index: ; 
+        }
+
+
+        #nav-collapse-toggle {
+          position: ;
+          top: ; 
+          right: px;               
+          font-size: px;
+          background: rgba(,,,);        
+          color: #;
+            padding: px px;     
+          border-radius: px;
+          cursor: ;
+            z-index: ;  
+        }
+
+
+        #nav-menu {
+          top: %;
+            left: ; 
+            right: ;   
+          background: rgba(,,,);
+          list-style: none;  
+            margin: ; 
+            padding: ; 
+            z-index: ;
+        }
+
+        #nav-menu.open 
+        { display: flex !important; }         
+        #nav-menu li {
+          padding: px px;        
+        }
+        #nav-menu li a {
+          color: #; 
+          font-size: px; 
+        }
+        #nav-menu li a:hover {
+          background: rgba(,,,);                   
+        }
+
+
+        #filter-bar {
+            gap: px;  
+          padding: px;
+          z-index: ;                          
+        }
+        .filter-button {
+          background: rgba(,,,);   
+          padding: px px; 
+          border-radius: px;
+          cursor: ;
+        }
+        .filter-button.active {
+          background: #;
+          color: #;                  
+        }
+
+
+
+
+
+        #gallery-zone {
+                                        
+          top: calc(2 * 100vh);                             
+          left: calc(3 * 100vw + 5%);                        
+          width: calc(100vw - 10%);                           
+          height: calc(5 * 100vh);                                                    
+          background-color: #;
+          z-index: ;               
+          padding: px 0;                                                                   
+        }
+        .info-title {
+          font-size: rem; 
+          margin-bottom: px; 
+        }
+        .info-controls {
+          gap: px;
+          margin-bottom: px;                     
+        }
+        .login-status,
+        .upload-button,
+        .sort-button {
+          background: rgba(,,,);
+          padding: px px;
+          border-radius: px;
+            cursor: ;   
+        }
+        .sort-button.active {
+          background: #;
+          color: #;                        
+        }
+
+
+        #gallery-container {
+          flex: ;
+          width: %;
+          gap:px;                      
+          overflow-y: ;
+          overflow-x: ; 
+          padding-bottom:px;
+          z-index: ;                                              
+        }
+        #gallery-container img,
+        #gallery-container video {
+          max-width: px;                                      
+          max-height: px;                                      
+          width: ; 
+          height: ; 
+              
+        }
+        #gallery-container::-webkit-scrollbar 
+        { width:px; }
+        #gallery-container::-webkit-scrollbar-track 
+        { background:; }
+        #gallery-container::-webkit-scrollbar-thumb 
+        { background:rgba(,,,);
+        border-radius:px; }
+
+
+        #lightbox {
+          top: ;
+            left: ;
+            width:vw;
+              height:vh;
+          background: rgba(,,,);
+          z-index:;
+        }
+
+        #lightbox img,
+        #lightbox video {
+          max-width:%;
+          max-height:%;
+            box-shadow:0 0 px #; 
+        }
+        #lightbox-close {
+          top:px; 
+          right:px;
+            font-size:px;
+          cursor:;
+          z-index:;                           
+        }
+
+
+        .arrow-key {
+
+          background: rgba(,,,);
+          color: #;
+            padding:px px;
+          border-radius:px;
+          cursor: ;
+            z-index:;
+          font-size: clamp(px,vw,px);
+        }
+        #up-arrow    
+        { left:%;
+          top:px;
+          transform:translateX(%); } 
+        #down-arrow  { left:%;
+        bottom:px;
+          transform:translateX(-%); }
+        #left-arrow  { left:px;
+        top:%;
+          transform:translateY(%); }
+        #right-arrow { right:px;
+        top:%;
+          transform:translateY(%); }
+
+
+        #overview-zone {
+          top:;
+            left:;
+            width:vw;
+              height:vh;
+          background:rgba(,,,.);
+            z-index:;
+          gap:px;                   
+        }
+        .overview-block {
+          background:#;
+          color:#;
+            font-size:px;                
+
+          cursor:;
+
+
+        }
+        .overview-block:hover { background:#; }               
+
+
+        #debug-wrapper {
+          bottom:vh;
+            right:vw;
+            z-index:;
+        }
+        #debug-info {
+          background: rgba(,,,);
+          color:#;
+          font-size: px;
+          line-height:;                         
+          padding:px;
+          border-radius:px;
+            width:px;
+          max-height:px;
+                            
+        }
+        #debug-info > div {
+          margin:px ; 
+                            
+        }
+
+
+        #debug-pagination {
+
+            margin-top:px; 
+        }
+        #debug-panel {
+                                                  
+          bottom:vh;                                                 
+          right:vw;                                                  
+          background: rgba(,,,);                                
+          padding: px;                                              
+          border-radius: px;                                          
+          max-height: vh;
+          width: px;
+          overflow-y: ;                                           
+          z-index: ;                                              
+        }
+        #debug-panel button {
+          background:rgba(,,,);
+
+          padding:px px;
+          font-size:px; 
+          cursor:;
+        }
+        #debug-panel button:hover { color:#; }                 
+
+
+        #overview-toggle {
+
+          bottom:vh; 
+          right:vw;                   
+          background: rgba(,,,);
+          color:;       
+          padding:6px px; 
+          border-radius:px; 
+          cursor:;      
+          font-size:px;
+          z-index:;                              
+        }
+
+        #debug-toggle {
+        bottom:vh;
+          right:vw;                  
+          background: rgba(,,,);
+          color:; border:;     
+          padding:px px;
+          border-radius:px;
+            cursor:;      
+          font-size:px;
+          z-index:;                             
+        }
+
+     - 此後每一行皆需要有對應註解說明用途，若沒有則需補上，當然除了此公告註解本身。
+   ================================================ */
+/* ================================================
+  D.pig's Little Cave - 全站樣式表（CSS）
+  此公告不得刪除!!!只能增加項目
+  最後更新：2025/05/07
+  說明：
+    - 本表自底層至上層排列
+    - 嚴格依照示意圖排版、Debug 三需求更新
+================================================ */
+
+/* ================================================
+  D.pig's Little Cave - 全站樣式表（CSS）
+  此公告不得刪除!!!只能增加項目
+  最後更新：2025/05/07
+  說明：
+    - 此樣式表包含(由最底下圖層至最上方圖層排列，上層蓋過下層)
+      - 全局設定
+      - 🧱 主體佈局
+      - 🔧 篩選列
+      - 客製化區塊設定
+      - 🔷 藝術品總覽
+      - 💡 燈箱
+      - ◀ ▶ △ ▽ 方向鍵
+      - 🗺 全區一覽
+      - 🧪 DEBUG 工具
+      - 📄 頁尾
+      - 🖥️ 響應式
+   ================================================ */
+/* ================================================
+  D.pig's Little Cave - 全站樣式表（CSS）
+  此公告不得刪除!!!只能增加項目
+  最後更新：2025/05/07 
+  說明：
+    - 此樣式表包含(由最底下圖層至最上方圖層排列，上層蓋過下層)
+
+      - 全局設定:
+        - 基本設置
+
+      - 🧱 主體佈局(背景底色):
+        - 需要能夠設定顏色和切換成圖片、GIF、或影片做為背景      
+        - 目前需確認有共35格(命名規則如下表)
+          "L2_U1  L1_U1  C_U1   R1_U1  R2_U1"
+          "L2_GROUND L1_GROUND C_GROUND R1_GROUND R2_GROUND"
+          "L2_D1  L1_D1  C_D1   R1_D1  R2_D1"
+          "L2_D2  L1_D2  C_D2   R1_D2  R2_D2"
+          "L2_D3  L1_D3  C_D3   R1_D3  R2_D3"
+          "L2_D4  L1_D4  C_D4   R1_D4  R2_D4"
+          "L2_D5  L1_D5  C_D5   R1_D5  R2_D5"
+
+      - 🔧 篩選列（#filter-bar）(佔未更新完全但保留)
+            - 依標籤篩選作品：全部、水彩、油畫、素描
+
+      - 客製化區塊設定
+        顯示時應位於畫面左下角
+        (customSections 在 JS 中定義)
+
+      - 藝術品總覽區塊 (#gallery-zone)
+          - 禁止使用 position: fixed; 改用 position: absolute
+          - 跨 R1_D1~R1_D5，標題與按鈕皆在最上方
+          - 同一行最多 3 張，縮圖長邊最大 500px
+          - 作品貼緊上方，等比例縮放
+
+      - 📄 頁尾（#contact）
+
+      - ◀ ▶ △ ▽ 方向鍵
+          - 常駐且大小一致
+          - 上鍵依導覽列顯示/隱藏而調整位置
+
+      - Lightbox 燈箱
+          - 點擊小圖開啟
+
+      - 🧪 Debug 工具
+          - 常駐於右下
+          - 🧪 工具一 (#debug-info): 字體 12px，最多 8 條，分頁顯示
+          - 🗺 工具二 (#overview-zone): 橫5×直7，共35格，字體 8px
+          - ⚙️ 工具三 (#debug-panel): 滑桿、上傳歌曲、儲存按鈕等
+
+      - 🖥️ 響應式
+        - 手機三欄
+
+   ================================================ */
+
 /* 🌐 全局設定 */
 body {
-  margin: 0; padding: 0;
-  font-family: sans-serif;
-  background-color: #222; color: #fff;
-  overflow-x: hidden; overflow-y: scroll;
+  margin: 0;                                            /* 去除外邊距 */
+  padding: 0;                                           /* 去除內邊距 */
+  font-family: sans-serif;                             /* 全站字型 */
+  background-color: #222;                              /* 背景色 */
+  color: #fff;                                         /* 預設文字色 */
+  overflow-x: hidden; overflow-y: scroll;              /* 隱藏水平、顯示垂直捲軸 */
 }
-
-/* 🧱 主展示格 */
-main {
-  display: grid;
-  grid-template-areas:
-    "L2_U1  L1_U1  C_U1   R1_U1  R2_U1"
-    "L2_GROUND L1_GROUND C_GROUND R1_GROUND R2_GROUND"
-    "L2_D1  L1_D1  C_D1   R1_D1  R2_D1"
-    "L2_D2  L1_D2  C_D2   R1_D2  R2_D2"
-    "L2_D3  L1_D3  C_D3   R1_D3  R2_D3"
-    "L2_D4  L1_D4  C_D4   R1_D4  R2_D4"
-    "L2_D5  L1_D5  C_D5   R1_D5  R2_D5";
-  grid-template-columns: repeat(5,100vw);
-  grid-template-rows: repeat(7,100vh);
-  width:500vw; height:700vh;
-  scroll-snap-type: both mandatory;
-  overflow:auto; position:relative;
-}
-main>section {
-  width:100vw; height:100vh;
-  display:flex; flex-direction:column;
-  justify-content:center; align-items:center;
-  scroll-snap-align:start;
-  background-color:#b38357; transition:opacity .4s;
-  position:relative;
-}
-main>section:nth-child(odd){ background:rgb(94,64,36); }
-main>section>div { font-size:60px; font-weight:bold; color:#fff; pointer-events:none; }
-
-/* 📌 作品資訊卡 */
-.info-card {
-  position:absolute; bottom:10px; left:10px;
-  background:rgba(0,0,0,0.6); padding:10px 15px;
-  border-radius:6px; font-size:14px; color:#fff;
-  display:none; pointer-events:none; z-index:10;
-}
-
-/* 🖼️ Lightbox */
-#lightbox {
-  position:fixed; top:0; left:0; width:100vw; height:100vh;
-  background:rgba(0,0,0,0.8); display:none;
-  justify-content:center; align-items:center; z-index:2000;
-}
-#lightbox img{ max-width:90%; max-height:90%; box-shadow:0 0 10px #fff; }
-#lightbox-close{ position:absolute; top:20px; right:30px; font-size:40px; color:#fff; cursor:pointer; }
 
 /* 🧭 導覽列 */
 #navbar {
-  position:fixed; top:0; width:100%; padding:10px 20px;
-  background:rgba(51,51,51,0.85); display:flex; align-items:center;
-  z-index:2500; transition:transform .4s ease;
+  position: fixed; top: 0; left: 0;                    /* 固定頂部全寬 */
+  width: 100%;                                         /* 滿寬 */
+  padding: 19px 20px;                                  /* 內距 */
+  background: rgba(32,32,32,0.85);                     /* 半透明背景 */
+  display: flex; align-items: center;                  /* 水平置中 */
+  z-index: 3000;                                       /* 層級 */
+  transition: transform .4s ease;                      /* 動畫 */
 }
-#navbar.hidden{ transform:translateY(-100%); }
-#nav-toggle{ font-size:28px; cursor:pointer; margin-right:10px; z-index:3001; }
-#nav-menu{
-  position:absolute; top:100%; left:0; right:0;
-  background:rgba(51,51,51,0.95); list-style:none;
-  display:none; flex-direction:column; margin:0; padding:0; z-index:2501;
+#navbar.hidden { transform: translateY(-100%); }       /* 隱藏時往上 */
+
+/* 🧭 漢堡按鈕 */
+#mobile-toggle {
+  font-size: 30px;                                      /* 大小 */
+  cursor: pointer;                                      /* 指標 */
+  margin-right: 10px;                                   /* 右外距 */
+  z-index: 3100;                                        /* 層級 */
 }
-#nav-menu.open{ display:flex !important; }
-#nav-menu li{ padding:10px 20px; }
-#nav-menu li a{ color:#fff; text-decoration:none; font-size:18px; }
-#nav-menu li a:hover{ background:rgba(255,255,255,0.1); }
 
 /* ⬡ 收合鍵 */
-#nav-collapse-toggle{
-  position:fixed; top:10px; right:20px;
-  background:rgba(0,0,0,0.6); color:#fff;
-  border:none; padding:6px 12px; border-radius:4px; cursor:pointer; z-index:3000;
+#nav-collapse-toggle {
+  position: fixed; top: 0; right: 20px;                 /* 固定右上 */
+  font-size: 30px;                                      /* 大小 */
+  background: rgba(0,0,0,0.2);                         /* 半透明 */
+  color: #fff;                                          /* 文字色 */
+  border: none;                                         /* 無邊框 */
+  padding: 6px 12px;                                    /* 內距 */
+  border-radius: 4px;                                   /* 圓角 */
+  cursor: pointer;                                      /* 指標 */
+  z-index: 3000;                                        /* 層級 */
 }
 
-/* 四向箭頭 */
-.arrow{
-  position:fixed; background:rgba(0,0,0,0.6);
-  color:#fff; border:none; padding:8px 14px;
-  border-radius:4px; cursor:pointer; z-index:2500;
-  font-size:clamp(18px,2.5vw,28px);
+/* 行動選單 */
+#nav-menu {
+  position: absolute; top: 100%; left: 0; right: 0;     /* 導覽列下方 */
+  background: rgba(34,34,34,0.6);                       /* 半透明背景 */
+  list-style: none;                                     /* 無項目符號 */
+  display: none; flex-direction: column;                /* 隱藏，直堆 */
+  margin: 0; padding: 0;                                /* 去除預設 */
+  z-index: 3001;                                        /* 層級 */
 }
-.arrow.left{ left:10px; top:50%; transform:translateY(-50%); }
-.arrow.right{ right:10px; top:50%; transform:translateY(-50%); }
-.arrow.up{ left:50%; transform:translateX(-50%); /* top 動態由 JS */ }
-.arrow.down{ bottom:10px; left:50%; transform:translateX(-50%); }
-
-/* 🔷 gallery-zone：跨 R1_D1~D5 */
-#gallery-zone{
-  grid-column:4/5; grid-row:3/8;
-  margin:0 5%;
-  display:flex; flex-direction:column; justify-content:flex-end;
-  background:#333; z-index:5;
+#nav-menu.open { display: flex !important; }           /* 展開 */
+#nav-menu li {
+  padding: 10px 20px;                                   /* 內距 */
+  text-align: left;                                     /* 置左 */
 }
-
-/* 🆕 Gallery 列宽最多 15% 配置（等比例缩放） */
-#gallery-container {
-  display: grid;
-  /* 每一列最大占容器宽度的 15% */
-  grid-template-columns: repeat(5, 1fr);
-  grid-auto-rows: auto;           /* row 高度自适应，保持图片长宽比 */
-  
-  gap: 10px;
-  width: 100%;
-  height: 95%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  justify-items: center;          /* 图片水平居中 */
-  align-items: start;             /* 图片顶部对齐 */
+#nav-menu li a {
+  color: #fff;                                          /* 文字色 */
+  text-decoration: none;                                /* 無底線 */
+  font-size: 18px;                                      /* 字型大小 */
+}
+#nav-menu li a:hover {
+  background: rgba(255,255,255,0.1);                    /* 懸停效果 */
 }
 
-#gallery-container::-webkit-scrollbar{ width:6px; }
-#gallery-container::-webkit-scrollbar-track{ background:transparent; }
-#gallery-container::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.3); border-radius:3px; }
-
-/* 🆕 全區一覽按鈕 */
-#overview-button{
-  position:fixed; bottom:28vh; right:2vw;
-  background:rgba(0, 0, 0, 0.6); color:#fff; border:none;
-  padding:.5vw 1vw; border-radius:.5vw; cursor:pointer; z-index:9999;
+/* 🔧 篩選列 */
+#filter-bar {
+  display: flex; justify-content: center; gap: 10px;    /* 水平置中，間距 */
+  padding: 10px;                                        /* 內距 */
+  z-index: 5;                                           /* 層級 */
+}
+.filter-button {
+  background: rgba(255,255,255,0.1);                    /* 半透明背景 */
+  border: none;                                         /* 無邊框 */
+  padding: 6px 12px;                                    /* 內距 */
+  border-radius: 4px;                                   /* 圓角 */
+  cursor: pointer;                                      /* 指標 */
+}
+.filter-button.active {
+  background: #12ca6e; color: #000;                     /* 活躍狀態 */
 }
 
-/* Overview Overlay */
-#overview-overlay{
-  position:fixed; top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  width:30vw; height:30vh; max-width:80vw; max-height:80vh;
-  background:rgba(0, 0, 0, 0.9); display:none; z-index:10000;
+/* 🧱 主展示格 (grid-layout) */
+main {
+  display: grid;                                        /* 啟用 Grid */
+  grid-template-areas:
+    "L2_U1     L1_U1     C_U1      R1_U1    R2_U1"
+    "L2_GROUND L1_GROUND C_GROUND R1_GROUND R2_GROUND"
+    "L2_D1     L1_D1     C_D1      R1_D1    R2_D1"
+    "L2_D2     L1_D2     C_D2      R1_D2    R2_D2"
+    "L2_D3     L1_D3     C_D3      R1_D3    R2_D3"
+    "L2_D4     L1_D4     C_D4      R1_D4    R2_D4"
+    "L2_D5     L1_D5     C_D5      R1_D5    R2_D5";  /* 定義 7×5 */
+  grid-template-columns: repeat(5, 100vw);              /* 每欄 100vw */
+  grid-template-rows:    repeat(7, 100vh);              /* 每列 100vh */
+  width:  500vw; height: 700vh;                        /* 容器大小 */
+  scroll-snap-type: both mandatory;                    /* 滾動對齊 */
+  overflow: auto; position: relative;                  /* 可滾與定位 */
 }
-.overview-grid{
-  display:grid; grid-template-columns:repeat(5,1fr);
-  grid-template-rows:repeat(7,1fr); gap:2px;
-  width:100%; height:100%;
-  
+main > section {
+  width: 100vw; height: 100vh;                         /* 填滿格子 */
+  display: flex; flex-direction: column;                /* 置中內容 */
+  justify-content: center; align-items: center;
+  scroll-snap-align: start;                            /* 起點對齊 */
+  background-color: #b38357;                           /* 背景色 */
+  transition: opacity .4s;                             /* 淡入淡出 */
+  position: relative;                                   /* 相對定位 */
 }
-.overview-item{
-  background:#444444; color:#fff; font-size:12px;
-  display:flex; justify-content:center; align-items:center;
-  cursor:pointer; user-select:none; transition:background .2s;
+main > section:nth-child(odd) {
+  background-color: rgb(94,64,36);                     /* 奇數色 */
 }
-.overview-item:hover{ background:#12ca40; }/*我要綠色/
+main > section > div {
+  font-size: 60px; font-weight: bold; color: #fff;     /* 標籤文字 */
+  pointer-events: none;                                /* 禁用滑鼠 */
+}
 
-/* 🔧 Debug 資訊 */
-#debug-info{
-  position:fixed; bottom:2vh; right:2vw;
-  background:rgba(0,0,0,0.6); color:#0f8;
-  font-size:clamp(10px,1.6vw,14px);
-  padding:1vw; border-radius:1vw; font-family:monospace;
-  width:clamp(120px,20vw,180px); max-height:200px; box-sizing:border-box;
-  z-index: 9998;
-}
-
-/* 登入 Modal 標籤文字黑色 */
-#login-overlay label { color:#000; }
-
-/* ====== 跨 R1_D1~D5 的 Gallery 外壳 ====== */
+/* 🔷 藝術品總覽 (#gallery-zone) */
 #gallery-zone {
-  /* 放到 R1 列第 D1~D5 */
-  grid-column: 4 / 5;
-  grid-row:    3 / 8;
-  margin:      0 5%;
-  /* 从上往下排：先 header/control，再 gallery */
-  display:        flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  background-color: #333;
-  padding:         20px 0;       /* 留点上下内距 */
-  box-sizing:      border-box;
+  position: absolute;                                   /* 絕對定位 */
+  /* 跨 R1_D1~R1_D5 */
+  top:    calc(2 * 100vh);                              /* R1_D1 起點 */
+  left:   calc(3 * 100vw + 5%);                         /* 橫向置中 + 5% */
+  width:  calc(100vw - 10%);                            /* 留白 5%＋5% */
+  height: calc(5 * 100vh);                              /* 5 個格高 */
+  background-color: #333;                               /* 背景色 */
+  z-index: 5;                                           /* 層級 */
+  padding: 20px 0;                                      /* 上下內距 */
+  box-sizing: border-box;                               /* 含內距計算 */
+}
+.info-title {
+  font-size: 2rem; text-align: center; margin-bottom: 10px; /* 標題 */
+}
+.info-controls {
+  display: flex; justify-content: center; align-items: center;
+  gap: 10px; margin-bottom: 10px;                        /* 按鈕群 */
+}
+.login-status,
+.upload-button,
+.sort-button {
+  background: rgba(255,255,255,0.1);                     /* 半透明 */
+  border: none; padding: 6px 12px; border-radius: 4px;
+  cursor: pointer;                                      /* 指標 */
+}
+.sort-button.active {
+  background: #12ca6e; color: #000;                     /* 活躍 */
 }
 
-/* ====== 抬头 & 按钮区 ====== */
-#gallery-zone .gallery-header,
-#gallery-zone label,
-#gallery-zone select,
-#gallery-zone button,
-#gallery-zone #upload-input {
-  /* 水平居中，垂直有间隙 */
-  margin: 5px auto;
-}
-
-/* ====== 真正的画廊区 ====== */
+/* ===== 作品格 ===== */
 #gallery-container {
-  /* 占满剩余空间 */
-  flex: 1;
-  width: 100%;
-  /* Grid 排布，每格最多占父宽 15%，高度自适应保持比例 */
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  justify-content: center;
-  gap: 5px;
-  /* 只要垂直滚动条 */
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-bottom: 10px;  /* 底部留白，别贴边 */
+  flex: 1; width: 100%; display: grid;
+  grid-template-columns: repeat(3,1fr); gap: 10px;      /* 三欄 */
+  overflow-y: auto; overflow-x: hidden; padding-bottom: 10px;
+  justify-items: center; align-items: start; z-index: 6;
 }
-
-/* 图片/Video 元素保持比例缩放 */
 #gallery-container img,
 #gallery-container video {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
+  max-width: 500px; max-height: 500px;                 /* 長邊限 500px */
+  width: 100%; height: auto; object-fit: contain;      /* 等比 */
+}
+#gallery-container::-webkit-scrollbar { width: 6px; }
+#gallery-container::-webkit-scrollbar-track { background: transparent; }
+#gallery-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 3px; }
+
+/* 💡 Lightbox 燈箱 */
+#lightbox {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.8); display: none;
+  justify-content: center; align-items: center; z-index: 2000;
+}
+#lightbox img,
+#lightbox video {
+  max-width: 90%; max-height: 90%; box-shadow: 0 0 10px #fff;
+}
+#lightbox-close {
+  position: absolute; top: 20px; right: 30px; font-size: 40px;
+  cursor: pointer; z-index: 3101;
 }
 
+/* ◀ ▶ △ ▽ 方向鍵 (.arrow-key) */
+.arrow-key {
+  position: fixed; background: rgba(0,0,0,0.6);
+  color: #fff; border: none; padding: 8px 14px;
+  border-radius: 4px; cursor: pointer; z-index: 3000;
+  font-size: clamp(18px,2.5vw,28px);
+}
+#up-arrow    { left:50%; top:57px; transform:translateX(-50%); }
+#down-arrow  { left:50%; bottom:10px; transform:translateX(-50%); }
+#left-arrow  { left:10px; top:50%; transform:translateY(-50%); }
+#right-arrow { right:10px; top:50%; transform:translateY(-50%); }
+
+/* 🗺 全區預覽 (#overview-zone) */
+#overview-zone {
+  position: fixed; top:0; left:0; width:100vw; height:100vh;
+  background: rgba(0,0,0,0.9); display: none; z-index:10000;
+  display: grid; grid-template-columns: repeat(5,1fr);
+  grid-template-rows: repeat(7,1fr); gap: 2px;
+}
+.overview-block {
+  background: #444; color: #fff; font-size: 8px;
+  display: flex; justify-content: center; align-items: center;
+  cursor: pointer; user-select: none; transition: background .2s;
+}
+.overview-block:hover { background: #12ca6e; }
+
+/* 🧪 DEBUG 工具 (#debug-wrapper, #debug-info, #debug-panel) */
+#debug-wrapper {
+  position: fixed; bottom: 2vh; right: 2vw;
+  display: flex; flex-direction: column; align-items: flex-end;
+  z-index: 9998;
+}
+#debug-info {
+  background: rgba(0,0,0,0.6); color: #0f8;
+  font-size: 12px; line-height: 1.2;          /* 字體 12px */
+  padding: 6px; border-radius: 4px;
+  width: 180px; max-height: 160px; overflow-y: auto;
+}
+#debug-info > div {
+  margin: 2px 0; white-space: nowrap;
+}
+#debug-pagination {
+  display: flex; justify-content: space-between;
+  margin-top: 4px; font-size: 12px;
+}
+/* 參數面板 */
+#debug-panel {
+  margin-top: 10px;
+  display: flex; flex-direction: column; gap: 6px;
+  width: 220px; max-height: 70vh; overflow-y: auto;
+}
+
+/* 🗺 全區一覽切換按鈕 */
+#overview-toggle {
+  position: fixed; bottom: 28vh; right: 2vw;
+  background: rgba(0,0,0,0.6); color: #fff; border: none;
+  padding: 6px 12px; border-radius: 4px; cursor: pointer;
+  font-size: 8px; z-index: 9999;
+}
+/* ⚙️ 參數調整切換按鈕 */
+#debug-toggle {
+  position: fixed; bottom: 28vh; right: 10vw;
+  background: rgba(0,0,0,0.6); color: #fff; border: none;
+  padding: 6px 12px; border-radius: 4px; cursor: pointer;
+  font-size: 8px; z-index: 9999;
+}
+
+/* ⚠️ 隱藏輔助類 */
+.hidden {
+  display: none !important;
+}
 
 /* 🖥️ 響應式 */
-@media screen and (max-width:768px){
-  #overview-overlay{ width:80vw; height:50vh; }
+@media screen and (max-width: 768px) {
+  #gallery-container {
+    grid-template-columns: repeat(3,1fr);       /* 手機三欄 */
+  }
 }
-

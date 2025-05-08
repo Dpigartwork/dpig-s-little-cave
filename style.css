@@ -515,6 +515,7 @@ body {
   z-index: 3000;                                       /* 層級 */
   transition: transform .4s ease;                      /* 動畫 */
 }
+/* 當導覽列被隱藏時的狀態 */
 #navbar.hidden { transform: translateY(-100%); }       /* 隱藏時往上 */
 
 /* 🧭 漢堡按鈕 */
@@ -547,16 +548,20 @@ body {
   margin: 0; padding: 0;                                /* 去除預設 */
   z-index: 3001;                                        /* 層級 */
 }
+/* 📱 導覽列展開時的樣式 */
 #nav-menu.open { display: flex !important; }           /* 展開 */
+/* 📱 導覽列內的每一項列表 */
 #nav-menu li {
   padding: 10px 20px;                                   /* 內距 */
   text-align: left;                                     /* 置左 */
 }
+/* 📱 導覽列中的字本身 */
 #nav-menu li a {
   color: #fff;                                          /* 文字色 */
   text-decoration: none;                                /* 無底線 */
-  font-size: 18px;                                      /* 字型大小 */
+  font-size: 180px;                                      /* 字型大小 */
 }
+/* 📱 滑鼠滑過行動選單連結時效果 */
 #nav-menu li a:hover {
   background: rgba(255,255,255,0.1);                    /* 懸停效果 */
 }
@@ -567,6 +572,7 @@ body {
   padding: 10px;                                        /* 內距 */
   z-index: 5;                                           /* 層級 */
 }
+/* 🔘 篩選按鈕樣式 */
 .filter-button {
   background: rgba(255,255,255,0.1);                    /* 半透明背景 */
   border: none;                                         /* 無邊框 */
@@ -574,6 +580,7 @@ body {
   border-radius: 4px;                                   /* 圓角 */
   cursor: pointer;                                      /* 指標 */
 }
+/* 🔘 被啟用的篩選按鈕樣式 */
 .filter-button.active {
   background: #12ca6e; color: #000;                     /* 活躍狀態 */
 }
@@ -595,6 +602,7 @@ main {
   scroll-snap-type: both mandatory;                    /* 滾動對齊 */
   overflow: auto; position: relative;                  /* 可滾與定位 */
 }
+/* 🧱 主區域內的每一個 section 區塊 */
 main > section {
   width: 100vw; height: 100vh;                         /* 填滿格子 */
   display: flex; flex-direction: column;                /* 置中內容 */
@@ -604,59 +612,123 @@ main > section {
   transition: opacity .4s;                             /* 淡入淡出 */
   position: relative;                                   /* 相對定位 */
 }
+/* 🧱 奇數 section 的樣式 */
 main > section:nth-child(odd) {
   background-color: rgb(94,64,36);                     /* 奇數色 */
 }
+/* 🧱 每個 section 中的子容器 */
 main > section > div {
   font-size: 60px; font-weight: bold; color: #fff;     /* 標籤文字 */
   pointer-events: none;                                /* 禁用滑鼠 */
 }
 
+
 /* 🔷 藝術品總覽 (#gallery-zone) */
 #gallery-zone {
   position: absolute;                                   /* 絕對定位 */
-  /* 跨 R1_D1~R1_D5 */
-  top:    calc(2 * 100vh);                              /* R1_D1 起點 */
+  top:    calc(2 * 100vh + 5.3%);                          /*2 * 100vh + 5.3%剛好為R1_D1 起點 */
   left:   calc(3 * 100vw + 5%);                         /* 橫向置中 + 5% */
   width:  calc(100vw - 10%);                            /* 留白 5%＋5% */
   height: calc(5 * 100vh);                              /* 5 個格高 */
-  background-color: #333;                               /* 背景色 */
+  background-color: rgba(0, 0, 0, 0.747);                               /* 背景色 */
   z-index: 5;                                           /* 層級 */
   padding: 20px 0;                                      /* 上下內距 */
   box-sizing: border-box;                               /* 含內距計算 */
 }
+/* 🔷 藝術品總覽標題 */
 .info-title {
-  font-size: 2rem; text-align: center; margin-bottom: 10px; /* 標題 */
+  font-size: 8rem; 
+  text-align: left; 
+  margin-bottom: 10px;                                    /* 標題 */
+  margin-left: 5%;                                        /* 左邊留白 */
 }
+/* 🔷 藝術品總覽 內文 */
+.info-description {
+  text-align: left;                                      /* 內文對齊左側 */
+  margin-left: 5%;                                        /* 左邊留白 */
+  max-width: 50vw;                                        /* 最大寬度為視窗50% */
+  color: #fff;                                           /* 文字顏色 */
+  font-size: 1.2rem;                                      /* 文字大小 */
+  line-height: 1.6;                                       /* 行高 */
+  padding-right: 10px;                                    /* 右邊內距，避免文字過於靠邊 */
+}
+/* 🖼 個別藝術作品卡片 */
+.info-card {
+  position: absolute; /* 使元素可以定位 */
+  bottom: 10px;       /* 距離區塊底部 10px */
+  left: 10px;         /* 距離區塊左邊 10px */
+  background-color: rgba(0, 0, 0, 0.6); /* 半透明背景 */
+  color: white;       /* 文字顏色 */
+  padding: 5px;       /* 內邊距 */
+  font-size: 14px;    /* 字型大小 */
+  display: none;      /* 預設隱藏 */
+}
+
+/* 🔸 藝術品總覽：控制按鈕區 */
 .info-controls {
-  display: flex; justify-content: center; align-items: center;
-  gap: 10px; margin-bottom: 10px;                        /* 按鈕群 */
+  display: flex;                                        /* 彈性排列 */
+  flex-direction: column;                              /* 改為由上至下排列 */
+  align-items: flex-end;                                /* 靠右對齊 */
+  gap: 10px;                                            /* 按鈕群間距 */
+  margin-bottom: 10px;
+  padding-right: 20px;                                  /* 右側留白距 */
 }
+/* 👤 登入狀態顯示 */
+.login-status,
+/* ⬆️ 上傳作品按鈕 */
+.upload-button,
+/* ⇅ 排序按鈕 */
+.sort-button {
+  background: rgba(226, 226, 226, 0.5);                     /* 半透明 */
+  width: 5vw;    
+  border: none; padding: 2px 10px; border-radius: 400px;
+  cursor: pointer;                                      /* 指標 */
+  z-index: 6;
+  
+}
+/* 單獨讓排序按鈕略為靠左 */
+.sort-button {
+  width: 8vw;
+  margin-right: 85%;                                   /* 往左縮 40px */
+}
+/* ✅ 被啟用的控制按鈕樣式 */
 .login-status,
 .upload-button,
-.sort-button {
-  background: rgba(255,255,255,0.1);                     /* 半透明 */
-  border: none; padding: 6px 12px; border-radius: 4px;
-  cursor: pointer;                                      /* 指標 */
-}
 .sort-button.active {
-  background: #12ca6e; color: #000;                     /* 活躍 */
+  font-size: 15px;
+  background: rgb(192, 192, 192);                   /* 活躍 */
+  color: #141414;
+}
+/* 滑鼠滑過時發亮效果 */
+.login-status:hover,
+.upload-button:hover,
+.sort-button:hover {
+  background: rgba(255, 255, 255, 0.904); /* 比原來更亮一點的半透明白色 */
+  transition: background 0.2s ease;     /* 平滑過渡效果 */
 }
 
 /* ===== 作品格 ===== */
 #gallery-container {
+    border: none;
   flex: 1; width: 100%; display: grid;
-  grid-template-columns: repeat(3,1fr); gap: 10px;      /* 三欄 */
+  grid-template-columns: repeat(6,1fr); gap: 10px;      /* 6欄 */
   overflow-y: auto; overflow-x: hidden; padding-bottom: 10px;
   justify-items: center; align-items: start; z-index: 6;
 }
+/* 🖼 圖片與影片內容樣式 */
 #gallery-container img,
 #gallery-container video {
+  margin-top: 30px;                                     /* 向下移動 */
+  border: none;
+  border-radius: 3%;
   max-width: 500px; max-height: 500px;                 /* 長邊限 500px */
-  width: 100%; height: auto; object-fit: contain;      /* 等比 */
+  width: 100%; height: auto; object-fit: contain;      /* 等比縮放 */
 }
+/* 🖱 自訂 scrollbar 外觀 */
 #gallery-container::-webkit-scrollbar { width: 6px; }
+/* 🖱 scrollbar 背景軌道 */
 #gallery-container::-webkit-scrollbar-track { background: transparent; }
+/* 🖱 scrollbar 拖曳區塊 */
 #gallery-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 3px; }
 
 /* 💡 Lightbox 燈箱 */
@@ -665,13 +737,15 @@ main > section > div {
   background: rgba(0,0,0,0.8); display: none;
   justify-content: center; align-items: center; z-index: 2000;
 }
+/* 💡 燈箱中顯示的圖片或影片 */
 #lightbox img,
 #lightbox video {
   max-width: 90%; max-height: 90%; box-shadow: 0 0 10px #fff;
 }
+/* ❌ 關閉燈箱按鈕 */
 #lightbox-close {
-  position: absolute; top: 20px; right: 30px; font-size: 40px;
-  cursor: pointer; z-index: 3101;
+  position: absolute; top: 20%; right: 20%; font-size: 40px;
+  cursor: pointer; z-index: 9999;
 }
 
 /* ◀ ▶ △ ▽ 方向鍵 (.arrow-key) */
@@ -681,23 +755,33 @@ main > section > div {
   border-radius: 4px; cursor: pointer; z-index: 3000;
   font-size: clamp(18px,2.5vw,28px);
 }
-#up-arrow    { left:50%; top:57px; transform:translateX(-50%); }
+/* 🔼 上方向鍵 */
+#up-arrow {
+  left: 50%;
+  top: calc(19px * 2 + 1px);  /* padding-top + padding-bottom + 邊界補差 */
+  transform: translateX(-50%);
+}
+/* 🔽 下方向鍵 */
 #down-arrow  { left:50%; bottom:10px; transform:translateX(-50%); }
+/* ◀️ 左方向鍵 */
 #left-arrow  { left:10px; top:50%; transform:translateY(-50%); }
+/* ▶️ 右方向鍵 */
 #right-arrow { right:10px; top:50%; transform:translateY(-50%); }
 
-/* 🗺 全區預覽 (#overview-zone) */
+/* 🗺 全區預覽 (#overview-zone) 此區塊已完成，不要改 */
 #overview-zone {
-  position: fixed; top:0; left:0; width:100vw; height:100vh;
-  background: rgba(0,0,0,0.9); display: none; z-index:10000;
+  position: fixed; top:35%; left:35%; width:30vw; height:30vh;
+  background: rgba(0,0,0,0.8); display: none; z-index:10000;
   display: grid; grid-template-columns: repeat(5,1fr);
   grid-template-rows: repeat(7,1fr); gap: 2px;
 }
+/*🗺 全區預覽 各區塊*/
 .overview-block {
-  background: #444; color: #fff; font-size: 8px;
+  background: rgba(66, 66, 66, 0.7); color: #fff; font-size: 8px;
   display: flex; justify-content: center; align-items: center;
   cursor: pointer; user-select: none; transition: background .2s;
 }
+/*🗺 全區預覽 各區塊滑鼠滑過*/
 .overview-block:hover { background: #12ca6e; }
 
 /* 🧪 DEBUG 工具 (#debug-wrapper, #debug-info, #debug-panel) */
@@ -706,15 +790,18 @@ main > section > div {
   display: flex; flex-direction: column; align-items: flex-end;
   z-index: 9998;
 }
+/* 🧪 DEBUG 顯示資訊區 */
 #debug-info {
   background: rgba(0,0,0,0.6); color: #0f8;
   font-size: 12px; line-height: 1.2;          /* 字體 12px */
   padding: 6px; border-radius: 4px;
   width: 180px; max-height: 160px; overflow-y: auto;
 }
+/* 🧪 DEBUG 資訊每個欄位 */
 #debug-info > div {
   margin: 2px 0; white-space: nowrap;
 }
+/* 🧪 DEBUG 頁碼切換區 */
 #debug-pagination {
   display: flex; justify-content: space-between;
   margin-top: 4px; font-size: 12px;
@@ -746,9 +833,42 @@ main > section > div {
   display: none !important;
 }
 
-/* 🖥️ 響應式 */
+/* 🖥️ 響應式 僅為手機排版更動*/
 @media screen and (max-width: 768px) {
   #gallery-container {
-    grid-template-columns: repeat(3,1fr);       /* 手機三欄 */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  /* 三欄排 */
+    gap: 20px;                              /* 格子間距 */
+    padding-left: 5%;                       /* 與 info 對齊 */
+    padding-right: 5%;                      /* 平衡右側 */
+    box-sizing: border-box;                 /* 含內距計算 */
   }
+  .info-title {
+    font-size: 2.5rem; 
+  }
+  .info-description {
+    max-width: 80vw;                                        /* 最大寬度為視窗80% */
+  }
+  /* 🔸 藝術品總覽：控制按鈕區 */
+  .info-controls {
+    gap: 5px;                                            /* 按鈕群間距 */
+    margin-bottom: 5px;
+    padding-right: 5px;                                  /* 右側留白距 */
+  }
+  .login-status,
+  .upload-button,
+  .sort-button {
+    background: rgba(226, 226, 226, 0.5);                     /* 半透明 */
+    width: 20%;    
+    border: none; padding: 2px 10px; border-radius: 400px;
+    cursor: pointer;                                      /* 指標 */
+    z-index: 6;
+    
+  }
+  /* 單獨讓排序按鈕略為靠左 */
+  .sort-button {
+    width: 30%;
+    margin-right: 65%;                                   /* 往左縮 40px */
+  }
+
 }

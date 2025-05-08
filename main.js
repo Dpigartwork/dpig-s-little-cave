@@ -282,10 +282,16 @@ window.addEventListener('load', function() {                                    
     updateDebugPage();
   }
 
-  // ===== 更新上箭頭位置 =====
-  function updateUpArrowPosition() {
-    upArrow.style.top = navBar.classList.contains('hidden') ? '20px' : '57px';
+// ===== 更新上箭頭位置（依導覽列高度）=====
+function updateUpArrowPosition() {
+  if (!navBar.classList.contains('hidden')) {
+    const navHeight = navBar.offsetHeight;  
+    upArrow.style.top = `${navHeight+48}px`;  
+  } else {
+    upArrow.style.top = '10px'; 
   }
+}
+
 
   // ===== 初場黑幕轉場 =====
   setTimeout(()=>{
@@ -363,30 +369,44 @@ window.addEventListener('load', function() {                                    
   });
 
   // ===== 滾輪導航（600ms 防抖） =====
-  window.addEventListener('scroll', ()=>{
+  window.addEventListener('scroll', () => {
     if (isTransitioning || isResizing) return;
+  
     clearTimeout(scrollDebounce);
-    scrollDebounce = setTimeout(()=>{
+    scrollDebounce = setTimeout(() => {
       const secs = document.querySelectorAll('#grid-layout>section');
-      let closest=null, minD=Infinity;
-      const cx=window.scrollX+window.innerWidth/2, cy=window.scrollY+window.innerHeight/2;
-      secs.forEach(sec=>{
-        const r=sec.getBoundingClientRect();
-        const scx=r.left+window.scrollX+r.width/2, scy=r.top+window.scrollY+r.height/2;
-        const d=Math.hypot(cx-scx,cy-scy);
-        if(d<minD){minD=d;closest=sec;}
+      let closest = null, minD = Infinity;
+      const cx = window.scrollX + window.innerWidth / 2;
+      const cy = window.scrollY + window.innerHeight / 2;
+  
+      secs.forEach(sec => {
+        const r = sec.getBoundingClientRect();
+        const scx = r.left + window.scrollX + r.width / 2;
+        const scy = r.top + window.scrollY + r.height / 2;
+        const d = Math.hypot(cx - scx, cy - scy);
+        if (d < minD) {
+          minD = d;
+          closest = sec;
+        }
       });
+  
       if (closest) {
-        const [c,r]=closest.id.split('_');
-        const nc=colLabels.indexOf(c), nr=rowLabels.indexOf(r);
-        if (!(currentColIndex===colLabels.indexOf('R1') &&
-             ((currentRowIndex===rowLabels.indexOf('D3')&&nr===rowLabels.indexOf('D4'))||
-              (currentRowIndex===rowLabels.indexOf('D4')&&nr===rowLabels.indexOf('D3'))))) {
-          scrollIntoBlock(nc,nr,'smooth');
+        const [c, r] = closest.id.split('_');
+        const nc = colLabels.indexOf(c);
+        const nr = rowLabels.indexOf(r);
+  
+        // 排除 R1 欄中的 D1~D5 區塊彼此之間互相捲動
+        const restrictedRows = ['D1', 'D2', 'D3', 'D4', 'D5'];
+        if (!(currentColIndex === colLabels.indexOf('R1') &&
+              restrictedRows.includes(rowLabels[currentRowIndex]) &&
+              restrictedRows.includes(rowLabels[nr]) &&
+              currentRowIndex !== nr)) {
+          scrollIntoBlock(nc, nr, 'smooth');
         }
       }
-    },600);
+    }, 600);
   });
+  
 
   // ===== 行動選單位置更新 =====
   function updateMobileMenuPosition() {
@@ -420,24 +440,29 @@ window.addEventListener('load', function() {                                    
   });
   window.addEventListener('orientationchange', updateMobileMenuPosition);
 
-  // ===== 全區一覽功能 =====
-  overviewToggle.addEventListener('click', ()=>{
-    overviewZone.style.display = overviewZone.style.display==='flex'?'none':'flex';
+// ===== 全區一覽功能 =====
+overviewToggle.addEventListener('click', () => {
+  // 切換顯示時使用 grid 而非 flex
+  overviewZone.style.display = (overviewZone.style.display === 'grid') ? 'none' : 'grid';
+});
+
+// 點擊背景任一空白處關閉
+overviewZone.addEventListener('click', e => {
+  if (e.target === overviewZone) overviewZone.style.display = 'none';
+});
+
+// 動態生成 5×7 格子按鈕
+rowLabels.forEach(r => colLabels.forEach(c => {
+  const id = `${c}_${r}`;
+  const item = document.createElement('div');
+  item.className = 'overview-block';
+  item.innerText = id;
+  item.addEventListener('click', () => {
+    overviewZone.style.display = 'none';
+    scrollIntoBlock(colLabels.indexOf(c), rowLabels.indexOf(r), 'smooth');
   });
-  overviewZone.addEventListener('click', e=>{
-    if(e.target===overviewZone) overviewZone.style.display='none';
-  });
-  rowLabels.forEach(r=> colLabels.forEach(c=>{
-    const id=`${c}_${r}`;
-    const item=document.createElement('div');
-    item.className='overview-block';
-    item.innerText=id;
-    item.addEventListener('click', ()=>{
-      overviewZone.style.display='none';
-      scrollIntoBlock(colLabels.indexOf(c),rowLabels.indexOf(r),'smooth');
-    });
-    overviewZone.appendChild(item);
-  }));
+  overviewZone.appendChild(item);
+}));
 
   // ===== 篩選功能 =====
   filterButtons.forEach(btn=>{
